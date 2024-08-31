@@ -3,13 +3,12 @@
 
 -------------------
 
-**ISMARKETAPP<br>**
-**<small>APPS MOVILES</small>**
+# **ISMARKETAPP**<br>**<small>APPS MOVILES</small>**
 
 **Integrantes:**
 **<small><br>SAMUEL BARONA</small>**
-**<small><br>JUAN VELOSA</small>**
-**<small><br>JUAN RAMIREZ</small>**
+**<small><br>JUAN MANUEL VELOSA</small>**
+**<small><br>JUAN ESTEBAN RAMIREZ</small>**
 **<small><br>CRISTIAN CARDONA</small>**
 **<small><br>FELIPE VELASCO</small>**
 ------
