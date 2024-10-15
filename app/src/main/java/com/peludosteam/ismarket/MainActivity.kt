@@ -8,13 +8,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,7 +31,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -138,6 +145,7 @@ fun ProfileScreen(navController: NavController, profileViewModel: ProfileViewMod
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel = viewModel()) {
     val authState by signupViewModel.authState.observeAsState()
@@ -190,12 +198,39 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                     modifier = Modifier.padding(bottom = 5.dp)
                 )
             }
-            TextField(value = name,
-                modifier = Modifier.padding(bottom = 8.dp),
-                onValueChange = { name = it },
-                label = { Text("Nombre") },
-                )
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .graphicsLayer {
+                        translationX = 4f
+                        translationY = 4f
+                        }
+            ) {
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nombre") },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color(0xFFFA4A0C),
+                        unfocusedIndicatorColor = Color(0xFFFA4A0C),
+                        cursorColor = Color(0xFFFA4A0C),
+                        focusedLabelColor = Color(0xFF1C0000),
+                        unfocusedLabelColor = Color(0xFF1C0000),
+                        containerColor = Color.White,
 
+
+
+
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFF1C0000),
+                        fontWeight = FontWeight.Normal,
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
