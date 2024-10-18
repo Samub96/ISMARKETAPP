@@ -1,6 +1,6 @@
 package com.peludosteam.ismarket
 
-import android.icu.text.CaseMap.Title
+
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -10,16 +10,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -35,12 +37,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -165,7 +167,7 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             verticalArrangement = Arrangement.Center
         ) {
 
-            Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,) {
+            Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
                 Text(
                     text = "Registrarte",
                     color = Color(0xFF1C0000),
@@ -204,7 +206,7 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                     .graphicsLayer {
                         translationX = 4f
                         translationY = 4f
-                        }
+                    }
             ) {
                 TextField(
                     value = name,
@@ -217,10 +219,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                         focusedLabelColor = Color(0xFF1C0000),
                         unfocusedLabelColor = Color(0xFF1C0000),
                         containerColor = Color.White,
-
-
-
-
                     ),
                     textStyle = TextStyle(
                         color = Color(0xFF1C0000),
@@ -249,10 +247,35 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                 )
             }
 
-            TextField(value = username,
-                modifier = Modifier.padding(bottom = 8.dp),
-                onValueChange = { username = it },
-                      label = { Text("Nombre de Usuario") })
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .graphicsLayer {
+                        translationX = 4f
+                        translationY = 4f
+                    }
+            ) {
+                TextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Nombre de usuario") },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color(0xFFFA4A0C),
+                        unfocusedIndicatorColor = Color(0xFFFA4A0C),
+                        cursorColor = Color(0xFFFA4A0C),
+                        focusedLabelColor = Color(0xFF1C0000),
+                        unfocusedLabelColor = Color(0xFF1C0000),
+                        containerColor = Color.White,
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFF1C0000),
+                        fontWeight = FontWeight.Normal,
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -270,14 +293,39 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                     modifier = Modifier.padding(bottom = 5.dp)
                 )
             }
-            TextField(value = email,
-                      modifier = Modifier.padding(bottom = 8.dp),
-                      onValueChange = { email = it },
-                      label = { Text("Correo") })
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .graphicsLayer {
+                        translationX = 4f
+                        translationY = 4f
+                    }
+            ) {
+                TextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Correo") },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color(0xFFFA4A0C),
+                        unfocusedIndicatorColor = Color(0xFFFA4A0C),
+                        cursorColor = Color(0xFFFA4A0C),
+                        focusedLabelColor = Color(0xFF1C0000),
+                        unfocusedLabelColor = Color(0xFF1C0000),
+                        containerColor = Color.White,
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFF1C0000),
+                        fontWeight = FontWeight.Normal,
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 38.dp),  // Alineación y margen lateral
+                    .padding(horizontal = 38.dp),
                 horizontalAlignment = androidx.compose.ui.Alignment.Start
             ) {
                 Text(
@@ -291,13 +339,35 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                     modifier = Modifier.padding(bottom = 5.dp),
                     )
             }
-            TextField(value = password,
-                modifier = Modifier.padding(bottom = 8.dp),
-                onValueChange = { password = it },
-                      label = { Text("Contraseña") },
-                      visualTransformation = PasswordVisualTransformation()
-
-            )
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .graphicsLayer {
+                        translationX = 4f
+                        translationY = 4f
+                    }
+            ) {
+                TextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Contraseña") },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color(0xFFFA4A0C),
+                        unfocusedIndicatorColor = Color(0xFFFA4A0C),
+                        cursorColor = Color(0xFFFA4A0C),
+                        focusedLabelColor = Color(0xFF1C0000),
+                        unfocusedLabelColor = Color(0xFF1C0000),
+                        containerColor = Color.White,
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFF1C0000),
+                        fontWeight = FontWeight.Normal,
+                    ),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                )
+            }
 
             if (authState == 1) {
                 CircularProgressIndicator()
@@ -306,10 +376,50 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             } else if (authState == 3) {
                 navController.navigate("profile")
             }
-            Button(onClick = {
-                signupViewModel.signup(User(name = name, username = username, email = email), password)
-            }) {
-                Text(text = "Registrarse")
+            Button(
+                onClick = {
+                    signupViewModel.signup(User(name = name, username = username, email = email), password)
+            },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFA4A0C),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.padding(8.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 38.dp)
+                    .height(55.dp)
+                    .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+
+                ) {
+                Text(text = "Registrarse",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Texto con navegación hacia la pantalla de login
+            ClickableText(
+                text = AnnotatedString("¿Ya tienes cuenta? Inicia sesión aquí"),
+                style = TextStyle(
+                    color = Color(0xFFFA4A0C),
+                    fontSize = 16.sp,
+                    textDecoration = TextDecoration.Underline
+                ),
+                onClick = {
+                    navController.navigate("login")
+                }
+            )
+
+            if (authState == 1) {
+                CircularProgressIndicator()
+            } else if (authState == 2) {
+                Text("Hubo un error", color = Color.Red)
+            } else if (authState == 3) {
+                navController.navigate("profile")
             }
         }
     }
