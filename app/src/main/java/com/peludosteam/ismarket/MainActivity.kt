@@ -17,10 +17,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,6 +34,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -40,6 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -93,6 +97,7 @@ fun App() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = viewModel()) {
     val authState by authViewModel.authState.observeAsState()
@@ -100,52 +105,135 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-        TextField(value = email, onValueChange = { email = it })
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            visualTransformation = PasswordVisualTransformation()
-        )
-        if (authState == 1) {
-            CircularProgressIndicator()
-        } else if (authState == 2) {
-            Text(text = "Hubo un error, que no podemos ver todavia")
-        } else if (authState == 3) {
-            navController.navigate("profile")
-        }
+    Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(Color(0xFFF2F2F2)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Inicia sesión",
+                color = Color(0xFF1C0000),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
+            )
 
-        Button(onClick = {
-            authViewModel.signin(email, password)
-        }) {
-            Text(text = "Iniciar sesion")
+            Text(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = "Inicia sesión para seguir comprando",
+                color = Color(0xFF1C0000),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Email Field
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Correo electrónico") },
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color(0xFFFA4A0C),
+                    unfocusedIndicatorColor = Color.Gray
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
+
+            // Password Field
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color(0xFFFA4A0C),
+                    unfocusedIndicatorColor = Color.Gray
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Estado de autenticación
+            when (authState) {
+                1 -> CircularProgressIndicator()
+                2 -> Text(text = "Hubo un error, que no podemos ver todavía", color = Color.Red)
+                3 -> navController.navigate("profile")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de iniciar sesión
+            Button(
+                onClick = { authViewModel.signin(email, password) },
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFA4A0C),
+                    contentColor = Color.White
+                ),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text(text = "Iniciar sesión", fontSize = 18.sp)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Texto para navegar a la pantalla de registro
+            ClickableText(
+                text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
+                style = TextStyle(
+                    color = Color(0xFFFA4A0C),
+                    textDecoration = TextDecoration.Underline
+                ),
+                onClick = { navController.navigate("signup") }
+            )
         }
     }
 }
 
-@Composable
-fun ProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
-    val userState by profileViewModel.user.observeAsState()
-    Log.e(">>>", userState.toString())
-    val username by remember { mutableStateOf("") }
+        @Composable
+        fun ProfileScreen(
+            navController: NavController,
+            profileViewModel: ProfileViewModel = viewModel()
+        ) {
+            val userState by profileViewModel.user.observeAsState()
+            Log.e(">>>", userState.toString())
+            val username by remember { mutableStateOf("") }
 
-    LaunchedEffect(true) {
-        profileViewModel.getCurrentUser()
-    }
-    if (userState == null) {
-        navController.navigate("login")
-    } else {
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-            Text(text = "Bienvenido ${userState?.name}")
-            Button(onClick = {
-                Firebase.auth.signOut()
+            LaunchedEffect(true) {
+                profileViewModel.getCurrentUser()
+            }
+            if (userState == null) {
                 navController.navigate("login")
-            }) {
-                Text(text = "Cerrar sesión")
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Bienvenido ${userState?.name}")
+                    Button(onClick = {
+                        Firebase.auth.signOut()
+                        navController.navigate("login")
+                    }) {
+                        Text(text = "Cerrar sesión")
+                    }
+                }
             }
         }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
