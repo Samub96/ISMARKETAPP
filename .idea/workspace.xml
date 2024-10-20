@@ -9,21 +9,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="86bdab0f-7c06-4b72-ad2b-142ae79eba6d" name="Changes" comment="Creacion de rama y clases para el carrito">
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/google-services.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/Domain/User.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/repository/AuthRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/service/AuthService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/viewmode/ProfileViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/viewmode/SignupViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/repository/UserRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/repository/UserRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/service/UserService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/service/UserService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/peludosteam/ismarket/viewmode/UserViewMode.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+    <list default="true" id="86bdab0f-7c06-4b72-ad2b-142ae79eba6d" name="Changes" comment="pull de h1 a hu carrito">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,10 +70,9 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "android.gradle.sync.needed": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "Merging HU-Carrito",
+    "git-widget-placeholder": "HU-Carrito",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/sdbp2/Desktop/apps2/ISMARKETAPP"
   },
@@ -178,6 +164,15 @@
       <option name="presentableId" value="Default" />
       <updated>1728342041511</updated>
     </task>
+    <task id="LOCAL-00001" summary="pull de h1 a hu carrito">
+      <option name="closed" value="true" />
+      <created>1729463633821</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729463633821</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -193,6 +188,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Creacion de rama y clases para el carrito" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creacion de rama y clases para el carrito" />
+    <MESSAGE value="pull de h1 a hu carrito" />
+    <option name="LAST_COMMIT_MESSAGE" value="pull de h1 a hu carrito" />
   </component>
 </project>
