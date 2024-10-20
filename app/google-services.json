@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "819531718619",
+    "project_id": "app-2bcf6",
+    "storage_bucket": "app-2bcf6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819531718619:android:ffe275a1695d892b5711fe",
+        "android_client_info": {
+          "package_name": "com.example.auntenticacin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtPIJzn3HjIKfcvO1HcgSamSZeH77eBN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819531718619:android:f069eee16c6758015711fe",
+        "android_client_info": {
+          "package_name": "com.example.auth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtPIJzn3HjIKfcvO1HcgSamSZeH77eBN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819531718619:android:2cdf8e05fe5293925711fe",
+        "android_client_info": {
+          "package_name": "com.example.pokedex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtPIJzn3HjIKfcvO1HcgSamSZeH77eBN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819531718619:android:7d34b627720902c65711fe",
+        "android_client_info": {
+          "package_name": "com.peludosteam.ismarket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtPIJzn3HjIKfcvO1HcgSamSZeH77eBN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

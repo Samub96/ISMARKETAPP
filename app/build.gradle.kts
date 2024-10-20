@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation("io.coil-kt:coil-compose:2.7.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
