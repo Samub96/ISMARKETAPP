@@ -1,32 +1,45 @@
 package com.peludosteam.ismarket
 
 
+import android.app.ActionBar
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,9 +50,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -60,6 +75,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.Domain.User
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import com.peludosteam.ismarket.viewmode.SignupViewModel
 
@@ -95,8 +111,93 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
+       // composable("dashboard") { Dashboard(navController) }
+
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Dashboard(){
+
+
+
+}
+
+@Composable
+fun CarritoView(carritoViewMode: CarritoViewMode){
+
+    Column (modifier = Modifier.fillMaxWidth()){
+        Spacer(
+            modifier = Modifier
+                .size(50.dp )
+        )
+
+        Image(
+            painter = painterResource(id = CarritoViewMode.Carrito.image),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(30.dp,0.dp)
+        )
+        Spacer(
+            modifier = Modifier
+                .size(50.dp )
+        )
+        Text(
+            text = CarritoViewMode.Carrito.title,
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center
+
+        )
+
+        Text(
+            text = CarritoViewMode.Carrito.description,
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 15.sp,
+            textAlign = TextAlign.Center
+
+        )
+    }
+
+}
+
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun CarritoViewImp(emptyCarrito : () -> Unit){
+    val pages = listOf(CarritoViewMode.Carrito)
+    val pagerState = rememberPagerState (initialPage = 0) {
+        pages.size
+
+    }
+
+
+    Row (modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement =Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+        ){
+
+
+    }
+
+
+
+
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun DashboardPreview(){
+    ISMARKETTheme {
+      //  CarritoViewImp()
+    }
+}
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
