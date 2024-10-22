@@ -69,13 +69,11 @@ import com.peludosteam.ismarket.viewmode.SignupViewModel
 
 
 import coil.compose.rememberImagePainter
-import com.android.identity.util.UUID
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmodel.ProductViewModel
-
-
+import java.util.UUID
 
 
 class MainActivity : ComponentActivity() {
