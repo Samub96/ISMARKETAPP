@@ -27,7 +27,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -243,7 +246,7 @@ fun ProfileScreen(navController: NavController, profileViewModel: ProfileViewMod
 
         // Botón para navegar a la pantalla de agregar productos
         Button(onClick = { navController.navigate("addProduct") }) {
-            Text(text = "Agregar p")
+            Text(text = "Agregar productos")
         }
     }
 }
@@ -538,6 +541,18 @@ fun AddProductScreen(navController: NavController) {
     var stock by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) } // Para almacenar la URI de la imagen seleccionada
     var isLoading by remember { mutableStateOf(false) } // Estado de carga
+    var expanded by remember { mutableStateOf(false) } // Controla la expansión del dropdown
+    var category by remember { mutableStateOf("") }
+    val categories = listOf(
+        "Postres",
+        "Comida y bebidas",
+        "Tecnologia (Accesorios tecnologicos., cargadores, forros celular, etc)",
+        "Tutorias",
+        "Servicios (Limpieza, arreglos y carpinteria, plataformas de streaming, etc)",
+        "Ropa",
+        "Accesorios (Joyeria, pulseras, etc)",
+        "Otros"
+    )
 
     val auth = FirebaseAuth.getInstance() // Firebase Auth para obtener el ID del usuario
     val db = FirebaseFirestore.getInstance() // Firestore
@@ -590,6 +605,37 @@ fun AddProductScreen(navController: NavController) {
                 )
             )
 
+            // Dropdown de Categoría
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                TextField(
+                    value = category,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Categoría") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    categories.forEach { selectedCategory ->
+                        DropdownMenuItem(
+                            text = { Text(selectedCategory) },
+                            onClick = {
+                                category = selectedCategory
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
             // Campo de Precio
             TextField(
                 value = price,
@@ -633,7 +679,7 @@ fun AddProductScreen(navController: NavController) {
             // Botón para agregar el producto
             Button(
                 onClick = {
-                    if (name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null) {
+                    if (name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty()) {
                         isLoading = true
                         val productId = UUID.randomUUID().toString()
 
@@ -652,7 +698,8 @@ fun AddProductScreen(navController: NavController) {
                                         description = description,
                                         imageRes = downloadUri.toString(), // Guardar la URL de la imagen
                                         stock = stock.toInt(),
-                                        userId = userId
+                                        userId = userId,
+                                        categoryName = category
                                     )
 
                                     // Subir a Firestore
@@ -671,7 +718,7 @@ fun AddProductScreen(navController: NavController) {
                         }
                     }
                 },
-                enabled = !isLoading && name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null,
+                enabled = !isLoading && name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFA4A0C))
             ) {
@@ -684,6 +731,7 @@ fun AddProductScreen(navController: NavController) {
         }
     }
 }
+
 
 
 
