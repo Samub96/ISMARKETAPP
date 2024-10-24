@@ -166,16 +166,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Estado de autenticación
-            when (authState) {
-                1 -> CircularProgressIndicator()
-                2 -> Text(text = "Hubo un error, que no podemos ver todavía", color = Color.Red)
-                3 -> navController.navigate("profile")
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Botón de iniciar sesión
             Button(
                 onClick = { authViewModel.signin(email, password) },
                 modifier = Modifier
@@ -192,7 +182,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto para navegar a la pantalla de registro
             ClickableText(
                 text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
                 style = TextStyle(
@@ -458,7 +447,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
 
             if (authState == 1) {
-                CircularProgressIndicator()
             } else if (authState == 2) {
                 Text("Hubo un error", color = Color.Red)
             } else if (authState == 3) {
@@ -489,7 +477,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto con navegación hacia la pantalla de login
             ClickableText(
                 text = AnnotatedString("¿Ya tienes cuenta? Inicia sesión aquí"),
                 style = TextStyle(
