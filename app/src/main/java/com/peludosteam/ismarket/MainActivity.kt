@@ -1,12 +1,16 @@
 package com.peludosteam.ismarket
 
 
+
+import ProfileViewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +19,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -36,10 +43,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -59,8 +69,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.Domain.User
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
-import com.peludosteam.ismarket.viewmode.ProfileViewModel
+
 import com.peludosteam.ismarket.viewmode.SignupViewModel
+
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
@@ -95,6 +106,72 @@ fun App() {
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
     }
+}
+
+@Composable
+fun ProfileOption(text: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .clickable(onClick = onClick),
+        elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = text, fontSize = 16.sp)
+        }
+    }
+}
+
+@Composable
+fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = viewModel()) {
+
+    val userState by viewModel.user.observeAsState()
+
+
+    Log.e(">>>", userState.toString())
+
+
+    LaunchedEffect(true) {
+        viewModel.getCurrentUser()
+    }
+
+
+    if (userState == null) {
+        navController.navigate("login")
+    } else {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Bienvenido ${userState?.name ?: "Usuario"}", fontSize = 24.sp)
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Botón para cerrar sesión
+            Button(onClick = {
+                Firebase.auth.signOut()
+                navController.navigate("login")
+            }) {
+                Text(text = "Cerrar sesión")
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Opciones de perfil
+            ProfileOption("Órdenes") { /* Acción para abrir Órdenes */ }
+            ProfileOption("Reseñas pendientes") { /* Acción para abrir Reseñas pendientes */ }
+            ProfileOption("Métodos de Pago") { /* Acción para abrir Métodos de Pago */ }
+            ProfileOption("Ubicación") { /* Acción para abrir Ubicación */ }
+        }
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -205,35 +282,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
     }
 }
 
-        @Composable
-        fun ProfileScreen(
-            navController: NavController,
-            profileViewModel: ProfileViewModel = viewModel()
-        ) {
-            val userState by profileViewModel.user.observeAsState()
-            Log.e(">>>", userState.toString())
-            val username by remember { mutableStateOf("") }
-
-            LaunchedEffect(true) {
-                profileViewModel.getCurrentUser()
-            }
-            if (userState == null) {
-                navController.navigate("login")
-            } else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "Bienvenido ${userState?.name}")
-                    Button(onClick = {
-                        Firebase.auth.signOut()
-                        navController.navigate("login")
-                    }) {
-                        Text(text = "Cerrar sesión")
-                    }
-                }
-            }
-        }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -511,4 +559,5 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
         }
     }
+
 }
