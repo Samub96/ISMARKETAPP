@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,6 +50,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
@@ -104,70 +106,77 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+@Composable
+fun EnterScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.logoapp), // Reemplaza 'tu_imagen' con el nombre de tu imagen sin extensión
+            contentDescription = "Descripción de la imagen",
+            modifier = Modifier
+                .fillMaxWidth() // Ajustar ancho de la imagen
+                .height(200.dp) // Ajustar altura de la imagen
+                .clip(RoundedCornerShape(12.dp)) // Bordes redondeados (opcional)
+
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            onClick = { navController.navigate("login") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Iniciar sesión")
+        }
+
+        Button(
+            onClick = { navController.navigate("signup") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Registrarse")
+        }
+    }
+}
+
+
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "signup") {
+    NavHost(navController = navController, startDestination = "Enter") {
+        composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
-       // composable("dashboard") { Dashboard(navController) }
-
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Dashboard(){
-
-
-
-}
-
-@Composable
-fun CarritoView(carritoViewMode: CarritoViewMode){
-
-    Column (modifier = Modifier.fillMaxWidth()){
-        Spacer(
-            modifier = Modifier
-                .size(50.dp )
-        )
-
-        Image(
-            painter = painterResource(id = CarritoViewMode.Carrito.image),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp,0.dp)
-        )
-        Spacer(
-            modifier = Modifier
-                .size(50.dp )
-        )
-        Text(
-            text = CarritoViewMode.Carrito.title,
-            modifier = Modifier.fillMaxWidth(),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center
-
-        )
-
-        Text(
-            text = CarritoViewMode.Carrito.description,
-            modifier = Modifier.fillMaxWidth(),
-            fontSize = 15.sp,
-            textAlign = TextAlign.Center
-
-        )
-    }
-
-}
-
-
-
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -238,16 +247,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Estado de autenticación
-            when (authState) {
-                1 -> CircularProgressIndicator()
-                2 -> Text(text = "Hubo un error, que no podemos ver todavía", color = Color.Red)
-                3 -> navController.navigate("profile")
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Botón de iniciar sesión
             Button(
                 onClick = { authViewModel.signin(email, password) },
                 modifier = Modifier
@@ -264,7 +263,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto para navegar a la pantalla de registro
             ClickableText(
                 text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
                 style = TextStyle(
@@ -530,7 +528,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
 
             if (authState == 1) {
-                CircularProgressIndicator()
             } else if (authState == 2) {
                 Text("Hubo un error", color = Color.Red)
             } else if (authState == 3) {
@@ -545,7 +542,8 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .padding(8.dp)
                     .fillMaxWidth()
                     .padding(horizontal = 38.dp)
                     .height(55.dp)
@@ -561,7 +559,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto con navegación hacia la pantalla de login
             ClickableText(
                 text = AnnotatedString("¿Ya tienes cuenta? Inicia sesión aquí"),
                 style = TextStyle(
