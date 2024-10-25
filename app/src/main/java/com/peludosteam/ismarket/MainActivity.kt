@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -44,10 +45,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -64,8 +67,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
-
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import com.peludosteam.ismarket.viewmode.SignupViewModel
@@ -75,7 +76,6 @@ import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.domain.Product
-import com.peludosteam.ismarket.viewmodel.ProductViewModel
 import java.util.UUID
 
 
@@ -98,16 +98,78 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            ISMARKETTheme {
+        ISMARKETTheme {
                 App()
+                }
             }
         }
     }
+
+@Composable
+fun EnterScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.logoapp), // Reemplaza 'tu_imagen' con el nombre de tu imagen sin extensión
+            contentDescription = "Descripción de la imagen",
+            modifier = Modifier
+                .fillMaxWidth() // Ajustar ancho de la imagen
+                .height(200.dp) // Ajustar altura de la imagen
+                .clip(RoundedCornerShape(12.dp)) // Bordes redondeados (opcional)
+
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            onClick = { navController.navigate("login") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Iniciar sesión")
+        }
+
+        Button(
+            onClick = { navController.navigate("signup") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Registrarse")
+        }
+    }
 }
+
+
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "signup") {
+    NavHost(navController = navController, startDestination = "Enter") {
+        composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
@@ -115,8 +177,6 @@ fun App() {
 
     }
 }
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -198,7 +258,7 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             // Botón de iniciar sesión
             Button(
-                onClick = { authViewModel.signin(email, password) },
+                onClick = { authViewModel.signin(email, password)},
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .height(50.dp),
@@ -213,7 +273,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto para navegar a la pantalla de registro
             ClickableText(
                 text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
                 style = TextStyle(
@@ -226,31 +285,40 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
     }
 }
 
-@Composable
-fun ProfileScreen(navController: NavController, profileViewModel: ProfileViewModel = viewModel()) {
-    val userState by profileViewModel.user.observeAsState()
-    // ...
+        @Composable
+        fun ProfileScreen(
+            navController: NavController,
+            profileViewModel: ProfileViewModel = viewModel()
+        ) {
+            val userState by profileViewModel.user.observeAsState()
+            Log.e(">>>", userState.toString())
+            val username by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "Bienvenido ${userState?.name}")
+            LaunchedEffect(true) {
+                profileViewModel.getCurrentUser()
+            }
+            if (userState == null) {
+                navController.navigate("login")
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Bienvenido ${userState?.name}")
+                    Button(onClick = {
+                        Firebase.auth.signOut()
+                        navController.navigate("login")
+                    }) {
+                        Text(text = "Cerrar sesión")
+                    }
 
-        Button(onClick = {
-            Firebase.auth.signOut()
-            navController.navigate("login")
-        }) {
-            Text(text = "Cerrar sesión")
+                        // Botón para navegar a la pantalla de agregar productos
+                        Button(onClick = { navController.navigate("addProduct") }) {
+                            Text(text = "Agregar productos")
+                    }
+                }
+            }
         }
-
-        // Botón para navegar a la pantalla de agregar productos
-        Button(onClick = { navController.navigate("addProduct") }) {
-            Text(text = "Agregar productos")
-        }
-    }
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -281,12 +349,12 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                         fontSize = 24.sp
                     )
                 )
-                Text( modifier = Modifier.padding(18.dp),
-                    text = "Regístrate para disfrutar todos los beneficios de la aplicación",
-                    color = Color(0xFF1C0000),
-                    textAlign = TextAlign.Center
-                )
-            }
+                    Text( modifier = Modifier.padding(18.dp),
+                        text = "Regístrate para disfrutar todos los beneficios de la aplicación",
+                        color = Color(0xFF1C0000),
+                        textAlign = TextAlign.Center
+                    )
+                }
 
             Column(
                 modifier = Modifier
@@ -442,7 +510,7 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
                         fontSize = 18.sp
                     ),
                     modifier = Modifier.padding(bottom = 5.dp),
-                )
+                    )
             }
             Box(
                 modifier = Modifier
@@ -475,7 +543,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
 
             if (authState == 1) {
-                CircularProgressIndicator()
             } else if (authState == 2) {
                 Text("Hubo un error", color = Color.Red)
             } else if (authState == 3) {
@@ -507,7 +574,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto con navegación hacia la pantalla de login
             ClickableText(
                 text = AnnotatedString("¿Ya tienes cuenta? Inicia sesión aquí"),
                 style = TextStyle(
