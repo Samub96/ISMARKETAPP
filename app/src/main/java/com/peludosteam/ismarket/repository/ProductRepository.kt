@@ -17,19 +17,20 @@ interface ProductRepository {
 
 class ProductRepositoryImpl : ProductRepository {
 
-    private val productCollection = Firebase.firestore.collection("products")
+    // Cambia para acceder a la subcolección de productos del usuario
+    private fun getUserProductCollection(userId: String) =
+        Firebase.firestore.collection("User").document(userId).collection("Product")
 
     override suspend fun getAllProducts(): List<Product> {
         return try {
             val currentUser = Firebase.auth.currentUser
             if (currentUser != null) {
-                val snapshot = productCollection
-                    .whereEqualTo("userId", currentUser.uid)  // Solo productos del usuario actual
+                val snapshot = getUserProductCollection(currentUser.uid)
                     .get()
                     .await()
                 snapshot.toObjects(Product::class.java)
             } else {
-                emptyList() // Retorna una lista vacía si no hay un usuario logueado
+                emptyList() // Retorna lista vacía si no hay un usuario logueado
             }
         } catch (e: Exception) {
             emptyList() // En caso de error
@@ -38,8 +39,16 @@ class ProductRepositoryImpl : ProductRepository {
 
     override suspend fun getProductById(id: String): Product? {
         return try {
-            val document = productCollection.document(id).get().await()
-            document.toObject(Product::class.java)
+            val currentUser = Firebase.auth.currentUser
+            if (currentUser != null) {
+                val document = getUserProductCollection(currentUser.uid)
+                    .document(id)
+                    .get()
+                    .await()
+                document.toObject(Product::class.java)
+            } else {
+                null
+            }
         } catch (e: Exception) {
             null // Retorna null si hay algún error
         }
@@ -50,7 +59,10 @@ class ProductRepositoryImpl : ProductRepository {
             val currentUser = Firebase.auth.currentUser
             if (currentUser != null) {
                 val productWithUser = product.copy(id = product.id, userId = currentUser.uid)
-                productCollection.document(productWithUser.id).set(productWithUser).await()
+                getUserProductCollection(currentUser.uid)
+                    .document(productWithUser.id)
+                    .set(productWithUser)
+                    .await()
             }
         } catch (e: Exception) {
             // Manejo de error si ocurre al agregar producto
@@ -61,7 +73,10 @@ class ProductRepositoryImpl : ProductRepository {
         try {
             val currentUser = Firebase.auth.currentUser
             if (currentUser != null && product.userId == currentUser.uid) {
-                productCollection.document(product.id).set(product).await()
+                getUserProductCollection(currentUser.uid)
+                    .document(product.id)
+                    .set(product)
+                    .await()
             }
         } catch (e: Exception) {
             // Manejo de error
@@ -73,7 +88,10 @@ class ProductRepositoryImpl : ProductRepository {
             val currentUser = Firebase.auth.currentUser
             val product = getProductById(id)
             if (currentUser != null && product?.userId == currentUser.uid) {
-                productCollection.document(id).delete().await()
+                getUserProductCollection(currentUser.uid)
+                    .document(id)
+                    .delete()
+                    .await()
             }
         } catch (e: Exception) {
             // Manejo de error
