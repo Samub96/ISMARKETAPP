@@ -3,17 +3,16 @@
 
 -------------------
 
-# **ISMARKETAPP**<br>**<small>APPS MOVILES</small>**
+# IsMarketApp 📈
 
-**Integrantes:**
-**<small><br>SAMUEL BARONA</small>**
-**<small><br>JUAN MANUEL VELOSA</small>**
-**<small><br>JUAN ESTEBAN RAMIREZ</small>**
-**<small><br>CRISTIAN CARDONA</small>**
-**<small><br>FELIPE VELASCO</small>**
-------
+Our sales app makes every step of the sales process easier, allowing you to capture and manage clients quickly and easily. With an intuitive and user-friendly design, this app allows you to make sales, know the history of each client and optimize your time with tools that help you turn each opportunity into an effective sale.
 
+Perfect for sellers and small business owners looking for a practical solution to increase their sales and provide a fast and reliable service to their customers.
 
-Este es un repo con el fin de crear una app móvil de ventas 
-
-
+## Creators 
+The creators of this application are:
+- Samuel Barona
+- Juan Manuel Velosa
+- Juan Esteban Ramirez
+- Cristian Cardona
+- Felipe velasco
