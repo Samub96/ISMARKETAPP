@@ -165,38 +165,7 @@ fun CarritoView(carritoViewMode: CarritoViewMode){
 
 
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun CarritoViewImp(emptyCarrito : () -> Unit){
-    val pages = listOf(CarritoViewMode.Carrito)
-    val pagerState = rememberPagerState (initialPage = 0) {
-        pages.size
 
-    }
-
-
-    Row (modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement =Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-        ){
-
-
-    }
-
-
-
-
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun DashboardPreview(){
-    ISMARKETTheme {
-      //  CarritoViewImp()
-    }
-}
 
 
 

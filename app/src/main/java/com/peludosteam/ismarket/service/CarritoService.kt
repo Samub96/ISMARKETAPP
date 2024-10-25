@@ -1,46 +1,60 @@
 package com.peludosteam.ismarket.service
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.Domain.Carrito
 import com.peludosteam.ismarket.Domain.Product
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
-class CarritoService {
-    private val firestore = FirebaseFirestore.getInstance()
-    private val cartCollection = firestore.collection("Carrito") // Colección donde se guardan los carritos
 
-    suspend fun getCartItems(): List<Product> {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return emptyList()
-        val cartRef = cartCollection.document(userId)
-        val document = cartRef.get().await()
+interface CarritoService {
+    suspend fun getCartProducts(id: String): List<Product>
+    suspend fun addProduct(userID: String, carritoProduct: Product)
+    suspend fun removeProduct(productId: String)
+    suspend fun updateProductQuantity(productId: String, quantity: Int)
+}
 
-        return if (document.exists()) {
-            document.toObject(Carrito::class.java)?.items ?: emptyList()
-        } else {
-            emptyList()
+class CarritoServiceImpl : CarritoService {
+    override suspend fun getCartProducts(id: String): List<Product> {
+
+        val normalizedProductList = Firebase.firestore
+            .collection("User")
+            .document(id)
+            .collection("ShoppingCar")
+            .get().await()
+
+        val productList = normalizedProductList.documents.map { normalizedProduct ->
+            Product(
+                normalizedProduct.get("productId").toString(),
+                normalizedProduct.get("Name").toString(),
+                normalizedProduct.get("Price").toString().toDouble(),
+            )
         }
+        return productList
     }
 
-    suspend fun addProductToCart(product: Product) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = cartCollection.document(userId)
+    override suspend fun addProduct(userID: String, product: Product) {
+        val normalizedProduct = hashMapOf(
+            "id" to UUID.randomUUID().toString(),
+            "productId" to product.id,
+            "Name" to product.name,
+            "Price" to product.price
+        )
 
-        cartRef.update("items", FieldValue.arrayUnion(product)).await()
+        Firebase.firestore.collection("User").document(userID)
+            .collection("ShoppingCar")
+            .document(normalizedProduct["id"].toString())
+            .set(normalizedProduct).await()
     }
 
-    suspend fun removeProductFromCart(product: Product) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = cartCollection.document(userId)
-
-        cartRef.update("items", FieldValue.arrayRemove(product)).await()
+    override suspend fun removeProduct(productId: String) {
+        TODO("Not yet implemented")
     }
 
-    suspend fun clearCart() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = cartCollection.document(userId)
-
-        cartRef.update("items", emptyList<Any>()).await()
+    override suspend fun updateProductQuantity(productId: String, quantity: Int) {
+        TODO("Not yet implemented")
     }
+
+
 }
