@@ -61,6 +61,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.Domain.User
+import com.peludosteam.ismarket.Screens.ViewProducts
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import com.peludosteam.ismarket.viewmode.SignupViewModel
@@ -159,6 +160,8 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
+        composable("viewProducts") { ViewProducts(navController) }
+
     }
 }
 
