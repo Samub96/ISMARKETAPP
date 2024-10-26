@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.listasapp.viewmodel.Product
+import com.peludosteam.ismarket.domain.Product
 
 @Composable
 fun ProductCard (product: Product){
@@ -67,7 +67,7 @@ fun ProductCardHeader(product: Product){
         .fillMaxWidth()
         .clip(RoundedCornerShape(16.dp))
         .background(Color.White)){
-        AsyncImage(model = product.image, contentDescription = product.title, modifier = Modifier
+        AsyncImage(model = product.imageRes, contentDescription = product.name, modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .height(200.dp))
@@ -84,7 +84,7 @@ fun ProductCardBody(product: Product){
 
         Text(text = "$ ${product.price}", fontSize = 32.sp, color = appColor)
         Text(
-            text = product.title.uppercase(),
+            text = product.name.uppercase(),
             fontSize = 14.sp,
             modifier = Modifier.padding(4.dp),
             //modifier =Modifier.fillMaxWidth(),

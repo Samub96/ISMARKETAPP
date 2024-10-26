@@ -3,7 +3,7 @@ package com.peludosteam.ismarket.service
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.peludosteam.ismarket.Domain.User
+import com.peludosteam.ismarket.domain.User
 import kotlinx.coroutines.tasks.await
 
 interface UserServices {
