@@ -1,14 +1,20 @@
 package com.peludosteam.ismarket
 
+import android.net.Uri
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import com.peludosteam.ismarket.domain.User
 
 
 import ProfileViewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -28,7 +35,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -56,7 +66,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -67,10 +76,18 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.peludosteam.ismarket.Domain.User
+import com.peludosteam.ismarket.Screens.ViewProducts
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
 
 import com.peludosteam.ismarket.viewmode.SignupViewModel
+
+
+import coil.compose.rememberImagePainter
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.peludosteam.ismarket.domain.Product
+import java.util.UUID
+
 
 
 class MainActivity : ComponentActivity() {
@@ -98,80 +115,79 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+@Composable
+fun EnterScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.logoapp), // Reemplaza 'tu_imagen' con el nombre de tu imagen sin extensión
+            contentDescription = "Descripción de la imagen",
+            modifier = Modifier
+                .fillMaxWidth() // Ajustar ancho de la imagen
+                .height(200.dp) // Ajustar altura de la imagen
+                .clip(RoundedCornerShape(12.dp)) // Bordes redondeados (opcional)
+
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            onClick = { navController.navigate("login") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Iniciar sesión")
+        }
+
+        Button(
+            onClick = { navController.navigate("signup") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFA4A0C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 38.dp)
+                .height(55.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+        ) {
+            Text("Registrarse")
+        }
+    }
+}
+
+
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "signup") {
+    NavHost(navController = navController, startDestination = "Enter") {
+        composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
+        composable("addProduct") { AddProductScreen(navController) }
+        composable("viewProducts") { ViewProducts(navController) }
+
     }
-}
-
-@Composable
-fun ProfileOption(text: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable(onClick = onClick),
-        elevation = androidx.compose.material3.CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = text, fontSize = 16.sp)
-        }
-    }
-}
-
-@Composable
-fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = viewModel()) {
-
-    val userState by viewModel.user.observeAsState()
-
-
-    Log.e(">>>", userState.toString())
-
-
-    LaunchedEffect(true) {
-        viewModel.getCurrentUser()
-    }
-
-
-    if (userState == null) {
-        navController.navigate("login")
-    } else {
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Bienvenido ${userState?.name ?: "Usuario"}", fontSize = 24.sp)
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Botón para cerrar sesión
-            Button(onClick = {
-                Firebase.auth.signOut()
-                navController.navigate("login")
-            }) {
-                Text(text = "Cerrar sesión")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Opciones de perfil
-            ProfileOption("Órdenes") { /* Acción para abrir Órdenes */ }
-            ProfileOption("Reseñas pendientes") { /* Acción para abrir Reseñas pendientes */ }
-            ProfileOption("Métodos de Pago") { /* Acción para abrir Métodos de Pago */ }
-            ProfileOption("Ubicación") { /* Acción para abrir Ubicación */ }
-        }
-    }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -254,7 +270,7 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             // Botón de iniciar sesión
             Button(
-                onClick = { authViewModel.signin(email, password) },
+                onClick = { authViewModel.signin(email, password)},
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .height(50.dp),
@@ -269,7 +285,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto para navegar a la pantalla de registro
             ClickableText(
                 text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
                 style = TextStyle(
@@ -282,6 +297,46 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
     }
 }
 
+        @Composable
+        fun ProfileScreen(
+            navController: NavController,
+            profileViewModel: ProfileViewModel = viewModel()
+        ) {
+            val userState by profileViewModel.user.observeAsState()
+            Log.e(">>>", userState.toString())
+            val username by remember { mutableStateOf("") }
+
+            LaunchedEffect(true) {
+                profileViewModel.getCurrentUser()
+            }
+            if (userState == null) {
+                navController.navigate("login")
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Bienvenido ${userState?.name}")
+                    Button(onClick = {
+                        Firebase.auth.signOut()
+                        navController.navigate("login")
+                    }) {
+                        Text(text = "Cerrar sesión")
+                    }
+
+                        // Botón para navegar a la pantalla de agregar productos
+                        Button(onClick = { navController.navigate("addProduct") }) {
+                            Text(text = "Agregar productos")
+                    }
+                    Button(onClick = {
+                        navController.navigate("viewProducts")
+                    }) {
+                        Text(text = "Ver productos disponibles")
+                    }
+
+                }
+            }
+        }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -506,7 +561,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
 
             if (authState == 1) {
-                CircularProgressIndicator()
             } else if (authState == 2) {
                 Text("Hubo un error", color = Color.Red)
             } else if (authState == 3) {
@@ -515,19 +569,20 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             Button(
                 onClick = {
                     signupViewModel.signup(User(name = name, username = username, email = email), password)
-            },
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFA4A0C),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .padding(8.dp)
                     .fillMaxWidth()
                     .padding(horizontal = 38.dp)
                     .height(55.dp)
                     .shadow(4.dp, shape = RoundedCornerShape(12.dp))
 
-                ) {
+            ) {
                 Text(text = "Registrarse",
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -537,7 +592,6 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto con navegación hacia la pantalla de login
             ClickableText(
                 text = AnnotatedString("¿Ya tienes cuenta? Inicia sesión aquí"),
                 style = TextStyle(
@@ -559,5 +613,214 @@ fun SignupScreen(navController: NavController, signupViewModel: SignupViewModel 
             }
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddProductScreen(navController: NavController) {
+    var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var price by remember { mutableStateOf("") }
+    var stock by remember { mutableStateOf("") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) } // Para almacenar la URI de la imagen seleccionada
+    var isLoading by remember { mutableStateOf(false) } // Estado de carga
+    var expanded by remember { mutableStateOf(false) } // Controla la expansión del dropdown
+    var category by remember { mutableStateOf("") }
+    val categories = listOf(
+        "Postres",
+        "Comida y bebidas",
+        "Tecnologia (Accesorios tecnologicos., cargadores, forros celular, etc)",
+        "Tutorias",
+        "Servicios (Limpieza, arreglos y carpinteria, plataformas de streaming, etc)",
+        "Ropa",
+        "Accesorios (Joyeria, pulseras, etc)",
+        "Otros"
+    )
+
+    val auth = FirebaseAuth.getInstance() // Firebase Auth para obtener el ID del usuario
+    val db = FirebaseFirestore.getInstance() // Firestore
+    val storage = FirebaseStorage.getInstance() // Firebase Storage para imágenes
+
+    // Lanzador para seleccionar imagen
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? -> imageUri = uri }
+    )
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = Color(0xFFF2F2F2)
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Agregar Producto",
+                style = MaterialTheme.typography.titleLarge,
+                color = Color(0xFF1C0000),
+                fontSize = 24.sp
+            )
+
+            // Campo de Nombre
+            TextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nombre") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White
+                )
+            )
+
+            // Campo de Descripción
+            TextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Descripción") },
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White
+                )
+            )
+
+            // Dropdown de Categoría
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                TextField(
+                    value = category,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Categoría") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    categories.forEach { selectedCategory ->
+                        DropdownMenuItem(
+                            text = { Text(selectedCategory) },
+                            onClick = {
+                                category = selectedCategory
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            // Campo de Precio
+            TextField(
+                value = price,
+                onValueChange = { price = it },
+                label = { Text("Precio") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White
+                )
+            )
+
+            // Campo de Stock
+            TextField(
+                value = stock,
+                onValueChange = { stock = it },
+                label = { Text("Stock") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White
+                )
+            )
+
+            // Botón para seleccionar imagen
+            Button(onClick = { imagePickerLauncher.launch("image/*") }) {
+                Text(text = "Seleccionar Imagen")
+            }
+
+            // Mostrar la imagen seleccionada si existe
+            imageUri?.let { uri ->
+                Image(
+                    painter = rememberImagePainter(uri),
+                    contentDescription = "Imagen seleccionada",
+                    modifier = Modifier
+                        .size(150.dp)
+                        .padding(8.dp)
+                )
+            }
+
+            // Botón para agregar el producto
+            Button(
+                onClick = {
+                    if (name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty()) {
+                        isLoading = true
+                        val productId = UUID.randomUUID().toString()
+
+                        // Subir la imagen a Firebase Storage
+                        val storageRef = storage.reference.child("product_images/$productId")
+                        imageUri?.let { uri ->
+                            storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+                                // Obtener la URL de descarga de la imagen
+                                storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                    // Guardar el producto en Firestore
+                                    val userId = auth.currentUser?.uid ?: ""
+                                    val newProduct = Product(
+                                        id = productId,
+                                        name = name,
+                                        price = price.toDouble(),
+                                        description = description,
+                                        imageRes = downloadUri.toString(), // Guardar la URL de la imagen
+                                        stock = stock.toInt(),
+                                        userId = userId,
+                                        categoryName = category
+                                    )
+
+                                    // Subir a Firestore
+                                    db.collection("products").document(productId)
+                                        .set(newProduct)
+                                        .addOnSuccessListener {
+                                            isLoading = false
+                                            navController.popBackStack() // Navega de regreso
+                                        }
+                                        .addOnFailureListener {
+                                            isLoading = false
+                                            // Manejar error
+                                        }
+                                }
+                            }
+                        }
+                    }
+                },
+                enabled = !isLoading && name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFA4A0C))
+            ) {
+                Text(text = if (isLoading) "Cargando..." else "Agregar Producto", color = Color.White)
+            }
+
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
