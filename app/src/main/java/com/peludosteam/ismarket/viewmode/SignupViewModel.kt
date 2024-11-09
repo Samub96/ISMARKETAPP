@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthException
-import com.peludosteam.ismarket.Domain.User
+import com.peludosteam.ismarket.domain.User
 import com.peludosteam.ismarket.repository.AuthRepository
 import com.peludosteam.ismarket.repository.AuthRepositoryImpl
 import kotlinx.coroutines.Dispatchers
