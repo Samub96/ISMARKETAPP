@@ -11,8 +11,8 @@ import java.util.UUID
 interface CarritoService {
     suspend fun getCartProducts(id: String): List<Product>
     suspend fun addProduct(userID: String, carritoProduct: Product)
-    suspend fun removeProduct(productId: String)
-    suspend fun updateProductQuantity(productId: String, quantity: Int)
+    suspend fun removeProduct(userID: String, productId: String)
+    suspend fun updateProductQuantity(userID: String, productId: String, quantity: Int)
 }
 
 class CarritoServiceImpl : CarritoService {
@@ -48,12 +48,34 @@ class CarritoServiceImpl : CarritoService {
             .set(normalizedProduct).await()
     }
 
-    override suspend fun removeProduct(productId: String) {
-        TODO("Not yet implemented")
+    override suspend fun removeProduct(userID: String, productId: String) {
+        // Elimina un producto del carrito del usuario
+        val productRef = Firebase.firestore
+            .collection("User")
+            .document(userID)
+            .collection("ShoppingCar")
+            .whereEqualTo("productId", productId)
+            .get()
+            .await()
+
+        for (document in productRef.documents) {
+            document.reference.delete().await()
+        }
     }
 
-    override suspend fun updateProductQuantity(productId: String, quantity: Int) {
-        TODO("Not yet implemented")
+    override suspend fun updateProductQuantity(userID: String, productId: String, quantity: Int) {
+        // Actualiza la cantidad de un producto en el carrito del usuario
+        val productRef = Firebase.firestore
+            .collection("User")
+            .document(userID)
+            .collection("ShoppingCar")
+            .whereEqualTo("productId", productId)
+            .get()
+            .await()
+
+        for (document in productRef.documents) {
+            document.reference.update("Quantity", quantity).await()
+        }
     }
 
 
