@@ -57,6 +57,7 @@ import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.Screens.AddressScreen
+import com.peludosteam.ismarket.Screens.ChangeAddressScreen
 import com.peludosteam.ismarket.Screens.EnterScreen
 import com.peludosteam.ismarket.Screens.LoginScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "address") {
+    NavHost(navController = navController, startDestination = "changeAddress") {
         composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
@@ -104,6 +105,7 @@ fun App() {
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
         composable("address") { AddressScreen(navController) }
+        composable("changeAddress") { ChangeAddressScreen(navController) }
 
     }
 }
