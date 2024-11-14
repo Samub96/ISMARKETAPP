@@ -78,6 +78,7 @@ import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.Screens.ViewCarrito
 import java.util.UUID
 
 
@@ -177,6 +178,7 @@ fun App() {
         composable("login") { LoginScreen(navController) }
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
+        composable("cart"){ViewCarrito(navController)}
 
     }
 }
