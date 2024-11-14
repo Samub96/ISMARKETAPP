@@ -17,7 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.listasapp.components.ProductCard
 import com.peludosteam.ismarket.Domain.Product
-import com.peludosteam.ismarket.viewmodel.ProductViewModel
+import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @Composable
 fun ViewProducts(navController: NavController, productViewModel: ProductViewModel = viewModel()){

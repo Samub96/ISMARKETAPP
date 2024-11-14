@@ -1,4 +1,4 @@
-package com.peludosteam.ismarket.viewmodel
+package com.peludosteam.ismarket.viewmode
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
