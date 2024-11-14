@@ -1,4 +1,4 @@
-package com.peludosteam.ismarket.viewmodel
+package com.peludosteam.ismarket.viewmode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
