@@ -86,7 +86,7 @@ fun HistorialEmptyScreen(navController: NavController) {
                 .height(55.dp)
                 .shadow(4.dp, shape = RoundedCornerShape(12.dp))
         ) {
-            Text("Reintentar", style = TextStyle(fontSize = 20.sp))
+            Text("Empieza tu pedido", style = TextStyle(fontSize = 20.sp))
         }
     }
 }
