@@ -61,6 +61,7 @@ import com.peludosteam.ismarket.Screens.ChangeAddressScreen
 import com.peludosteam.ismarket.Screens.EnterScreen
 import com.peludosteam.ismarket.Screens.LoginScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
+import com.peludosteam.ismarket.Screens.WifiErrorScreen
 import com.peludosteam.ismarket.domain.Product
 import java.util.UUID
 
@@ -97,7 +98,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "address") {
+    NavHost(navController = navController, startDestination = "wifiError") {
         composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
@@ -106,6 +107,7 @@ fun App() {
         composable("viewProducts") { ViewProducts(navController) }
         composable("address") { AddressScreen(navController) }
         composable("changeAddress") { ChangeAddressScreen(navController) }
+        composable("wifiError") { WifiErrorScreen(navController) }
 
     }
 }
