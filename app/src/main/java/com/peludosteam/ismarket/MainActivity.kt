@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "changeAddress") {
+    NavHost(navController = navController, startDestination = "address") {
         composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }

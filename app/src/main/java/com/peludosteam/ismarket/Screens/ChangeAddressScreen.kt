@@ -1,4 +1,9 @@
 package com.peludosteam.ismarket.Screens
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,10 +45,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.R
+import kotlinx.coroutines.delay
 
+
+@Composable
+fun CustomToast(message: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(Color(0xFFFA4A0C), shape = RoundedCornerShape(12.dp))
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = message,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeAddressScreen(navController: NavController) {
+    var showCustomToast by remember { mutableStateOf(false) }
     val (selectedOption, setSelectedOption) = remember { mutableStateOf("Entrega a domicilio") }
     var firstInput by remember { mutableStateOf("") }
     var secondInput by remember { mutableStateOf("") }
@@ -127,7 +154,7 @@ fun ChangeAddressScreen(navController: NavController) {
                         fontWeight = FontWeight.Normal
                     )
                 )
-                Spacer(modifier =   Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 TextField(
                     value = secondInput,
                     onValueChange = { secondInput = it },
@@ -146,7 +173,7 @@ fun ChangeAddressScreen(navController: NavController) {
                         fontWeight = FontWeight.Normal
                     )
                 )
-                Spacer(modifier =   Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 TextField(
                     value = thirdInput,
                     onValueChange = { thirdInput = it },
@@ -165,10 +192,12 @@ fun ChangeAddressScreen(navController: NavController) {
                         fontWeight = FontWeight.Normal
                     )
                 )
-                Spacer(modifier =   Modifier.height(160.dp))
+                Spacer(modifier = Modifier.height(160.dp))
                 Button(
                     onClick = {
-                        savedInfo = "Datos guardados:\n1: $firstInput\n2: $secondInput\n3: $thirdInput"
+                        savedInfo =
+                            "Datos guardados:\n1: $firstInput\n2: $secondInput\n3: $thirdInput"
+                        showCustomToast = true
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFA4A0C),
@@ -190,10 +219,26 @@ fun ChangeAddressScreen(navController: NavController) {
                         )
                     )
                 }
+                AnimatedVisibility(
+                    visible = showCustomToast,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    CustomToast(message = "Ubicación guardada exitosamente")
+                }
+                LaunchedEffect(showCustomToast) {
+                    if (showCustomToast) {
+                        delay(2000)
+                        showCustomToast = false
+                        navController.navigate("address")
+
+                    }
+                }
             }
         }
     }
 }
+
 
 
 

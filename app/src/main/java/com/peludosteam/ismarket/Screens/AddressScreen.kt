@@ -89,7 +89,7 @@ fun AddressScreen(navController: NavController) {
             ClickableText(
                 text = annotatedString,
                 onClick = {
-                    navController.navigate("pantallaDestino")
+                    navController.navigate("changeAddress")
                 },
                 style = TextStyle(
                     color = Color(0xFFFA4A0C),
@@ -209,7 +209,7 @@ fun AddressScreen(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(60.dp))
             Button(
-                onClick = { navController.navigate("login") },
+                onClick = { navController.navigate("changeAddress") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFA4A0C),
                     contentColor = Color.White
