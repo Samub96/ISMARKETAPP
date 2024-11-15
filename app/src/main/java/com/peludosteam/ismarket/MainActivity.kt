@@ -59,6 +59,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.Screens.AddressScreen
 import com.peludosteam.ismarket.Screens.ChangeAddressScreen
 import com.peludosteam.ismarket.Screens.EnterScreen
+import com.peludosteam.ismarket.Screens.HistorialEmptyScreen
 import com.peludosteam.ismarket.Screens.LoginScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.Screens.WifiErrorScreen
@@ -98,7 +99,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "wifiError") {
+    NavHost(navController = navController, startDestination = "historialEmpty") {
         composable("Enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
@@ -108,6 +109,7 @@ fun App() {
         composable("address") { AddressScreen(navController) }
         composable("changeAddress") { ChangeAddressScreen(navController) }
         composable("wifiError") { WifiErrorScreen(navController) }
+        composable("historialEmpty") { HistorialEmptyScreen(navController) }
 
     }
 }

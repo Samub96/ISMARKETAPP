@@ -30,9 +30,8 @@ import com.peludosteam.ismarket.R
 @Composable
 fun WifiErrorScreen(navController: NavController) {
     Box(
-        modifier = Modifier.fillMaxSize()  // Ocupa todo el espacio disponible
+        modifier = Modifier.fillMaxSize()
     ) {
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
