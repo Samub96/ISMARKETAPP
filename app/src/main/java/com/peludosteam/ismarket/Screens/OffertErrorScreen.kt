@@ -66,7 +66,7 @@ fun OffertErrorScreen(navController: NavController) {
             contentDescription = "Offert Logo",
             modifier = Modifier.size(250.dp)
         )
-        Text(text = "No hay historial por ahora",
+        Text(text = "No tienes ofertas disponibles",
             style = TextStyle(fontSize = 25.sp,
                 fontWeight = FontWeight.Bold),
         )
