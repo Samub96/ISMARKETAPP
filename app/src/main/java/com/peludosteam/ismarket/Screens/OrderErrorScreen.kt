@@ -29,8 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.R
+
 @Composable
-fun HistorialEmptyScreen(navController: NavController) {
+fun OrderErrorScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +54,7 @@ fun HistorialEmptyScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "Historial",
+                text = "Ordenes",
                 style = TextStyle(fontSize = 20.sp),
                 color = Color.Black,
                 modifier = Modifier.fillMaxWidth(),
@@ -62,17 +63,18 @@ fun HistorialEmptyScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(150.dp))
         Image(
-            painter = painterResource(id = R.drawable.historialogo),
+            painter = painterResource(id = R.drawable.carritodecompras),
             contentDescription = "Historial Logo",
             modifier = Modifier.size(250.dp)
         )
-        Text(text = "No hay historial por ahora",
+        Text(text = "No hay ordenes en este momento",
             style = TextStyle(fontSize = 25.sp,
                 fontWeight = FontWeight.Bold),
-        )
+            )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = "Crea tu primer pedido.\nNo pierdas la oportunidad.",
+            text = "Empieza  una orden en esre momento.\n" +
+                    "No pierdas la oportunidad.",
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

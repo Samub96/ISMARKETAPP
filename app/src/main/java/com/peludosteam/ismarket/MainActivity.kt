@@ -61,6 +61,8 @@ import com.peludosteam.ismarket.Screens.ChangeAddressScreen
 import com.peludosteam.ismarket.Screens.EnterScreen
 import com.peludosteam.ismarket.Screens.HistorialEmptyScreen
 import com.peludosteam.ismarket.Screens.LoginScreen
+import com.peludosteam.ismarket.Screens.OffertErrorScreen
+import com.peludosteam.ismarket.Screens.OrderErrorScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.Screens.WifiErrorScreen
 import com.peludosteam.ismarket.domain.Product
@@ -99,8 +101,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "historialEmpty") {
-        composable("Enter") { EnterScreen(navController) }
+    NavHost(navController = navController, startDestination = "offertError") {
+        composable("enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
@@ -110,6 +112,8 @@ fun App() {
         composable("changeAddress") { ChangeAddressScreen(navController) }
         composable("wifiError") { WifiErrorScreen(navController) }
         composable("historialEmpty") { HistorialEmptyScreen(navController) }
+        composable("orderError") { OrderErrorScreen(navController) }
+        composable("offertError") { OffertErrorScreen(navController) }
 
     }
 }
