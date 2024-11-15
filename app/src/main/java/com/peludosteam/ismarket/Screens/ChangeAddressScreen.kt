@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -95,6 +96,10 @@ fun ChangeAddressScreen(navController: NavController) {
                 modifier = Modifier
                     .size(15.dp)
                     .graphicsLayer { rotationZ = 90f }
+                    .clickable { navController.navigate("address"){
+                        launchSingleTop = true
+
+                    } }
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(

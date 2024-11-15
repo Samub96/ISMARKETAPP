@@ -209,7 +209,7 @@ fun AddressScreen(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(60.dp))
             Button(
-                onClick = { navController.navigate("changeAddress") },
+                onClick = { navController.navigate("Pantalla de pago") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFA4A0C),
                     contentColor = Color.White
