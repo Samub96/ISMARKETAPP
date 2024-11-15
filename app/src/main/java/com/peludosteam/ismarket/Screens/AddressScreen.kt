@@ -199,8 +199,6 @@ fun AddressScreen(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Método seleccionado: $selectedOption", modifier = Modifier.padding(16.dp))
-            Spacer(modifier = Modifier.height(40.dp))
             Row ( modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically){
@@ -209,8 +207,7 @@ fun AddressScreen(navController: NavController) {
                 Text(text = "1200", style = TextStyle(fontSize = 20.sp),
                 )
             }
-            Spacer(modifier = Modifier.height(80.dp))
-
+            Spacer(modifier = Modifier.height(60.dp))
             Button(
                 onClick = { navController.navigate("login") },
                 colors = ButtonDefaults.buttonColors(
