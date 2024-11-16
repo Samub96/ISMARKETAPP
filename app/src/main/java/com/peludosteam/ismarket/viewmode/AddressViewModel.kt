@@ -19,6 +19,9 @@ class AddressViewModel : ViewModel() {
     )
         private set
 
+    var productPrice by mutableStateOf("Cargando precio...")
+        private set  // Definir el estado mutable para el precio
+
     private val db = FirebaseFirestore.getInstance()
 
     fun updateDeliveryMethod(method: String) {
@@ -30,26 +33,44 @@ class AddressViewModel : ViewModel() {
     }
 
     fun listenForAddressUpdates() {
-        // Escucha en tiempo real para obtener la dirección más reciente
         db.collection("Addresses")
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .limit(1) // Aseguramos que solo obtengamos el documento más reciente
+            .limit(1)
             .addSnapshotListener { documents, error ->
                 if (error != null) {
                     println("Error al obtener la dirección: ${error.message}")
                     return@addSnapshotListener
                 }
 
-                // Si hay documentos, actualizamos la UI con los más recientes
                 documents?.forEach { document ->
                     val location = "Edificio: ${document.getString("building") ?: "Sin edificio"}"
                     val details = "Piso: ${document.getString("floor") ?: "Sin piso"} Salón: ${
                         document.getString("room") ?: "Sin habitación"
                     }"
                     updateAddressDetails(AddressDetails(location, details))
-
                 }
             }
+    }
+
+
+    fun listenForProductPrice() {
+        db.collection("products")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .addSnapshotListener { documents, error ->
+                if (error != null) {
+                    println("Error al obtener el precio del producto: ${error.message}")
+                    return@addSnapshotListener
+                }
+                documents?.forEach { document ->
+                    val price = document.getString("price") ?: "Precio no disponible"
+                    updateProductPrice(price)
+                }
+            }
+    }
+
+    private fun updateProductPrice(price: String) {
+        productPrice = price
     }
 }
 

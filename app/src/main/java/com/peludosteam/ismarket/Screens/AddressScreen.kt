@@ -33,10 +33,12 @@ import com.peludosteam.ismarket.viewmode.AddressViewModel
 fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
     val selectedOption = viewModel.deliveryMethod
     val addressDetails = viewModel.addressDetails
+    val productPrice = viewModel.productPrice
 
 
     LaunchedEffect(true) {
         viewModel.listenForAddressUpdates()
+        viewModel.listenForProductPrice()
     }
 
     Column(
@@ -189,7 +191,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Total", style = TextStyle(fontSize = 20.sp))
-            Text(text = "$1200", style = TextStyle(fontSize = 20.sp))
+            Text(text = "$productPrice", style = TextStyle(fontSize = 20.sp))
         }
 
         Spacer(modifier = Modifier.height(60.dp))
