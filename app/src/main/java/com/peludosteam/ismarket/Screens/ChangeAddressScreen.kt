@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.firestore.FirebaseFirestore
 import com.peludosteam.ismarket.R
 import kotlinx.coroutines.delay
 
@@ -67,15 +68,33 @@ fun CustomToast(message: String) {
         )
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeAddressScreen(navController: NavController) {
     var showCustomToast by remember { mutableStateOf(false) }
-    val (selectedOption, setSelectedOption) = remember { mutableStateOf("Entrega a domicilio") }
     var firstInput by remember { mutableStateOf("") }
     var secondInput by remember { mutableStateOf("") }
     var thirdInput by remember { mutableStateOf("") }
-    var savedInfo by remember { mutableStateOf("") }
+
+    val db = FirebaseFirestore.getInstance()
+
+    fun saveAddressToFirestore(building: String, floor: String, room: String) {
+        val address = hashMapOf(
+            "building" to building,
+            "floor" to floor,
+            "room" to room,
+            "timestamp" to com.google.firebase.Timestamp.now()
+        )
+        db.collection("Addresses")
+            .add(address)
+            .addOnSuccessListener {
+                showCustomToast = true
+            }
+            .addOnFailureListener { e ->
+                println("Error al guardar la dirección: ${e.message}")
+            }
+    }
 
     Column(
         modifier = Modifier
@@ -96,10 +115,12 @@ fun ChangeAddressScreen(navController: NavController) {
                 modifier = Modifier
                     .size(15.dp)
                     .graphicsLayer { rotationZ = 90f }
-                    .clickable { navController.navigate("address"){
-                        launchSingleTop = true
+                    .clickable {
+                        navController.navigate("address") {
+                            launchSingleTop = true
 
-                    } }
+                        }
+                    }
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -200,9 +221,7 @@ fun ChangeAddressScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(160.dp))
                 Button(
                     onClick = {
-                        savedInfo =
-                            "Datos guardados:\n1: $firstInput\n2: $secondInput\n3: $thirdInput"
-                        showCustomToast = true
+                        saveAddressToFirestore(firstInput, secondInput, thirdInput)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFA4A0C),
@@ -224,6 +243,7 @@ fun ChangeAddressScreen(navController: NavController) {
                         )
                     )
                 }
+
                 AnimatedVisibility(
                     visible = showCustomToast,
                     enter = fadeIn(),
@@ -231,12 +251,12 @@ fun ChangeAddressScreen(navController: NavController) {
                 ) {
                     CustomToast(message = "Ubicación guardada exitosamente")
                 }
+
                 LaunchedEffect(showCustomToast) {
                     if (showCustomToast) {
                         delay(2000)
                         showCustomToast = false
                         navController.navigate("address")
-
                     }
                 }
             }

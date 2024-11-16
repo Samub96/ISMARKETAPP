@@ -66,6 +66,7 @@ import com.peludosteam.ismarket.Screens.OrderErrorScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.Screens.WifiErrorScreen
 import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmode.AddressViewModel
 import java.util.UUID
 
 
@@ -101,14 +102,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "offertError") {
+    NavHost(navController = navController, startDestination = "address") {
         composable("enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
-        composable("address") { AddressScreen(navController) }
+        composable("address") {
+            val viewModel = AddressViewModel()
+            AddressScreen(navController, viewModel)}
         composable("changeAddress") { ChangeAddressScreen(navController) }
         composable("wifiError") { WifiErrorScreen(navController) }
         composable("historialEmpty") { HistorialEmptyScreen(navController) }
@@ -117,7 +120,10 @@ fun App() {
 
     }
 }
-        @Composable
+
+
+
+@Composable
         fun ProfileScreen(
             navController: NavController,
             profileViewModel: ProfileViewModel = viewModel()
