@@ -769,6 +769,7 @@ fun AddProductScreen(navController: NavController) {
             }
         }
     }
+
 }
 
 

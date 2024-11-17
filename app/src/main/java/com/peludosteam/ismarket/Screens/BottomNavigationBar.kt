@@ -34,7 +34,7 @@ fun BottomNavigationBar(nestedNavController: NavController = rememberNavControll
                 launchSingleTop = true
             }
             navigationSelectedItemIndex = 0
-        }, icon = { Icon(Icons.Filled.Home, contentDescription = "viewProducts") }, label = { Text(text = "Ver productos") })
+        }, icon = { Icon(Icons.Filled.Home, contentDescription = "viewProducts") }, label = { Text(text = "Inicio") })
 
         NavigationBarItem(selected = navigationSelectedItemIndex == 1, onClick = {
             nestedNavController.navigate("history"){
