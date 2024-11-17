@@ -65,7 +65,6 @@ fun ViewProducts(
 ) {
     val productListState by productViewModel.productList.observeAsState()
     val userState by profileViewModel.user.observeAsState()
-    val nestedNavController = rememberNavController()
 
     // Estado para el texto de búsqueda
     var searchQuery by remember { mutableStateOf("") }
@@ -81,25 +80,18 @@ fun ViewProducts(
     // Acción se ejecuta al inicio
     LaunchedEffect(true) {
         productViewModel.downloadData()
+        //profileViewModel.getCurrentUser()
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                //colors = TopAppBarDefaults.topAppBarColors(containerColor =  Color(0xFFFA4A0A)),
-
             title = {
                     SearchBar(searchQuery) { query -> searchQuery = query }
                 },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
             )
         },
-        bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -119,6 +111,7 @@ fun ViewProducts(
                 )
                 categories.forEach { category ->
                     Filtro(innerPadding, filteredProducts, category)
+                    //Text(text = "hola ${userState?.name}")
                 }
             }
         }
@@ -152,13 +145,10 @@ fun SearchBar(searchQuery: String, onSearchChange: (String) -> Unit) {
     }
 }
 
-
-
-
 @Composable
 fun Filtro(innerPadding: PaddingValues, productListState: List<Product>, catName: String) {
     Text(text = catName)
-    LazyRow(modifier = Modifier.padding(innerPadding)) {
+    LazyRow(modifier = Modifier.padding(8.dp)) {
         items(productListState) { product ->
             if (product.categoryName == catName) {
                 ProductCard(product = product)
