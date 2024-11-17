@@ -76,6 +76,8 @@ import com.peludosteam.ismarket.viewmode.SignupViewModel
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.peludosteam.ismarket.Screens.ProfileScreen
+import com.peludosteam.ismarket.Screens.ViewProfile
 import com.peludosteam.ismarket.domain.Product
 import java.util.UUID
 
@@ -174,8 +176,11 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
-        composable("addProduct") { AddProductScreen(navController) }
-        composable("viewProducts") { ViewProducts(navController) }
+        //composable("addProduct") { AddProductScreen(navController) }
+        //composable("history") { History(navController) }
+        //composable("chat") { Chat(navController) }
+        // composable("viewProfile") { ViewProfile(navController) }
+        //composable("viewProducts") { ViewProducts(navController) }
 
     }
 }
@@ -287,46 +292,6 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
     }
 }
 
-        @Composable
-        fun ProfileScreen(
-            navController: NavController,
-            profileViewModel: ProfileViewModel = viewModel()
-        ) {
-            val userState by profileViewModel.user.observeAsState()
-            Log.e(">>>", userState.toString())
-            val username by remember { mutableStateOf("") }
-
-            LaunchedEffect(true) {
-                profileViewModel.getCurrentUser()
-            }
-            if (userState == null) {
-                navController.navigate("login")
-            } else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "Bienvenido ${userState?.name}")
-                    Button(onClick = {
-                        Firebase.auth.signOut()
-                        navController.navigate("login")
-                    }) {
-                        Text(text = "Cerrar sesión")
-                    }
-
-                        // Botón para navegar a la pantalla de agregar productos
-                        Button(onClick = { navController.navigate("addProduct") }) {
-                            Text(text = "Agregar productos")
-                    }
-                    Button(onClick = {
-                        navController.navigate("viewProducts")
-                    }) {
-                        Text(text = "Ver productos disponibles")
-                    }
-
-                }
-            }
-        }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -768,7 +733,7 @@ fun AddProductScreen(navController: NavController) {
                                     val newProduct = Product(
                                         id = productId,
                                         name = name,
-                                        price = price.toDouble(),
+                                        price = price.toInt(),
                                         description = description,
                                         imageRes = downloadUri.toString(), // Guardar la URL de la imagen
                                         stock = stock.toInt(),
