@@ -77,13 +77,13 @@ fun ProfileScreen(
                 composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()
-                    AddressScreen(navController, addressViewModel)
+                    AddressScreen(nestedNavController, addressViewModel)
                 }
-                composable("orderError") { OrderErrorScreen(navController) }
-                composable("changeAddress") { ChangeAddressScreen(navController) }
-                composable("offertError") { OffertErrorScreen(navController) }
-                composable("wifiError") { WifiErrorScreen(navController) }
-
+                composable("orderError") { OrderErrorScreen(nestedNavController) }
+                composable("changeAddress") { ChangeAddressScreen(nestedNavController) }
+                composable("offertError") { OffertErrorScreen(nestedNavController) }
+                composable("wifiError") { WifiErrorScreen(nestedNavController) }
+                composable("PaymentScreen") { PaymentScreen(nestedNavController) }
 
             }
         }

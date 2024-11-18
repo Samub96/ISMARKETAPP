@@ -31,6 +31,11 @@ fun Cart(navController: NavController) {
 
         }
 
+        Button(onClick = { navController.navigate("PaymentScreen")}) {
+            Text(text = "PaymentScreen")
+
+        }
+
     }
 
 }
