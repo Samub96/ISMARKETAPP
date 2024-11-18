@@ -57,19 +57,26 @@ import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.Screens.PaymentScreen
+import com.peludosteam.ismarket.Screens.AddressScreen
+import com.peludosteam.ismarket.Screens.ChangeAddressScreen
+import com.peludosteam.ismarket.Screens.EnterScreen
+import com.peludosteam.ismarket.Screens.LoginScreen
+import com.peludosteam.ismarket.Screens.OffertErrorScreen
+import com.peludosteam.ismarket.Screens.OrderErrorScreen
+import com.peludosteam.ismarket.Screens.ProfileScreen
+import com.peludosteam.ismarket.Screens.SignupScreen
+import com.peludosteam.ismarket.Screens.WifiErrorScreen
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmode.AddressViewModel
+import com.peludosteam.ismarket.viewmode.SignupViewModel
 import java.util.UUID
-
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         auth = Firebase.auth
-
         auth.addAuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user != null) {
@@ -78,8 +85,6 @@ class MainActivity : ComponentActivity() {
                 Log.d("MainActivity", "No user is signed in")
             }
         }
-
-
         setContent {
         ISMARKETTheme {
                 App()
@@ -87,20 +92,24 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
-
-
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "address") {
+    NavHost(navController = navController, startDestination = "enter") {
         composable("enter") { EnterScreen(navController) }
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
+        composable("address") {
+            val addressViewModel: AddressViewModel = viewModel()
+            AddressScreen(navController, addressViewModel)
+        }
+        composable("orderError") { OrderErrorScreen(navController) }
+        composable("changeAddress") { ChangeAddressScreen(navController) }
+        composable("offertError") { OffertErrorScreen(navController) }
+        composable("wifiError") { WifiErrorScreen(navController) }
         composable("PaymentScreen") { PaymentScreen(navController)}
 
     }
@@ -185,82 +194,10 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de iniciar sesión
-            Button(
-                onClick = { authViewModel.signin(email, password)},
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFA4A0C),
-                    contentColor = Color.White
-                ),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Text(text = "Iniciar sesión", fontSize = 18.sp)
-            }
 
-            Spacer(modifier = Modifier.height(8.dp))
 
-            ClickableText(
-                text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
-                style = TextStyle(
-                    color = Color(0xFFFA4A0C),
-                    textDecoration = TextDecoration.Underline
-                ),
-                onClick = { navController.navigate("signup") }
-            )
-        }
     }
 }
-
-        @Composable
-        fun ProfileScreen(
-            navController: NavController,
-            profileViewModel: ProfileViewModel = viewModel()
-        ) {
-            val userState by profileViewModel.user.observeAsState()
-            Log.e(">>>", userState.toString())
-            val username by remember { mutableStateOf("") }
-
-            LaunchedEffect(true) {
-                profileViewModel.getCurrentUser()
-            }
-            if (userState == null) {
-                navController.navigate("login")
-            } else {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "Bienvenido ${userState?.name}")
-                    Button(onClick = {
-                        Firebase.auth.signOut()
-                        navController.navigate("login")
-                    }) {
-                        Text(text = "Cerrar sesión")
-                    }
-
-                        // Botón para navegar a la pantalla de agregar productos
-                        Button(onClick = { navController.navigate("addProduct") }) {
-                            Text(text = "Agregar productos")
-                    }
-                    Button(onClick = {
-                        navController.navigate("viewProducts")
-                    }) {
-                        Text(text = "Ver productos disponibles")
-                    }
-                    Button(onClick = {navController.navigate("PaymentScreen")}) {
-                        Text(text = "Metodo de pago")
-
-                    }
-
-                }
-            }
-        }
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -283,11 +220,9 @@ fun AddProductScreen(navController: NavController) {
         "Accesorios (Joyeria, pulseras, etc)",
         "Otros"
     )
-
     val auth = FirebaseAuth.getInstance() // Firebase Auth para obtener el ID del usuario
     val db = FirebaseFirestore.getInstance() // Firestore
     val storage = FirebaseStorage.getInstance() // Firebase Storage para imágenes
-
     // Lanzador para seleccionar imagen
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
