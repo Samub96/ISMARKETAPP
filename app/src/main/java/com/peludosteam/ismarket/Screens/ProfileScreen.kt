@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.peludosteam.ismarket.AddProductScreen
+import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 
 
@@ -57,7 +58,7 @@ fun ProfileScreen(
                     },
                     actions = {
                         // Ícono en la derecha (Carrito)
-                        IconButton(onClick = { navController.navigate("cart") }) {
+                        IconButton(onClick = { nestedNavController.navigate("cart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
                     },
@@ -74,6 +75,17 @@ fun ProfileScreen(
                 composable("viewProducts") { ViewProducts(navController = nestedNavController) }
                 composable("viewProfile") { ViewProfile() }
                 composable("addProduct") { AddProductScreen(navController = nestedNavController) }
+                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
+                composable("cart") { Cart(navController = nestedNavController) }
+                composable("address") {
+                    val addressViewModel: AddressViewModel = viewModel()
+                    AddressScreen(navController, addressViewModel)
+                }
+                composable("orderError") { OrderErrorScreen(navController) }
+                composable("changeAddress") { ChangeAddressScreen(navController) }
+                composable("offertError") { OffertErrorScreen(navController) }
+                composable("wifiError") { WifiErrorScreen(navController) }
+
             }
         }
     }

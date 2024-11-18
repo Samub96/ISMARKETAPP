@@ -99,19 +99,6 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
-        composable("addProduct") { AddProductScreen(navController) }
-        composable("viewProducts") { ViewProducts(navController) }
-        composable("address") {
-            val addressViewModel: AddressViewModel = viewModel()
-            AddressScreen(navController, addressViewModel)
-        }
-        composable("orderError") { OrderErrorScreen(navController) }
-        composable("changeAddress") { ChangeAddressScreen(navController) }
-        composable("offertError") { OffertErrorScreen(navController) }
-        composable("wifiError") { WifiErrorScreen(navController) }
-
-
-
     }
 }
 
