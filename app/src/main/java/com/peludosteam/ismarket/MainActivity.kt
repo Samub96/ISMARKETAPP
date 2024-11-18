@@ -56,15 +56,6 @@ import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.peludosteam.ismarket.Screens.AddressScreen
-import com.peludosteam.ismarket.Screens.ChangeAddressScreen
-import com.peludosteam.ismarket.Screens.EnterScreen
-import com.peludosteam.ismarket.Screens.HistorialEmptyScreen
-import com.peludosteam.ismarket.Screens.LoginScreen
-import com.peludosteam.ismarket.Screens.OffertErrorScreen
-import com.peludosteam.ismarket.Screens.OrderErrorScreen
-import com.peludosteam.ismarket.Screens.SignupScreen
-import com.peludosteam.ismarket.Screens.WifiErrorScreen
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import java.util.UUID
@@ -109,14 +100,6 @@ fun App() {
         composable("login") { LoginScreen(navController) }
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
-        composable("address") {
-            val viewModel = AddressViewModel()
-            AddressScreen(navController, viewModel)}
-        composable("changeAddress") { ChangeAddressScreen(navController) }
-        composable("wifiError") { WifiErrorScreen(navController) }
-        composable("historialEmpty") { HistorialEmptyScreen(navController) }
-        composable("orderError") { OrderErrorScreen(navController) }
-        composable("offertError") { OffertErrorScreen(navController) }
 
     }
 }
@@ -124,6 +107,112 @@ fun App() {
 
 
 @Composable
+fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = viewModel()) {
+    val authState by authViewModel.authState.observeAsState()
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(Color(0xFFF2F2F2)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Inicia sesión",
+                color = Color(0xFF1C0000),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
+            )
+
+            Text(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = "Inicia sesión para seguir comprando",
+                color = Color(0xFF1C0000),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Email Field
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Correo electrónico") },
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color(0xFFFA4A0C),
+                    unfocusedIndicatorColor = Color.Gray
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
+
+            // Password Field
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.White,
+                    focusedIndicatorColor = Color(0xFFFA4A0C),
+                    unfocusedIndicatorColor = Color.Gray
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Estado de autenticación
+            when (authState) {
+                1 -> CircularProgressIndicator()
+                2 -> Text(text = "Hubo un error, que no podemos ver todavía", color = Color.Red)
+                3 -> navController.navigate("profile")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de iniciar sesión
+            Button(
+                onClick = { authViewModel.signin(email, password)},
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFA4A0C),
+                    contentColor = Color.White
+                ),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text(text = "Iniciar sesión", fontSize = 18.sp)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ClickableText(
+                text = AnnotatedString("¿No tienes cuenta? Regístrate aquí"),
+                style = TextStyle(
+                    color = Color(0xFFFA4A0C),
+                    textDecoration = TextDecoration.Underline
+                ),
+                onClick = { navController.navigate("signup") }
+            )
+        }
+    }
+}
+
+        @Composable
         fun ProfileScreen(
             navController: NavController,
             profileViewModel: ProfileViewModel = viewModel()
@@ -149,6 +238,8 @@ fun App() {
                     }) {
                         Text(text = "Cerrar sesión")
                     }
+
+                        // Botón para navegar a la pantalla de agregar productos
                         Button(onClick = { navController.navigate("addProduct") }) {
                             Text(text = "Agregar productos")
                     }
@@ -327,7 +418,7 @@ fun AddProductScreen(navController: NavController) {
                                     val newProduct = Product(
                                         id = productId,
                                         name = name,
-                                        price = price.toDouble(),
+                                        price = price.toInt(),
                                         description = description,
                                         imageRes = downloadUri.toString(), // Guardar la URL de la imagen
                                         stock = stock.toInt(),

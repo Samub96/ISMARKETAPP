@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -23,6 +25,10 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,61 +39,63 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmodel.ProductViewModel
 
 @Composable
-fun ProductCard (product: Product){
+fun ProductCardEditView (product: Product, productViewModel: ProductViewModel = viewModel()){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 3.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         modifier = Modifier
             //.fillMaxWidth()
-            .padding(8.dp).width(300.dp)
+            .padding(2.dp)
+            .width(350.dp)
 
     ) {
         Column(
             modifier= Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(300.dp)
                 .padding(4.dp),
             ){
-            ProductCardHeader(product)
-            ProductCardBody(product)
+            ProdCardHeader(product)
+            ProdCardBody(product, productViewModel)
         }
     }
 }
 
 @Composable
-fun ProductCardHeader(product: Product){
+fun ProdCardHeader(product: Product){
     Box(modifier = Modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(16.dp))
         .background(Color.White)){
         AsyncImage(model = product.imageRes, contentDescription = product.name, modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .height(200.dp))
+            .padding(4.dp)
+            .height(150.dp))
 
     }
 }
 
 @Composable
-fun ProductCardBody(product: Product){
+fun ProdCardBody(product: Product, productViewModel: ProductViewModel){
     val appColor  = Color(0xFFFA4A0A)
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp)) {
-
-        Text(text = "$ ${product.price}", fontSize = 32.sp, color = appColor)
+        .padding(4.dp)) {
+        Text(text = "$ ${product.price}", fontSize = 14.sp, color = appColor)
         Text(
             text = product.name.uppercase(),
-            fontSize = 14.sp,
-            modifier = Modifier.padding(4.dp),
+            fontSize = 16.sp,
+            modifier = Modifier.padding(2.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style=TextStyle(fontWeight = FontWeight.Bold),
@@ -95,44 +103,62 @@ fun ProductCardBody(product: Product){
         )
         Text(
             text = product.description,
-            fontSize = 14.sp,
+            fontSize = 10.sp,
             modifier = Modifier.fillMaxWidth(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = Color.Gray,
         )
-
         // Asegura que los botones estén alineados a la misma altura
+        var stock by remember {
+            mutableStateOf(product.stock)
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 4.dp),
             verticalAlignment = Alignment.CenterVertically, // Alineación vertical
             horizontalArrangement = Arrangement.SpaceBetween // Espacio entre los botones
         ) {
-            Button(//Chatear con el vendedor
-                onClick = { /*TODO*/ },
+            Button(//Aumentar stock
+                onClick = {
+                    val newStock = product.stock + 1
+                    productViewModel.updateProductStock(product.id, newStock) // Llama al método del ViewModel
+                    product.stock = newStock // Actualiza el stock localmente
+                    stock=newStock
+
+                          },
                 colors = ButtonDefaults.buttonColors(containerColor = appColor),
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Send,
-                    contentDescription = "chat",
-                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Filled.KeyboardArrowUp,
+                    contentDescription = "aumentar stock",
+                    modifier = Modifier.size(16.dp),
                     tint = Color.White
                 )
             }
 
-            Button(//Añadir al carrito
-                onClick = { /*TODO*/ },
+            Text(text = "Stock: $stock", fontSize = 12.sp, color = appColor)
+
+            Button(//restar stock
+                onClick = {
+                    if (product.stock > 0) {
+                        val newStock = product.stock - 1
+                        productViewModel.updateProductStock(product.id, newStock) // Llama al método del ViewModel
+                        product.stock = newStock // Actualiza el stock localmente
+                        stock=newStock
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = appColor),
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ShoppingCart,
-                    contentDescription = "carrito",
-                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Filled.KeyboardArrowDown,
+                    contentDescription = "disminuir stock",
+                    modifier = Modifier.size(12.dp),
                     tint = Color.White
                 )
             }
         }
+
     }
 }
