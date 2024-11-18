@@ -12,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -69,7 +71,6 @@ fun CustomToast(message: String) {
         )
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeAddressScreen(navController: NavController) {
@@ -96,6 +97,7 @@ fun ChangeAddressScreen(navController: NavController) {
                 println("Error al guardar la dirección: ${e.message}")
             }
     }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         content = { paddingValues ->
@@ -103,11 +105,10 @@ fun ChangeAddressScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
-                    .padding(paddingValues), // Para asegurar que se respeten los márgenes de pantalla
+                    .padding(paddingValues),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -125,7 +126,6 @@ fun ChangeAddressScreen(navController: NavController) {
                                 }
                             }
                     )
-                    Spacer(modifier = Modifier.width(16.dp))
                     Text(
                         text = "Ubicación",
                         style = TextStyle(fontSize = 20.sp),
@@ -134,8 +134,7 @@ fun ChangeAddressScreen(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
                 }
-                Spacer(modifier = Modifier.height(50.dp))
-
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "Ubicación",
                     style = TextStyle(fontSize = 30.sp),
@@ -144,7 +143,6 @@ fun ChangeAddressScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -162,7 +160,7 @@ fun ChangeAddressScreen(navController: NavController) {
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
-                        Spacer(modifier = Modifier.height(40.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         TextField(
                             value = firstInput,
                             onValueChange = { firstInput = it },
@@ -220,7 +218,7 @@ fun ChangeAddressScreen(navController: NavController) {
                                 fontWeight = FontWeight.Normal
                             )
                         )
-                        Spacer(modifier = Modifier.height(160.dp))
+                        Spacer(modifier = Modifier.height(60.dp))
                         Button(
                             onClick = {
                                 saveAddressToFirestore(firstInput, secondInput, thirdInput)
@@ -267,7 +265,6 @@ fun ChangeAddressScreen(navController: NavController) {
         }
     )
 }
-
 
 
 

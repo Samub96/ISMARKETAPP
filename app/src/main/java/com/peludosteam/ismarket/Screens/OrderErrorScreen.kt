@@ -1,6 +1,7 @@
 package com.peludosteam.ismarket.Screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,12 +40,13 @@ fun OrderErrorScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Para manejar márgenes correctamente
-                    .padding(16.dp),
+                    .padding(paddingValues)
+                    .padding(16.dp),  // Padding general
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(50.dp))
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -57,6 +59,10 @@ fun OrderErrorScreen(navController: NavController) {
                         modifier = Modifier
                             .size(15.dp)
                             .graphicsLayer { rotationZ = 90f }
+                            .clickable {
+                                // Regresar a la pantalla anterior
+                                navController.popBackStack()
+                            }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -68,29 +74,29 @@ fun OrderErrorScreen(navController: NavController) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(150.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Image(
                     painter = painterResource(id = R.drawable.carritodecompras),
                     contentDescription = "Historial Logo",
-                    modifier = Modifier.size(250.dp)
+                    modifier = Modifier.size(200.dp)
                 )
 
                 Text(
                     text = "No hay ordenes en este momento",
-                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(top = 16.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = "Empieza una orden en este momento.\n" +
-                            "No pierdas la oportunidad.",
+                    text = "Empieza una orden en este momento.\nNo pierdas la oportunidad.",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(200.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
                     onClick = { /* Acción para iniciar el pedido */ },
@@ -102,7 +108,6 @@ fun OrderErrorScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
-                        .padding(horizontal = 38.dp)
                         .height(55.dp)
                         .shadow(4.dp, shape = RoundedCornerShape(12.dp))
                 ) {

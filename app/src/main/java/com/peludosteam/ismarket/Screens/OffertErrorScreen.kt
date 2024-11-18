@@ -1,6 +1,7 @@
 package com.peludosteam.ismarket.Screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,6 +57,10 @@ fun OffertErrorScreen(navController: NavController) {
                         modifier = Modifier
                             .size(15.dp)
                             .graphicsLayer { rotationZ = 90f }
+                            .clickable {
+
+                                navController.popBackStack()
+                            }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(

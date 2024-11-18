@@ -2,6 +2,7 @@ package com.peludosteam.ismarket.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -47,12 +48,12 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)  // Asegura que el contenido no se solape con el borde
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.Top, // Cambiado para mejor alineación con el top
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(50.dp))
+                // Reducir el padding superior y hacerlo más flexible
+                Spacer(modifier = Modifier.height(20.dp)) // Menos espacio arriba
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -64,6 +65,10 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         modifier = Modifier
                             .size(15.dp)
                             .graphicsLayer { rotationZ = 90f }
+                            .clickable {
+                                // Regresar a la pantalla anterior
+                                navController.popBackStack()
+                            }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -75,7 +80,8 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp)) // Reducido el espacio entre el título y los detalles
+
                 Text(
                     text = "Domicilio",
                     style = TextStyle(fontSize = 30.sp, fontWeight = FontWeight.Bold),
@@ -84,7 +90,9 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     textAlign = TextAlign.Start
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Asegurando que el contenido se ajuste bien a la pantalla
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -104,12 +112,13 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     )
                 }
 
+                // Contenedor de dirección con un tamaño más flexible
                 Box(
                     modifier = Modifier
                         .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
                         .height(150.dp)
-                        .width(300.dp),
+                        .fillMaxWidth(), // Hacer el contenedor flexible
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
@@ -137,6 +146,8 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
+
+                // Método de entrega con ajuste en el tamaño
                 Text(
                     text = "Método de entrega",
                     style = TextStyle(fontSize = 20.sp),
@@ -144,12 +155,11 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
-
                 Box(
                     modifier = Modifier
                         .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                        .height(200.dp)
+                        .height(150.dp)
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
@@ -160,7 +170,6 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                                 onClick = { viewModel.updateDeliveryMethod("Entrega a domicilio") },
                                 colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "Entrega a domicilio",
                                 style = TextStyle(fontSize = 18.sp),
@@ -187,8 +196,6 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -198,7 +205,8 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     Text(text = "$productPrice", style = TextStyle(fontSize = 20.sp))
                 }
 
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(40.dp))
+
                 Button(
                     onClick = { navController.navigate("PantallaDePago") },
                     colors = ButtonDefaults.buttonColors(
@@ -209,7 +217,6 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
-                        .padding(horizontal = 38.dp)
                         .height(55.dp)
                         .shadow(4.dp, shape = RoundedCornerShape(12.dp))
                 ) {
