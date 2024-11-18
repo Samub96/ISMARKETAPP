@@ -32,16 +32,7 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
     val selectedDeliveryMethod = paymentViewModel.selectedDeliveryMethod
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Pedido", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        },
+
         content = { innerPadding ->
             Column(
                 modifier = Modifier
@@ -56,8 +47,8 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
 
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 30.dp)
-                        .padding(vertical = 25.dp)
+                        .padding(horizontal = 20.dp)
+                        .padding(vertical = 15.dp)
                         .width(315.dp)
                         .padding(vertical = 12.dp)
                         .background(Color(0xFFFFFFFF), RoundedCornerShape(10.dp))
@@ -87,12 +78,12 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = "Método de entrega", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold))
+                Text(text = "Método de entrega", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold,fontSize = 20.sp))
 
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = 30.dp)
-                        .padding(vertical = 25.dp)
+                        .padding(horizontal = 20.dp)
+                        .padding(vertical = 15.dp)
                         .width(315.dp)
                         .padding(vertical = 12.dp)
                         .background(Color(0xFFFFFFFF), RoundedCornerShape(10.dp))
