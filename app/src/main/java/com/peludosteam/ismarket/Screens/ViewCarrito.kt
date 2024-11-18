@@ -13,8 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.components.ProductCard
 import com.peludosteam.ismarket.viewmode.CarritoViewMode
-import com.example.listasapp.components.ProductCard
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.Domain.Product
@@ -19,6 +20,19 @@ class ProductViewModel(
 ) : ViewModel() {
 
     val productList : MutableLiveData<List<Product>> = MutableLiveData(listOf())
+    private val firestore = FirebaseFirestore.getInstance()
+
+    fun updateProductStock(productId: String, newStock: Int) {
+        firestore.collection("products") // Asegúrate de usar la colección correcta
+            .document(productId)
+            .update("stock", newStock)
+            .addOnSuccessListener {
+                Log.d("ProductViewModel", "Stock actualizado exitosamente.")
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ProductViewModel", "Error al actualizar el stock: ${exception.message}")
+            }
+    }
 
     fun downloadData() {
         viewModelScope.launch (Dispatchers.IO) {
