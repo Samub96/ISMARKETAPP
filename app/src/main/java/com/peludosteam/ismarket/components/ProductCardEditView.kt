@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.peludosteam.ismarket.domain.Product
-import com.peludosteam.ismarket.viewmodel.ProductViewModel
+import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @Composable
 fun ProductCardEditView (product: Product, productViewModel: ProductViewModel = viewModel()){

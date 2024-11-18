@@ -47,7 +47,7 @@ import com.example.listasapp.components.ProductCard
 import com.example.listasapp.components.ProductCardEditView
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
-import com.peludosteam.ismarket.viewmodel.ProductViewModel
+import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

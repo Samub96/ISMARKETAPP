@@ -49,7 +49,7 @@ import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.AddProductScreen
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
-import com.peludosteam.ismarket.viewmodel.ProductViewModel
+import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,7 +91,7 @@ fun ProfileScreen(
             bottomBar = { BottomNavigationBar(nestedNavController)}
             ){ innerPadding ->
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
-                composable("viewProducts"){ ViewProducts()}
+                //composable("viewProducts"){ ViewProducts()}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile"){ ViewProfile() }
