@@ -68,11 +68,23 @@ fun ProfileScreen(
             ){ innerPadding ->
 
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
-                composable("viewProducts"){ ViewProducts()}
+                composable("viewProducts"){ ViewProducts(nestedNavController)}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile"){ ViewProfile() }
                 composable("addProduct") { AddProductScreen(nestedNavController) }
+                composable("cart") { Cart(nestedNavController) }
+                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
+                composable("address") {
+                    val addressViewModel: AddressViewModel = viewModel()
+                    AddressScreen(navController, addressViewModel)
+                }
+                composable("orderError") { OrderErrorScreen(navController) }
+                composable("changeAddress") { ChangeAddressScreen(navController) }
+                composable("offertError") { OffertErrorScreen(navController) }
+                composable("wifiError") { WifiErrorScreen(navController) }
+
+
             }
         }
     }
