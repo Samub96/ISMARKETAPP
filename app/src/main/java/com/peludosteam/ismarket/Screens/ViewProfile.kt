@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.listasapp.components.ProductCard
 import com.example.listasapp.components.ProductCardEditView
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.ProductViewModel
