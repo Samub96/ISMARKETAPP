@@ -24,8 +24,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.peludosteam.ismarket.AddProductScreen
+import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +57,7 @@ fun ProfileScreen(
                     },
                     actions = {
                         // Ícono en la derecha (Carrito)
-                        IconButton(onClick = { navController.navigate("cart") }) {
+                        IconButton(onClick = { nestedNavController.navigate("cart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
                     },
@@ -66,14 +66,25 @@ fun ProfileScreen(
             },
             bottomBar = { BottomNavigationBar(nestedNavController)}
             ){ innerPadding ->
-            NavHost(
-                navController = nestedNavController,
-                startDestination = "viewProducts",
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable("viewProducts") { ViewProducts(navController = nestedNavController) }
-                composable("viewProfile") { ViewProfile() }
-                composable("addProduct") { AddProductScreen(navController = nestedNavController) }
+
+            NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
+                composable("viewProducts"){ ViewProducts(nestedNavController)}
+                //composable("history"){ ViewProducts()}
+                //composable("chat"){ ViewProducts()}
+                composable("viewProfile"){ ViewProfile() }
+                composable("addProduct") { AddProductScreen(nestedNavController) }
+                composable("cart") { Cart(nestedNavController) }
+                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
+                composable("address") {
+                    val addressViewModel: AddressViewModel = viewModel()
+                    AddressScreen(navController, addressViewModel)
+                }
+                composable("orderError") { OrderErrorScreen(navController) }
+                composable("changeAddress") { ChangeAddressScreen(navController) }
+                composable("offertError") { OffertErrorScreen(navController) }
+                composable("wifiError") { WifiErrorScreen(navController) }
+
+
             }
         }
     }

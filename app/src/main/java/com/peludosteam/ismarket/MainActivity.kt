@@ -11,12 +11,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,9 +44,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -59,7 +66,6 @@ import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.peludosteam.ismarket.Screens.PaymentScreen
 import com.peludosteam.ismarket.Screens.AddressScreen
 import com.peludosteam.ismarket.Screens.ChangeAddressScreen
 import com.peludosteam.ismarket.Screens.EnterScreen
@@ -69,6 +75,8 @@ import com.peludosteam.ismarket.Screens.OrderErrorScreen
 import com.peludosteam.ismarket.Screens.ProfileScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.Screens.WifiErrorScreen
+import com.peludosteam.ismarket.Screens.EnterScreen
+import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.SignupViewModel
@@ -103,23 +111,8 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
-        composable("addProduct") { AddProductScreen(navController) }
-        composable("viewProducts") { ViewProducts(navController) }
-        composable("address") {
-            val addressViewModel: AddressViewModel = viewModel()
-            AddressScreen(navController, addressViewModel)
-        }
-        composable("orderError") { OrderErrorScreen(navController) }
-        composable("changeAddress") { ChangeAddressScreen(navController) }
-        composable("offertError") { OffertErrorScreen(navController) }
-        composable("wifiError") { WifiErrorScreen(navController) }
-        composable("PaymentScreen") { PaymentScreen(navController)}
-
     }
 }
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
