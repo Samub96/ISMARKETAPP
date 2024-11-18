@@ -47,16 +47,16 @@ fun ProfileScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "Is Market", color = Color(0xFFFA4A0A))
+                        Text(text = "Is Market", color = Color(0xFFFA4A0A)) // Puedes ajustar el título si lo necesitas
                     },
                     navigationIcon = {
-
+                        // Ícono en la izquierda (Menú)
                         IconButton(onClick = { navController.navigate("menu") }) {
                             Icon(Icons.Filled.Menu, contentDescription = "Menu", tint = Color(0xFFFA4A0A))
                         }
                     },
                     actions = {
-
+                        // Ícono en la derecha (Carrito)
                         IconButton(onClick = { nestedNavController.navigate("cart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
@@ -68,7 +68,7 @@ fun ProfileScreen(
             ){ innerPadding ->
 
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
-                composable("viewProducts"){ ViewProducts(nestedNavController)}
+                composable("viewProducts"){ ViewProducts()}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile"){ ViewProfile() }
@@ -77,12 +77,13 @@ fun ProfileScreen(
                 composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()
-                    AddressScreen(navController, addressViewModel)
+                    AddressScreen(nestedNavController, addressViewModel)
                 }
-                composable("orderError") { OrderErrorScreen(navController) }
-                composable("changeAddress") { ChangeAddressScreen(navController) }
-                composable("offertError") { OffertErrorScreen(navController) }
-                composable("wifiError") { WifiErrorScreen(navController) }
+                composable("orderError") { OrderErrorScreen(nestedNavController) }
+                composable("changeAddress") { ChangeAddressScreen(nestedNavController) }
+                composable("offertError") { OffertErrorScreen(nestedNavController) }
+                composable("wifiError") { WifiErrorScreen(nestedNavController) }
+                composable("PaymentScreen") { PaymentScreen(nestedNavController) }
 
             }
         }
