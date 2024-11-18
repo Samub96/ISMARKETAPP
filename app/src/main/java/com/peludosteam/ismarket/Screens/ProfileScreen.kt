@@ -68,7 +68,7 @@ fun ProfileScreen(
             ){ innerPadding ->
 
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
-                composable("viewProducts"){ ViewProducts()}
+                composable("viewProducts"){ ViewProducts(nestedNavController)}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile"){ ViewProfile() }
