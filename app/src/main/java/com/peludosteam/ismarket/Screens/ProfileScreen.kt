@@ -27,7 +27,6 @@ import com.peludosteam.ismarket.AddProductScreen
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -67,25 +66,13 @@ fun ProfileScreen(
             },
             bottomBar = { BottomNavigationBar(nestedNavController)}
             ){ innerPadding ->
-            NavHost(
-                navController = nestedNavController,
-                startDestination = "viewProducts",
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable("viewProducts") { ViewProducts(navController = nestedNavController) }
-                composable("viewProfile") { ViewProfile() }
-                composable("addProduct") { AddProductScreen(navController = nestedNavController) }
-                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
-                composable("cart") { Cart(navController = nestedNavController) }
-                composable("address") {
-                    val addressViewModel: AddressViewModel = viewModel()
-                    AddressScreen(navController, addressViewModel)
-                }
-                composable("orderError") { OrderErrorScreen(navController) }
-                composable("changeAddress") { ChangeAddressScreen(navController) }
-                composable("offertError") { OffertErrorScreen(navController) }
-                composable("wifiError") { WifiErrorScreen(navController) }
 
+            NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
+                composable("viewProducts"){ ViewProducts()}
+                //composable("history"){ ViewProducts()}
+                //composable("chat"){ ViewProducts()}
+                composable("viewProfile"){ ViewProfile() }
+                composable("addProduct") { AddProductScreen(nestedNavController) }
             }
         }
     }
