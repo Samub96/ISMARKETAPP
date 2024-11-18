@@ -12,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +21,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -68,7 +71,6 @@ fun CustomToast(message: String) {
         )
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeAddressScreen(navController: NavController) {
@@ -96,172 +98,172 @@ fun ChangeAddressScreen(navController: NavController) {
             }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.flecha),
-                contentDescription = "Flecha",
-                modifier = Modifier
-                    .size(15.dp)
-                    .graphicsLayer { rotationZ = 90f }
-                    .clickable {
-                        navController.navigate("address") {
-                            launchSingleTop = true
-
-                        }
-                    }
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Ubicación",
-                style = TextStyle(fontSize = 20.sp),
-                color = Color.Black,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Text(
-            text = "Ubicación",
-            style = TextStyle(fontSize = 30.sp),
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start
-        )
-
-        Box(
-            modifier = Modifier
-                .height(900.dp)
-                .fillMaxWidth()
-                .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                .padding(16.dp)
-        ) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        content = { paddingValues ->
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.torre),
-                    contentDescription = "Imagen de torre",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-                TextField(
-                    value = firstInput,
-                    onValueChange = { firstInput = it },
-                    label = { Text("Edificio") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color(0xFFFA4A0C),
-                        unfocusedIndicatorColor = Color(0xFFFA4A0C),
-                        focusedLabelColor = Color(0xFFFA4A0C),
-                        unfocusedLabelColor = Color(0xFFFA4A0C),
-                        containerColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFF1C0000),
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    value = secondInput,
-                    onValueChange = { secondInput = it },
-                    label = { Text("Piso") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color(0xFFFA4A0C),
-                        focusedLabelColor = Color(0xFFFA4A0C),
-                        unfocusedLabelColor = Color(0xFFFA4A0C),
-                        containerColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFF1C0000),
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    value = thirdInput,
-                    onValueChange = { thirdInput = it },
-                    label = { Text("Salón") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color(0xFFFA4A0C),
-                        focusedLabelColor = Color(0xFFFA4A0C),
-                        unfocusedLabelColor = Color(0xFFFA4A0C),
-                        containerColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFF1C0000),
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-                Spacer(modifier = Modifier.height(160.dp))
-                Button(
-                    onClick = {
-                        saveAddressToFirestore(firstInput, secondInput, thirdInput)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFA4A0C),
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 38.dp)
-                        .height(55.dp)
-                        .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
                 ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.flecha),
+                        contentDescription = "Flecha",
+                        modifier = Modifier
+                            .size(15.dp)
+                            .graphicsLayer { rotationZ = 90f }
+                            .clickable {
+                                navController.navigate("address") {
+                                    launchSingleTop = true
+                                }
+                            }
+                    )
                     Text(
-                        text = "Guardar Ubicación",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
-                        )
+                        text = "Ubicación",
+                        style = TextStyle(fontSize = 20.sp),
+                        color = Color.Black,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
                     )
                 }
-
-                AnimatedVisibility(
-                    visible = showCustomToast,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Ubicación",
+                    style = TextStyle(fontSize = 30.sp),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Start
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                        .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
                 ) {
-                    CustomToast(message = "Ubicación guardada exitosamente")
-                }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.torre),
+                            contentDescription = "Imagen de torre",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        TextField(
+                            value = firstInput,
+                            onValueChange = { firstInput = it },
+                            label = { Text("Edificio") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = Color(0xFFFA4A0C),
+                                unfocusedIndicatorColor = Color(0xFFFA4A0C),
+                                focusedLabelColor = Color(0xFFFA4A0C),
+                                unfocusedLabelColor = Color(0xFFFA4A0C),
+                                containerColor = Color.White
+                            ),
+                            textStyle = TextStyle(
+                                color = Color(0xFF1C0000),
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        TextField(
+                            value = secondInput,
+                            onValueChange = { secondInput = it },
+                            label = { Text("Piso") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = Color(0xFFFA4A0C),
+                                focusedLabelColor = Color(0xFFFA4A0C),
+                                unfocusedLabelColor = Color(0xFFFA4A0C),
+                                containerColor = Color.White
+                            ),
+                            textStyle = TextStyle(
+                                color = Color(0xFF1C0000),
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        TextField(
+                            value = thirdInput,
+                            onValueChange = { thirdInput = it },
+                            label = { Text("Salón") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = Color(0xFFFA4A0C),
+                                focusedLabelColor = Color(0xFFFA4A0C),
+                                unfocusedLabelColor = Color(0xFFFA4A0C),
+                                containerColor = Color.White
+                            ),
+                            textStyle = TextStyle(
+                                color = Color(0xFF1C0000),
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(60.dp))
+                        Button(
+                            onClick = {
+                                saveAddressToFirestore(firstInput, secondInput, thirdInput)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFFA4A0C),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth()
+                                .padding(horizontal = 38.dp)
+                                .height(55.dp)
+                                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+                        ) {
+                            Text(
+                                text = "Guardar Ubicación",
+                                style = TextStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                )
+                            )
+                        }
 
-                LaunchedEffect(showCustomToast) {
-                    if (showCustomToast) {
-                        delay(2000)
-                        showCustomToast = false
-                        navController.navigate("address")
+                        AnimatedVisibility(
+                            visible = showCustomToast,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            CustomToast(message = "Ubicación guardada exitosamente")
+                        }
+
+                        LaunchedEffect(showCustomToast) {
+                            if (showCustomToast) {
+                                delay(2000)
+                                showCustomToast = false
+                                navController.navigate("address")
+                            }
+                        }
                     }
                 }
             }
         }
-    }
+    )
 }
 
 
