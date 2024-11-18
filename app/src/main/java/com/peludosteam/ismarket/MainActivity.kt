@@ -76,6 +76,7 @@ import com.peludosteam.ismarket.viewmode.SignupViewModel
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.peludosteam.ismarket.Screens.PaymentScreen
 import com.peludosteam.ismarket.domain.Product
 import java.util.UUID
 
@@ -176,6 +177,7 @@ fun App() {
         composable("login") { LoginScreen(navController) }
         composable("addProduct") { AddProductScreen(navController) }
         composable("viewProducts") { ViewProducts(navController) }
+        composable("PaymentScreen") { PaymentScreen(navController)}
 
     }
 }
@@ -322,6 +324,10 @@ fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = v
                         navController.navigate("viewProducts")
                     }) {
                         Text(text = "Ver productos disponibles")
+                    }
+                    Button(onClick = {navController.navigate("PaymentScreen")}) {
+                        Text(text = "Metodo de pago")
+
                     }
 
                 }
