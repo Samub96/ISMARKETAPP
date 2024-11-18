@@ -47,16 +47,16 @@ fun ProfileScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "Is Market", color = Color(0xFFFA4A0A)) // Puedes ajustar el título si lo necesitas
+                        Text(text = "Is Market", color = Color(0xFFFA4A0A))
                     },
                     navigationIcon = {
-                        // Ícono en la izquierda (Menú)
+
                         IconButton(onClick = { navController.navigate("menu") }) {
                             Icon(Icons.Filled.Menu, contentDescription = "Menu", tint = Color(0xFFFA4A0A))
                         }
                     },
                     actions = {
-                        // Ícono en la derecha (Carrito)
+
                         IconButton(onClick = { nestedNavController.navigate("cart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
@@ -68,7 +68,7 @@ fun ProfileScreen(
             ){ innerPadding ->
 
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
-                composable("viewProducts"){ ViewProducts()}
+                composable("viewProducts"){ ViewProducts(nestedNavController)}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile"){ ViewProfile() }

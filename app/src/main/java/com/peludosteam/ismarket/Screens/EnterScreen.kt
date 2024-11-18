@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,59 +26,66 @@ import com.peludosteam.ismarket.R
 
 @Composable
 fun EnterScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(50.dp))
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues) // Para manejar los márgenes correctamente
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(50.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.logoapp),
-            contentDescription = "Descripción de la imagen",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .clip(RoundedCornerShape(12.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.logoapp),
+                    contentDescription = "Descripción de la imagen",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                )
 
-        )
+                Spacer(modifier = Modifier.weight(1f))
 
-        Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    onClick = { navController.navigate("login") },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFA4A0C),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 38.dp)
+                        .height(55.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+                ) {
+                    Text("Iniciar sesión")
+                }
 
-        Button(
-            onClick = { navController.navigate("login") },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFA4A0C),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(12.dp),
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 38.dp)
-                .height(55.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
-        ) {
-            Text("Iniciar sesión")
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { navController.navigate("signup") },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFA4A0C),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 38.dp)
+                        .height(55.dp)
+                        .shadow(4.dp, shape = RoundedCornerShape(12.dp))
+                ) {
+                    Text("Registrarse")
+                }
+            }
         }
-
-        Button(
-            onClick = { navController.navigate("signup") },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFA4A0C),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(12.dp),
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 38.dp)
-                .height(55.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(12.dp))
-        ) {
-            Text("Registrarse")
-        }
-    }
+    )
 }
