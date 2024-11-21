@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.domain.Product
 
 @Composable
 fun ProductCard (product: Product){

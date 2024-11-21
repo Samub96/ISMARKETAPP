@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.repository.ProductRepository
 import com.peludosteam.ismarket.repository.ProductRepositoryImpl
 import kotlinx.coroutines.Dispatchers

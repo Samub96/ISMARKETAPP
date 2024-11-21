@@ -1,4 +1,4 @@
-package com.peludosteam.ismarket.Domain
+package com.peludosteam.ismarket.domain
 
 data class Product(
     var id: String = "",

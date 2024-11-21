@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.peludosteam.ismarket.Domain.Product
 import com.peludosteam.ismarket.components.ProductCard
 import com.peludosteam.ismarket.viewmode.CarritoViewMode
 

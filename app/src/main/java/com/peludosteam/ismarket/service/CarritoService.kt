@@ -2,8 +2,8 @@ package com.peludosteam.ismarket.service
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.peludosteam.ismarket.Domain.Carrito
-import com.peludosteam.ismarket.Domain.Product
+
+import com.peludosteam.ismarket.domain.Product
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 

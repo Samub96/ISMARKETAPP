@@ -2,7 +2,7 @@ package com.peludosteam.ismarket.repository
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.service.CarritoService
 import com.peludosteam.ismarket.service.CarritoServiceImpl
 

@@ -1,5 +1,5 @@
 package com.peludosteam.ismarket.service
-import com.peludosteam.ismarket.Domain.Product
+import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.repository.ProductRepository
 import com.peludosteam.ismarket.repository.ProductRepositoryImpl
 
