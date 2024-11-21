@@ -11,6 +11,7 @@ interface CarritoRepository {
     suspend fun addProduct(product: Product)
     suspend fun removeProduct(userID: String, productId: String)
     suspend fun updateProductQuantity(userID: String, productId: String, quantity: Int)
+    suspend fun clearCart(userID: String)
 }
 
 class CarritoRepositoryImpl(
@@ -34,4 +35,9 @@ class CarritoRepositoryImpl(
     override suspend fun updateProductQuantity(userID: String, productId: String, quantity: Int) {
         carritoService.updateProductQuantity(userID, productId, quantity)
     }
+
+    override suspend fun clearCart(userID: String) {
+        carritoService.clearCart(userID)
+    }
+
 }

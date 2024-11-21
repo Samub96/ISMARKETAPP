@@ -2,7 +2,6 @@ package com.peludosteam.ismarket.service
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 import com.peludosteam.ismarket.domain.Product
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
@@ -13,6 +12,7 @@ interface CarritoService {
     suspend fun addProduct(userID: String, carritoProduct: Product)
     suspend fun removeProduct(userID: String, productId: String)
     suspend fun updateProductQuantity(userID: String, productId: String, quantity: Int)
+    suspend fun clearCart(userID: String)
 }
 
 class CarritoServiceImpl : CarritoService {
@@ -28,7 +28,7 @@ class CarritoServiceImpl : CarritoService {
             Product(
                 normalizedProduct.get("productId").toString(),
                 normalizedProduct.get("Name").toString(),
-                normalizedProduct.get("Price").toString().toDouble(),
+                normalizedProduct.get("Price").toString().toInt(),
             )
         }
         return productList
@@ -75,6 +75,20 @@ class CarritoServiceImpl : CarritoService {
 
         for (document in productRef.documents) {
             document.reference.update("Quantity", quantity).await()
+        }
+    }
+
+    override suspend fun clearCart(userID: String) {
+        val cartRef = Firebase.firestore
+            .collection("User")
+            .document(userID)
+            .collection("ShoppingCar")
+            .get()
+            .await()
+
+        // Eliminar cada documento del carrito
+        for (document in cartRef.documents) {
+            document.reference.delete().await()
         }
     }
 

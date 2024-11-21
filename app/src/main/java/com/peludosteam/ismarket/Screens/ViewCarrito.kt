@@ -9,12 +9,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.peludosteam.ismarket.components.ProductCard
 import com.peludosteam.ismarket.viewmode.CarritoViewMode
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,11 +54,16 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
                         .padding(8.dp)
                 ) {
                     items(cartProducts) { product ->
-                        ProductCard(product = product)
+                        ProductCard(product = product) // Asumo que ProductCard ya está diseñado adecuadamente
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+
+                // Divisor para separar la lista de productos del total
+                Divider(modifier = Modifier.padding(horizontal = 16.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 // Muestra el precio total del carrito
                 Text(
@@ -66,12 +72,18 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Botón para finalizar la compra
                 Button(
                     onClick = { cartViewModel.checkout() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(horizontal = 16.dp),
+                    shape = MaterialTheme.shapes.medium, // Redondear las esquinas del botón
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Text("Finalizar Compra")
                 }
@@ -79,3 +91,4 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
         }
     }
 }
+

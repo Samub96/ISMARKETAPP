@@ -47,7 +47,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
-
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -250,7 +249,7 @@ fun AddProductScreen(navController: NavController) {
                                     val newProduct = Product(
                                         id = productId,
                                         name = name,
-                                        price = price.toDouble(),
+                                        price = price.toInt(),
                                         description = description,
                                         imageRes = downloadUri.toString(), // Guardar la URL de la imagen
                                         stock = stock.toInt(),

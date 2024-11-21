@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.repository.CarritoRepository
+import com.peludosteam.ismarket.repository.CarritoRepositoryImpl
 import kotlinx.coroutines.launch
 
 class CarritoViewMode( val carritoRepository: CarritoRepository) : ViewModel() {
@@ -15,8 +17,8 @@ class CarritoViewMode( val carritoRepository: CarritoRepository) : ViewModel() {
     private val _cartProducts = MutableLiveData<List<Product>>()
     val cartProducts: LiveData<List<Product>> = _cartProducts
 
-    private val _totalPrice = MutableLiveData<Double>()
-    val totalPrice: LiveData<Double> = _totalPrice
+    private val _totalPrice = MutableLiveData<Int>()
+    val totalPrice: LiveData<Int> = _totalPrice
 
     init {
         loadCartProducts()
@@ -68,6 +70,29 @@ class CarritoViewMode( val carritoRepository: CarritoRepository) : ViewModel() {
     }
 
     fun checkout() {
-        // Lógica para procesar el pago o finalizar la compra
+        val products = _cartProducts.value ?: emptyList()
+        val userID = Firebase.auth.currentUser?.uid
+        if (products.isNotEmpty() && userID != null) {
+            viewModelScope.launch {
+                try {
+                    val paymentSuccessful =  true // processPayment(products, _totalPrice.value ?: 0)
+                    if (paymentSuccessful) {
+                        carritoRepository.clearCart(userID)
+                        _cartProducts.value = emptyList()
+                        _totalPrice.value = 0
+                    } else {
+                        // Notificar al usuario que el pago falló
+                    }
+                } catch (e: FirebaseFirestoreException) {
+                    // Manejar errores de Firebase
+                }  catch (e: Exception) {
+                    // Manejar errores generales
+                }
+            }
+        } else {
+            // Notificar al usuario que el carrito está vacío o no está autenticado
+        }
     }
+
+
 }
