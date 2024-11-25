@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,12 +27,14 @@ import androidx.navigation.compose.rememberNavController
 import com.peludosteam.ismarket.AddProductScreen
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
+import com.peludosteam.ismarket.viewmode.SignupViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavController = rememberNavController(),
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    authViewModel: SignupViewModel = viewModel(),
 ) {
     val userState by profileViewModel.user.observeAsState()
     Log.e(">>>", userState.toString())
@@ -64,6 +67,7 @@ fun ProfileScreen(
                 )
 
             },
+
             bottomBar = { BottomNavigationBar(nestedNavController)}
             ){ innerPadding ->
 
