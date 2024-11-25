@@ -48,12 +48,12 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.Top, // Cambiado para mejor alineación con el top
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp), // Agregado padding horizontal
+                verticalArrangement = Arrangement.Top, // Alineación superior
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Reducir el padding superior y hacerlo más flexible
-                Spacer(modifier = Modifier.height(20.dp)) // Menos espacio arriba
+                // Imagen de flecha y título
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -70,29 +70,26 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                                 navController.popBackStack()
                             }
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Pedido",
-                        style = TextStyle(fontSize = 20.sp),
+                        style = TextStyle(fontSize = 22.sp),
                         color = Color.Black,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp)) // Reducido el espacio entre el título y los detalles
-
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Domicilio",
-                    style = TextStyle(fontSize = 30.sp, fontWeight = FontWeight.Bold),
+                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
                     color = Color.Black,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Asegurando que el contenido se ajuste bien a la pantalla
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -112,19 +109,17 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     )
                 }
 
-                // Contenedor de dirección con un tamaño más flexible
+                Spacer(modifier = Modifier.height(24.dp))
                 Box(
                     modifier = Modifier
-                        .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                        .height(150.dp)
-                        .fillMaxWidth(), // Hacer el contenedor flexible
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
                         Text(
                             text = "Universidad ICESI",
-                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold),
                             modifier = Modifier.padding(8.dp)
                         )
                         HorizontalDivider(
@@ -145,9 +140,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                // Método de entrega con ajuste en el tamaño
+                Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = "Método de entrega",
                     style = TextStyle(fontSize = 20.sp),
@@ -157,9 +150,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                 )
                 Box(
                     modifier = Modifier
-                        .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                        .height(150.dp)
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
@@ -187,7 +178,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                                 onClick = { viewModel.updateDeliveryMethod("Recogerlo en la tienda") },
                                 colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 text = "Recogerlo en la tienda",
                                 style = TextStyle(fontSize = 18.sp),
@@ -196,6 +187,8 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -205,8 +198,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     Text(text = "$productPrice", style = TextStyle(fontSize = 20.sp))
                 }
 
-                Spacer(modifier = Modifier.height(40.dp))
-
+                Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     onClick = { navController.navigate("PantallaDePago") },
                     colors = ButtonDefaults.buttonColors(
@@ -215,10 +207,8 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
-                        .padding(8.dp)
                         .fillMaxWidth()
                         .height(55.dp)
-                        .shadow(4.dp, shape = RoundedCornerShape(12.dp))
                 ) {
                     Text("Proceder al pago", style = TextStyle(fontSize = 20.sp))
                 }
