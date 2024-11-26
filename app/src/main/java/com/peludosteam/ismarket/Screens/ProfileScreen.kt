@@ -57,7 +57,7 @@ fun ProfileScreen(
                     },
                     actions = {
                         // Ícono en la derecha (Carrito)
-                        IconButton(onClick = { nestedNavController.navigate("cart") }) {
+                        IconButton(onClick = { nestedNavController.navigate("ViewCart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
                     },
@@ -84,6 +84,8 @@ fun ProfileScreen(
                 composable("offertError") { OffertErrorScreen(nestedNavController) }
                 composable("wifiError") { WifiErrorScreen(nestedNavController) }
                 composable("PaymentScreen") { PaymentScreen(nestedNavController) }
+                composable("ViewCart") { ViewCarrito(nestedNavController) }
+
 
             }
         }

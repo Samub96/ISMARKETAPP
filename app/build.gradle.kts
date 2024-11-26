@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+
 }
 
 android {
@@ -53,6 +54,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.glide)
+    implementation(libs.landscapist.glide)
     implementation ("androidx.compose.material:material-icons-extended:1.4.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")

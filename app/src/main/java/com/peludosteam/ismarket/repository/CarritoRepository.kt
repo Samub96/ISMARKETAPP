@@ -15,7 +15,7 @@ interface CarritoRepository {
 }
 
 class CarritoRepositoryImpl(
-    private val carritoService: CarritoService = CarritoServiceImpl()
+    val carritoService: CarritoService = CarritoServiceImpl()
 ) : CarritoRepository {
 
     private val userID: String?

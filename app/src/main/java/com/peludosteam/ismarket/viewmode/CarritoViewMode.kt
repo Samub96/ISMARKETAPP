@@ -12,7 +12,9 @@ import com.peludosteam.ismarket.repository.CarritoRepository
 import com.peludosteam.ismarket.repository.CarritoRepositoryImpl
 import kotlinx.coroutines.launch
 
-class CarritoViewMode( val carritoRepository: CarritoRepository) : ViewModel() {
+class CarritoViewMode(
+    val carritoRepository: CarritoRepository = CarritoRepositoryImpl()
+) : ViewModel() {
 
     private val _cartProducts = MutableLiveData<List<Product>>()
     val cartProducts: LiveData<List<Product>> = _cartProducts

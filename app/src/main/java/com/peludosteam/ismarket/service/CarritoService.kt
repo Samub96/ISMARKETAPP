@@ -34,12 +34,12 @@ class CarritoServiceImpl : CarritoService {
         return productList
     }
 
-    override suspend fun addProduct(userID: String, product: Product) {
+    override suspend fun addProduct(userID: String, carritoProduct: Product) {
         val normalizedProduct = hashMapOf(
             "id" to UUID.randomUUID().toString(),
-            "productId" to product.id,
-            "Name" to product.name,
-            "Price" to product.price
+            "productId" to carritoProduct.id,
+            "Name" to carritoProduct.name,
+            "Price" to carritoProduct.price
         )
 
         Firebase.firestore.collection("User").document(userID)

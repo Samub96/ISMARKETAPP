@@ -14,12 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.peludosteam.ismarket.components.CartProductCard
 import com.peludosteam.ismarket.components.ProductCard
 import com.peludosteam.ismarket.viewmode.CarritoViewMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = viewModel()) {
+fun ViewCarrito(
+    navController: NavController
+) {
+    val cartViewModel: CarritoViewMode = viewModel()
     val cartProducts by cartViewModel.cartProducts.observeAsState(emptyList())
     val totalPrice by cartViewModel.totalPrice.observeAsState(0.0)
 
@@ -34,7 +38,7 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(8.dp)
+                .padding(2.dp)
         ) {
             if (cartProducts.isEmpty()) {
                 // Muestra un mensaje cuando el carrito está vacío
@@ -54,7 +58,7 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
                         .padding(8.dp)
                 ) {
                     items(cartProducts) { product ->
-                        ProductCard(product = product) // Asumo que ProductCard ya está diseñado adecuadamente
+                        CartProductCard(product)
                     }
                 }
 
@@ -67,16 +71,20 @@ fun ViewCarrito(navController: NavController, cartViewModel: CarritoViewMode = v
 
                 // Muestra el precio total del carrito
                 Text(
-                    text = "Total: $${"%.2f".format(totalPrice)}",
+                    text = "Total: $${"%.2f".format(totalPrice.toDouble())}",
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Botón para finalizar la compra
                 Button(
-                    onClick = { cartViewModel.checkout() },
+                    onClick = {
+                        navController.navigate("PaymentScreen")
+                        //cartViewModel.checkout()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),

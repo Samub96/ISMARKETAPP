@@ -130,7 +130,7 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                         paymentViewModel.savePaymentToFirebase(
                             onSuccess = {
                                 // Acción en caso de éxito, por ejemplo, navegar hacia atrás
-                                navController.popBackStack()
+                                navController.navigate("viewProducts")
                             },
                             onError = { error ->
                                 // Manejo de errores, como mostrar un mensaje al usuario
@@ -149,11 +149,7 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
             }
         }
     )
-
-
 }
-
-
 
 @Composable
 fun PaymentOption(text: String, icon: ImageVector, selected: Boolean, onClick: () -> Unit, selectedIconColor: Color) {
@@ -162,7 +158,10 @@ fun PaymentOption(text: String, icon: ImageVector, selected: Boolean, onClick: (
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .selectable(selected = selected, onClick = onClick)
-            .background(if (selected) Color(0xFFE1F5FE) else Color.Transparent, RoundedCornerShape(8.dp)),
+            .background(
+                if (selected) Color(0xFFE1F5FE) else Color.Transparent,
+                RoundedCornerShape(8.dp)
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         RadioButton(
