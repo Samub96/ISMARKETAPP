@@ -119,7 +119,7 @@ fun ResumenCompraScreen(navController: NavController) {
 
         // Precio Total
         Text(
-            text = "Total: $11,400", // Este es el precio de ejemplo, puedes calcularlo dinámicamente
+            text = "Total: $11,400",
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             modifier = Modifier.align(Alignment.End)

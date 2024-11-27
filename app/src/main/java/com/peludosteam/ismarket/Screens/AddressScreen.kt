@@ -200,7 +200,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
 
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
-                    onClick = { navController.navigate("ResumenCompraScreen") },
+                    onClick = { navController.navigate("resumen") },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFA4A0C),
                         contentColor = Color.White
