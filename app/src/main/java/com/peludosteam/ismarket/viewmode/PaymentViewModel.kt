@@ -1,10 +1,14 @@
 package com.peludosteam.ismarket.viewmode
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.peludosteam.ismarket.domain.Product
 import kotlinx.coroutines.tasks.await
 
 data class PaymentMethod(val id: String, val name: String)

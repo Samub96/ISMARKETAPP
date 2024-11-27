@@ -1,5 +1,6 @@
 package com.peludosteam.ismarket.Screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +28,7 @@ import com.peludosteam.ismarket.viewmode.PaymentMethod
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewModel = viewModel()) {
-
+    val totalAmount = paymentViewModel.totalAmount
     val selectedPaymentMethod = paymentViewModel.selectedPaymentMethod
     val selectedDeliveryMethod = paymentViewModel.selectedDeliveryMethod
 
@@ -119,7 +120,9 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = "Total", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                    Text(text = "$23,000", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    // Aquí mostramos el total dinámicamente
+                    Text(text = "$ $totalAmount", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    Log.d("PriceDetails", "price: $totalAmount")
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

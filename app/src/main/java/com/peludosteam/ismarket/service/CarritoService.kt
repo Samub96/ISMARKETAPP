@@ -29,6 +29,8 @@ class CarritoServiceImpl : CarritoService {
                 normalizedProduct.get("productId").toString(),
                 normalizedProduct.get("Name").toString(),
                 normalizedProduct.get("Price").toString().toInt(),
+                normalizedProduct.get("description").toString(),
+                normalizedProduct.get("imageRes").toString()
             )
         }
         return productList
@@ -39,7 +41,8 @@ class CarritoServiceImpl : CarritoService {
             "id" to UUID.randomUUID().toString(),
             "productId" to carritoProduct.id,
             "Name" to carritoProduct.name,
-            "Price" to carritoProduct.price
+            "Price" to carritoProduct.price,
+            "imageRes" to carritoProduct.imageRes
         )
 
         Firebase.firestore.collection("User").document(userID)

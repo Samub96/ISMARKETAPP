@@ -124,7 +124,7 @@ fun ProductCardBody(product: Product, cartViewModel: CarritoViewMode){
 
             Button(//Añadir al carrito
                 onClick = {
-                    Log.e(">>>", "Agregando al carrito")
+                    Log.d(">>>", "Agregando al carrito")
 
                     cartViewModel.addProductToCart(product);
 
