@@ -13,9 +13,7 @@ import androidx.navigation.NavController
 import com.peludosteam.ismarket.viewmode.SignupViewModel
 
 @Composable
-fun Cart(navController: NavController,
-         authViewModel: SignupViewModel = viewModel(),
-) {
+fun Cart(navController: NavController,) {
 
     Column(
         modifier = Modifier.padding(16.dp)
@@ -38,14 +36,8 @@ fun Cart(navController: NavController,
         Button(onClick = { navController.navigate("PaymentScreen") }) {
             Text(text = "PaymentScreen")
         }
-        // Botón para cerrar sesión Cambiarlo al profile
-        Button(
-            onClick = {
-                authViewModel.signout()  // Llamamos a la función de cerrar sesión
-                navController.navigate("login")  // Navegamos al login
-            }
-        ) {
-            Text(text = "Cerrar sesión")
+        Button(onClick = { navController.navigate("nav") }) {
+            Text(text = "ProfileScreen")
         }
     }
 }

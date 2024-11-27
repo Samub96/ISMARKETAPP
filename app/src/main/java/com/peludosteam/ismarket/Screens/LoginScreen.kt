@@ -33,24 +33,26 @@
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
     import androidx.lifecycle.viewmodel.compose.viewModel
-    import androidx.navigation.NavController
     import com.peludosteam.ismarket.viewmode.SignupViewModel
     import androidx.compose.runtime.LaunchedEffect
+    import androidx.navigation.NavHostController
 
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun LoginScreen(navController: NavController, authViewModel: SignupViewModel = viewModel()) {
+    fun LoginScreen(navController: NavHostController, authViewModel: SignupViewModel = viewModel()) {
         val authState by authViewModel.authState.observeAsState()
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
-        var errorMessage by remember { mutableStateOf("") }
+
+        // Recuperar el mensaje de error del ViewModel
+        val errorMessage by authViewModel.errorMessage.observeAsState("")
 
         // Verificar si hay un usuario autenticado al cargar la pantalla
         LaunchedEffect(Unit) {
             if (authViewModel.isUserLoggedIn()) {
                 navController.navigate("profile") {
-                    popUpTo("login") { inclusive = true } // Elimina la pantalla de login del stack
+                    popUpTo("login") { inclusive = true }
                 }
             }
         }
@@ -72,6 +74,7 @@
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // Campo de correo electrónico
                 TextField(
                     value = email,
                     onValueChange = { email = it },
@@ -83,6 +86,7 @@
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.White)
                 )
 
+                // Campo de contraseña
                 TextField(
                     value = password,
                     onValueChange = { password = it },
@@ -95,18 +99,19 @@
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.White)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Mostrar mensajes de error específicos
-                if (authState == 2) {
+                // Mostrar mensaje de error debajo de los campos
+                if (errorMessage.isNotEmpty()) {
                     Text(
                         text = errorMessage,
                         color = Color.Red,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 8.dp) // Añadimos espacio entre los campos y el mensaje
                     )
                 }
 
-                // Estado de autenticación
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Estado de autenticación: cargando o exitoso
                 when (authState) {
                     1 -> CircularProgressIndicator()
                     3 -> {
@@ -119,16 +124,18 @@
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Botón de iniciar sesión
                 Button(
                     onClick = {
-                        errorMessage = ""
                         authViewModel.signin(email, password) { error ->
-                            errorMessage = when (error) {
+                            authViewModel.errorMessage.value = when (error) {
                                 "ERROR_INVALID_EMAIL" -> "El correo no tiene un formato válido."
                                 "ERROR_WRONG_PASSWORD" -> "La contraseña es incorrecta."
                                 "ERROR_USER_NOT_FOUND" -> "El usuario no existe."
                                 else -> "Error desconocido. Inténtalo nuevamente."
                             }
+                            // Cambiar el estado de carga
+                            authViewModel.authState.value = 0 // o el estado adecuado para error
                         }
                     },
                     modifier = Modifier
@@ -142,8 +149,10 @@
                     Text(text = "Iniciar sesión", fontSize = 18.sp)
                 }
 
+
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // Enlace para registrarse
                 TextButton(onClick = { navController.navigate("signup") }) {
                     Text(
                         text = "¿No tienes cuenta? Regístrate aquí",
@@ -152,24 +161,7 @@
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Botón para cerrar sesión
-                if (authViewModel.isUserLoggedIn()) {
-                    Button(
-                        onClick = {
-                            authViewModel.signout()
-                            navController.navigate("login") {
-                                popUpTo("profile") { inclusive = true }
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Gray,
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Text("Cerrar sesión")
-                    }
-                }
             }
         }
     }
+
