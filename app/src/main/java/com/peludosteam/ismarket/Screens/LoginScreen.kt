@@ -127,16 +127,8 @@
                 // Botón de iniciar sesión
                 Button(
                     onClick = {
-                        authViewModel.signin(email, password) { error ->
-                            authViewModel.errorMessage.value = when (error) {
-                                "ERROR_INVALID_EMAIL" -> "El correo no tiene un formato válido."
-                                "ERROR_WRONG_PASSWORD" -> "La contraseña es incorrecta."
-                                "ERROR_USER_NOT_FOUND" -> "El usuario no existe."
-                                else -> "Error desconocido. Inténtalo nuevamente."
-                            }
-                            // Cambiar el estado de carga
-                            authViewModel.authState.value = 0 // o el estado adecuado para error
-                        }
+                        // Llamamos al método signin sin pasarle un parámetro
+                        authViewModel.signin(email, password)
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
@@ -164,4 +156,3 @@
             }
         }
     }
-

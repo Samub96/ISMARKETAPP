@@ -63,7 +63,8 @@ class SignupViewModel(
             } catch (ex: FirebaseAuthWeakPasswordException) {
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
-                    errorMessage.value = "La contraseña es demasiado débil. Usa al menos 6 caracteres."
+                    errorMessage.value =
+                        "La contraseña es demasiado débil. Usa al menos 6 caracteres."
                 }
             } catch (ex: FirebaseAuthInvalidCredentialsException) {
                 withContext(Dispatchers.Main) {
@@ -78,49 +79,63 @@ class SignupViewModel(
             } catch (ex: FirebaseAuthException) {
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
-                    errorMessage.value = "Ocurrió un error durante el registro: ${ex.localizedMessage}"
+                    errorMessage.value =
+                        "Ocurrió un error durante el registro: ${ex.localizedMessage}"
                 }
             } catch (ex: Exception) {
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
-                    errorMessage.value = "Ha ocurrido un error inesperado. Por favor, intenta nuevamente."
+                    errorMessage.value =
+                        "Ha ocurrido un error inesperado. Por favor, intenta nuevamente."
                 }
             }
         }
     }
 
-    // Iniciar sesión
-    fun signin(email: String, password: String, param: (Any) -> Unit) {
+    fun signin(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Cambiar el estado de carga antes de hacer la solicitud
                 withContext(Dispatchers.Main) {
                     authState.value = 1 // Estado de carga
                 }
+
+                // Realizar la autenticación de Firebase
                 repo.signin(email, password)
+
+                // Cambiar el estado a éxito en el hilo principal después de la autenticación
                 withContext(Dispatchers.Main) {
                     authState.value = 3 // Inicio de sesión exitoso
                 }
             } catch (ex: FirebaseAuthInvalidUserException) {
+                // Error de usuario no encontrado
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
                     errorMessage.value = "El usuario no existe. Verifica tu correo electrónico."
                 }
             } catch (ex: FirebaseAuthInvalidCredentialsException) {
+                // Error de credenciales incorrectas
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
                     errorMessage.value = "La contraseña es incorrecta. Intenta nuevamente."
                 }
             } catch (ex: FirebaseAuthException) {
+                // Error relacionado con Firebase
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
                     errorMessage.value = "Ocurrió un error al iniciar sesión: ${ex.localizedMessage}"
                 }
             } catch (ex: Exception) {
+                // Error general no esperado
                 withContext(Dispatchers.Main) {
                     authState.value = 2 // Estado de error
-                    errorMessage.value = "Ha ocurrido un error inesperado al iniciar sesión."
+                    errorMessage.value = "Ha ocurrido un error inesperado: ${ex.localizedMessage}"
                 }
             }
         }
     }
 }
+
+
+
+
