@@ -1,12 +1,12 @@
 package com.peludosteam.ismarket.Screens
 
+import ResumenCompraScreen
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -88,7 +88,8 @@ fun ProfileScreen(
                 composable("offertError") { OffertErrorScreen(nestedNavController) }
                 composable("wifiError") { WifiErrorScreen(nestedNavController) }
                 composable("PaymentScreen") { PaymentScreen(nestedNavController) }
-                composable("nav"){Nav(nestedNavController)}
+                composable("resumen"){ResumenCompraScreen(nestedNavController)}
+
 
             }
         }
