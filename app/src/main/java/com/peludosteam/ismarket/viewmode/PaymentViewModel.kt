@@ -10,6 +10,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.peludosteam.ismarket.domain.Product
 import kotlinx.coroutines.tasks.await
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 data class PaymentMethod(val id: String, val name: String)
 data class DeliveryMethod(val id: String, val name: String)
@@ -18,14 +21,15 @@ class PaymentViewModel : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
 
+    var totalAmount =0
+
     var selectedPaymentMethod by mutableStateOf(PaymentMethod("card", "Card ending in •3239"))
         private set
 
     var selectedDeliveryMethod by mutableStateOf(DeliveryMethod("home_delivery", "Entrega a domicilio"))
         private set
 
-    var totalAmount by mutableStateOf(23000) // Ejemplo de valor total
-        private set
+
 
     fun setPaymentMethod(paymentMethod: PaymentMethod) {
         selectedPaymentMethod = paymentMethod
@@ -34,10 +38,10 @@ class PaymentViewModel : ViewModel() {
     fun setDeliveryMethod(deliveryMethod: DeliveryMethod) {
         selectedDeliveryMethod = deliveryMethod
     }
-
-    fun updateTotalAmount(amount: Int) {
-        totalAmount = amount
+    fun setAmount(price:Int){
+        totalAmount=price
     }
+
 
     fun savePaymentToFirebase(
         onSuccess: () -> Unit,
@@ -50,12 +54,15 @@ class PaymentViewModel : ViewModel() {
             "deliveryMethodName" to selectedDeliveryMethod.name,
             "totalAmount" to totalAmount,
             "timestamp" to System.currentTimeMillis()
+
         )
+        Log.d("Subida firebase", "totalAmount $totalAmount")
 
         db.collection("payments")
             .add(paymentData)
             .addOnSuccessListener {
                 println("Método de pago guardado correctamente")
+
                 onSuccess()
             }
             .addOnFailureListener { exception ->

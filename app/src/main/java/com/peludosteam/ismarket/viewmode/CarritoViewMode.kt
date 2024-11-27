@@ -22,7 +22,7 @@ class CarritoViewMode(
     private val _cartProducts = MutableLiveData<List<Product>>()
     val cartProducts: LiveData<List<Product>> = _cartProducts
 
-    private val _totalPrice = MutableLiveData<Int>()
+    val _totalPrice = MutableLiveData<Int>()
     val totalPrice: LiveData<Int> = _totalPrice
 
     init {
@@ -44,7 +44,7 @@ class CarritoViewMode(
      private fun updateTotalPrice(products: List<Product>) {
          val total = products.sumOf { it.price }
          _totalPrice.value = total
-         paymentViewModel.updateTotalAmount(total)
+
         Log.d("PriceAmount:", "price $total")
      }
 
