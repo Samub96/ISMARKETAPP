@@ -88,7 +88,9 @@ fun ProfileScreen(
                 composable("offertError") { OffertErrorScreen(nestedNavController) }
                 composable("wifiError") { WifiErrorScreen(nestedNavController) }
                 composable("PaymentScreen") { PaymentScreen(nestedNavController) }
-                composable("resumen"){ResumenCompraScreen(nestedNavController)}
+                composable("resumen"){
+                    val addressViewModel: AddressViewModel = viewModel()
+                    ResumenCompraScreen(nestedNavController, addressViewModel)}
 
 
             }

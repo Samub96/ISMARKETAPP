@@ -49,11 +49,11 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = 16.dp), // Agregado padding horizontal
-                verticalArrangement = Arrangement.Top, // Alineación superior
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Imagen de flecha y título
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -66,7 +66,6 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                             .size(15.dp)
                             .graphicsLayer { rotationZ = 90f }
                             .clickable {
-                                // Regresar a la pantalla anterior
                                 navController.popBackStack()
                             }
                     )
@@ -129,14 +128,23 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         )
                         Text(
                             text = addressDetails.location,
+                            fontWeight = FontWeight.Bold,
                             style = TextStyle(fontSize = 20.sp),
                             modifier = Modifier.padding(8.dp)
                         )
                         Text(
-                            text = addressDetails.details,
+                            text = "Piso: ${addressDetails.floor}",
+                            fontWeight = FontWeight.Bold,
                             style = TextStyle(fontSize = 20.sp),
                             modifier = Modifier.padding(8.dp)
                         )
+                        Text(
+                            text = "Salón: ${addressDetails.room}",
+                            fontWeight = FontWeight.Bold,
+                            style = TextStyle(fontSize = 20.sp),
+                            modifier = Modifier.padding(8.dp)
+                        )
+
                     }
                 }
 
