@@ -71,4 +71,40 @@ class PaymentViewModel : ViewModel() {
             }
     }
 
+    fun savePurchaseToFirebase(
+        products: List<Product>,
+        userId: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val purchaseData = mapOf(
+            "userId" to userId,
+            "paymentMethodName" to selectedPaymentMethod.name,
+            "deliveryMethodName" to selectedDeliveryMethod.name,
+            "totalAmount" to totalAmount.toDouble(),
+            "products" to products.map { product ->
+                mapOf(
+                    "id" to product.id,
+                    "name" to product.name,
+                    "price" to product.price,
+                    "quantity" to product.stock
+                )
+            },
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        db.collection("purchases")
+            .add(purchaseData)
+            .addOnSuccessListener {
+                println("Compra guardada correctamente en Firestore")
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                println("Error al guardar la compra: ${exception.message}")
+                onError(exception.message ?: "Error desconocido")
+            }
+    }
+
+
+
 }

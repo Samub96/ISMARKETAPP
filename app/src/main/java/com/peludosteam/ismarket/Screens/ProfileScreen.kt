@@ -28,6 +28,7 @@ import com.peludosteam.ismarket.AddProductScreen
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 import com.peludosteam.ismarket.viewmode.SignupViewModel
+import com.peludosteam.ismarket.Screens.PurchaseHistoryScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,7 +79,7 @@ fun ProfileScreen(
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }
                 composable("menu") { MenuScreen( nestedNavController) }
-                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
+                composable("history") { PurchaseHistoryScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()
                     AddressScreen(nestedNavController, addressViewModel)

@@ -30,6 +30,14 @@ import com.peludosteam.ismarket.viewmode.CarritoViewMode
 import com.peludosteam.ismarket.viewmode.DeliveryMethod
 import com.peludosteam.ismarket.viewmode.PaymentMethod
 
+// Para Firebase Authentication
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+// Para Firebase Firestore
+import com.google.firebase.firestore.FirebaseFirestore
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewModel = viewModel(),
@@ -140,32 +148,29 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                 Spacer(modifier = Modifier.height(16.dp))
 
 
+                val products = cartViewModel.cartProducts.value ?: emptyList() // Obtener productos del carrito
+
                 Button(
                     onClick = {
-
-                        paymentViewModel.savePaymentToFirebase(
-
+                        val userId = Firebase.auth.currentUser?.uid ?: return@Button
+                        paymentViewModel.savePurchaseToFirebase(
+                            products = products,
+                            userId = userId,
                             onSuccess = {
-                                showDialog = true
-                                carrito.checkout()
-                                // Acción en caso de éxito, por ejemplo, navegar hacia atrás
-                                navController.navigate("viewProducts")
-
+                                cartViewModel.checkout() // Vaciar el carrito después del pago
+                                navController.navigate("viewProducts") // Navegar a otra pantalla
                             },
                             onError = { error ->
-                                // Manejo de errores, como mostrar un mensaje al usuario
-                                println("Error al guardar el pago: ${error}")
+                                Log.e("PaymentScreen", "Error al guardar la compra: $error")
                             }
                         )
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 30.dp)
-                        .padding(vertical = 12.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6D00))
-                )  {
-                    Text(text = "Proceder al pago", style = MaterialTheme.typography.titleMedium.copy(color = Color.White, fontSize = 25.sp))
+                ) {
+                    Text(text = "Proceder al pago", style = MaterialTheme.typography.titleMedium.copy(color = Color.White))
                 }
+
             }
             if (showDialog) {
                 AlertDialog(
