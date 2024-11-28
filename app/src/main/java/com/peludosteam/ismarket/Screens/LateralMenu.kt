@@ -22,13 +22,12 @@ import com.google.firebase.auth.FirebaseAuth
 fun MenuScreen(navController: NavController) {
     Column(
         modifier = Modifier
-            .fillMaxSize()  // Ocupa toda la pantalla
-            .background(Color(0xFFFA4A0C)) // Fondo naranja
-            .padding(16.dp), // Espacio alrededor de la columna
-        horizontalAlignment = Alignment.Start, // Alineación de los botones a la izquierda
-        verticalArrangement = Arrangement.spacedBy(24.dp) // Aumentar el espaciado entre los botones
+            .fillMaxSize()
+            .background(Color(0xFFFA4A0C))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Flecha de retroceso (con espaciado pequeño hacia abajo)
         IconButton(onClick = { navController.popBackStack() }, modifier = Modifier.padding(bottom = 8.dp)) {
             Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
         }
@@ -40,21 +39,20 @@ fun MenuScreen(navController: NavController) {
             onClick = { navController.navigate("favorites") }
         )*/
 
-        // Botón de Órdenes
+
         MenuButtonCustom(
             text = "Órdenes",
             icon = Icons.Filled.List,
             onClick = { navController.navigate("orderError") }
         )
 
-        // Botón de Ofertas
+
         MenuButtonCustom(
             text = "Ofertas y promociones",
             icon = Icons.Filled.LocalOffer,
             onClick = { navController.navigate("offertError") }
         )
 
-        // Botón de Dirección
         MenuButtonCustom(
             text = "Dirección",
             icon = Icons.Filled.LocationOn,
@@ -68,11 +66,11 @@ fun MenuScreen(navController: NavController) {
             onClick = { navController.navigate("settings") }
         )*/
 
-        // Botón de Cerrar sesión
         MenuButtonCustom(
             text = "Cerrar Sesión",
             icon = Icons.AutoMirrored.Filled.ExitToApp,
-            onClick = { FirebaseAuth.getInstance().signOut() }
+            onClick = { FirebaseAuth.getInstance().signOut()
+                navController.navigate("login") }
         )
     }
 }
@@ -86,8 +84,8 @@ fun MenuButtonCustom(
     IconButton(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()  // El botón ocupa toda la pantalla
-            .padding(vertical = 8.dp) // Espacio entre los botones
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -97,13 +95,13 @@ fun MenuButtonCustom(
                 imageVector = icon,
                 contentDescription = text,
                 tint = Color.White,
-                modifier = Modifier.size(24.dp) // Tamaño del icono
+                modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
                 color = Color.White,
-                style = MaterialTheme.typography.bodyMedium // Estilo del texto
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
