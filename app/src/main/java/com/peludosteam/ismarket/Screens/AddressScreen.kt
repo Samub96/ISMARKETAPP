@@ -15,6 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -27,15 +29,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.AddressViewModel
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
+import com.peludosteam.ismarket.viewmode.PaymentViewModel
 
 @Composable
-fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
+fun AddressScreen(navController: NavController, viewModel: AddressViewModel, paymentViewModel: PaymentViewModel = viewModel(),
+                  cartViewModel: CarritoViewMode = viewModel(),) {
     val selectedOption = viewModel.deliveryMethod
     val addressDetails = viewModel.addressDetails
     val productPrice = viewModel.productPrice
+    val totalPrice by cartViewModel.totalPrice.observeAsState(0)
+    val totalAmount =paymentViewModel.setAmount(totalPrice)
 
     LaunchedEffect(true) {
         viewModel.listenForAddressUpdates()
@@ -149,51 +157,14 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = "Método de entrega",
-                    style = TextStyle(fontSize = 20.sp),
-                    color = Color.Black,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start
-                )
+
                 Box(
                     modifier = Modifier
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedOption == "Entrega a domicilio",
-                                onClick = { viewModel.updateDeliveryMethod("Entrega a domicilio") },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
-                            )
-                            Text(
-                                text = "Entrega a domicilio",
-                                style = TextStyle(fontSize = 18.sp),
-                                color = Color.Black
-                            )
-                        }
-                        HorizontalDivider(
-                            color = Color.Gray,
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedOption == "Recogerlo en la tienda",
-                                onClick = { viewModel.updateDeliveryMethod("Recogerlo en la tienda") },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                text = "Recogerlo en la tienda",
-                                style = TextStyle(fontSize = 18.sp),
-                                color = Color.Black
-                            )
-                        }
-                    }
+
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -203,7 +174,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Total", style = TextStyle(fontSize = 20.sp))
-                    Text(text = "$productPrice", style = TextStyle(fontSize = 20.sp))
+                    Text(text = "$totalPrice", style = TextStyle(fontSize = 20.sp))
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -218,7 +189,7 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         .fillMaxWidth()
                         .height(55.dp)
                 ) {
-                    Text("Proceder al pago", style = TextStyle(fontSize = 20.sp))
+                    Text("finalizar  pago", style = TextStyle(fontSize = 20.sp))
                 }
             }
         }
