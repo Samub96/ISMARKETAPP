@@ -9,10 +9,11 @@ interface UserServices {
     suspend fun createUser(user: User)
     suspend fun getUserById(id: String): User?
     suspend fun updateUser(user: User) // Nuevo método para actualizar usuario
+    suspend fun getAllUsers():List<User?>
+
+
 }
-
-class UserServicesImpl : UserServices {
-
+class UserServicesImpl: UserServices {
     override suspend fun createUser(user: User) {
         Firebase.firestore
             .collection("User")
@@ -31,6 +32,15 @@ class UserServicesImpl : UserServices {
         return userObject
     }
 
+    override suspend fun getAllUsers(): List<User?> {
+        val userList = Firebase.firestore
+            .collection("User")
+            .get()
+            .await()
+        return userList.documents.map { document ->
+            document.toObject(User::class.java)
+        }
+    }
     // Implementación del nuevo método updateUser
     override suspend fun updateUser(user: User) {
         Firebase.firestore

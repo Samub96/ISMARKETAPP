@@ -7,21 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 import com.peludosteam.ismarket.domain.Product
-import com.peludosteam.ismarket.repository.AuthRepository
-import com.peludosteam.ismarket.repository.AuthRepositoryImpl
 import com.peludosteam.ismarket.repository.ProductRepository
 import com.peludosteam.ismarket.repository.ProductRepositoryImpl
-import com.peludosteam.ismarket.service.ProductService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.net.HttpURLConnection
-import java.net.URL
 
 class ProductViewModel(
     private val productRepository:ProductRepository= ProductRepositoryImpl(),

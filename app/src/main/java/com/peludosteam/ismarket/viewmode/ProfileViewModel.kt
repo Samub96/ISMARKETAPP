@@ -1,5 +1,7 @@
 package com.peludosteam.ismarket.viewmode
 
+
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -71,6 +73,19 @@ class ProfileViewModel(
 
             withContext(Dispatchers.Main) {
                 _user.value = updatedUser
+            }
+        }
+    }
+
+    private val _userList = MutableLiveData(listOf<User?>())
+    val userList: LiveData<List<User?>> get() = _userList
+
+
+    fun getUserList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userList = userRepository.getAllUsers()
+            withContext(Dispatchers.Main) {
+                _userList.value = userList
             }
         }
     }

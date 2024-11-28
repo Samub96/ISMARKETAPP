@@ -9,6 +9,8 @@ import com.peludosteam.ismarket.service.UserServicesImpl
 interface UserRepository {
     suspend fun createUser(user: User)
     suspend fun getCurrentUser(): User?
+    suspend fun getAllUsers(): List<User?>
+
     suspend fun updateUser(user: User): Boolean // Nueva función para actualizar el perfil
 }
 
@@ -27,6 +29,10 @@ class UserRepositoryImpl(
         } else {
             null
         }
+    }
+
+    override suspend fun getAllUsers(): List<User?> {
+        return userServices.getAllUsers()
     }
 
     // Implementación del nuevo método updateUser

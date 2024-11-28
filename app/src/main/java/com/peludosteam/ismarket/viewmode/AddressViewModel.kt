@@ -14,13 +14,15 @@ class AddressViewModel : ViewModel() {
     var addressDetails by mutableStateOf(
         AddressDetails(
             location = "Cargando...",
-            details = "Por favor espera..."
+            room = "Cargando...",
+            floor = "Cargando..."
         )
     )
+
         private set
 
     var productPrice by mutableStateOf("Cargando precio...")
-        private set  // Definir el estado mutable para el precio
+        private set
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -44,27 +46,40 @@ class AddressViewModel : ViewModel() {
 
                 documents?.forEach { document ->
                     val location = "Edificio: ${document.getString("building") ?: "Sin edificio"}"
-                    val details = "Piso: ${document.getString("floor") ?: "Sin piso"} Salón: ${
-                        document.getString("room") ?: "Sin habitación"
-                    }"
-                    updateAddressDetails(AddressDetails(location, details))
+                    val floor = document.getString("floor") ?: "Sin piso"
+                    val room = document.getString("room") ?: "Sin habitación"
+
+                    // Aquí creas un nuevo AddressDetails con los valores correspondientes
+                    val newAddressDetails = AddressDetails(location, floor, room)
+
+                    // Actualizas los detalles con el nuevo AddressDetails
+                    updateAddressDetails(newAddressDetails)
                 }
             }
     }
 
-
     fun listenForProductPrice() {
+        println("Iniciando escucha de precios en Firestore...")
         db.collection("products")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .orderBy("price", Query.Direction.DESCENDING)
             .limit(1)
             .addSnapshotListener { documents, error ->
                 if (error != null) {
                     println("Error al obtener el precio del producto: ${error.message}")
+                    updateProductPrice("Error al cargar precio")
                     return@addSnapshotListener
                 }
-                documents?.forEach { document ->
-                    val price = document.getString("price") ?: "Precio no disponible"
-                    updateProductPrice(price)
+
+                if (documents == null || documents.isEmpty) {
+                    println("No se encontraron productos en la colección.")
+                    updateProductPrice("Precio no disponible")
+                    return@addSnapshotListener
+                }
+
+                for (document in documents) {
+                    val price = document.getDouble("price") ?: 0.0
+                    println("Precio obtenido desde Firestore: $price")
+                    updateProductPrice("$${price}")
                 }
             }
     }
@@ -76,5 +91,7 @@ class AddressViewModel : ViewModel() {
 
 data class AddressDetails(
     val location: String,
-    val details: String,
+    val room:String,
+    val floor: String
+
 )
