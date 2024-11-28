@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.components.ProductCard
 import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
 import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @Composable

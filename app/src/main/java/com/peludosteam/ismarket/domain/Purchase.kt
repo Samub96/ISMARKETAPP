@@ -2,13 +2,15 @@ package com.peludosteam.ismarket.domain
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.domain.Purchase
 
-class Purchase (
 
+data class Purchase(
     val id: String = "",
-    val productName: String = "",
-    val quantity: Int = 0,
-    val totalPrice: Double = 0.0,
     val userId: String = "",
-    val purchaseDate: String = ""
+    val paymentMethodName: String = "",
+    val deliveryMethodName: String = "",
+    val totalAmount: Double = 0.0,
+    val products: List<Product> = emptyList(), // Lista de productos comprados
+    val timestamp: Long = 0L // Fecha de la compra en formato Unix
 )
+
 

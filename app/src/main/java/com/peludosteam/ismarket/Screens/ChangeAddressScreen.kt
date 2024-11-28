@@ -2,9 +2,6 @@ package com.peludosteam.ismarket.Screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-
-
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -71,6 +65,7 @@ fun CustomToast(message: String) {
         )
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeAddressScreen(navController: NavController) {
@@ -110,7 +105,9 @@ fun ChangeAddressScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
@@ -134,24 +131,27 @@ fun ChangeAddressScreen(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "Ubicación",
                     style = TextStyle(fontSize = 30.sp),
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),  // Removido padding extra en la parte superior
                     textAlign = TextAlign.Start
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.torre),
@@ -160,14 +160,15 @@ fun ChangeAddressScreen(navController: NavController) {
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         TextField(
                             value = firstInput,
                             onValueChange = { firstInput = it },
                             label = { Text("Edificio") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 8.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color(0xFFFA4A0C),
                                 unfocusedIndicatorColor = Color(0xFFFA4A0C),
@@ -180,14 +181,15 @@ fun ChangeAddressScreen(navController: NavController) {
                                 fontWeight = FontWeight.Normal
                             )
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         TextField(
                             value = secondInput,
                             onValueChange = { secondInput = it },
                             label = { Text("Piso") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 8.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color(0xFFFA4A0C),
                                 focusedLabelColor = Color(0xFFFA4A0C),
@@ -199,14 +201,15 @@ fun ChangeAddressScreen(navController: NavController) {
                                 fontWeight = FontWeight.Normal
                             )
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         TextField(
                             value = thirdInput,
                             onValueChange = { thirdInput = it },
                             label = { Text("Salón") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp)),
+                                .border(2.dp, Color(0xFFFA4A0C), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 8.dp),
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color(0xFFFA4A0C),
                                 focusedLabelColor = Color(0xFFFA4A0C),
@@ -229,9 +232,8 @@ fun ChangeAddressScreen(navController: NavController) {
                             ),
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier
-                                .padding(8.dp)
                                 .fillMaxWidth()
-                                .padding(horizontal = 38.dp)
+                                .padding(horizontal = 16.dp)
                                 .height(55.dp)
                                 .shadow(4.dp, shape = RoundedCornerShape(12.dp))
                         ) {
@@ -265,7 +267,3 @@ fun ChangeAddressScreen(navController: NavController) {
         }
     )
 }
-
-
-
-

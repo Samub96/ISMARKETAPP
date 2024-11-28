@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.navigation.NavController
+import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.domain.Purchase
 
 @Composable
@@ -34,14 +35,35 @@ fun PurchaseHistoryScreen(navController: NavController) {
             .get()
             .addOnSuccessListener { snapshot ->
                 val purchaseList = snapshot.documents.mapNotNull { document ->
-                    document.toObject(Purchase::class.java)
+                    val products = document.get("products") as? List<Map<String, Any>> ?: emptyList()
+                    val mappedProducts: List<Product> = products.mapNotNull { product ->
+                        try {
+                            Product(
+                                id = product["id"] as? String ?: "",
+                                name = product["name"] as? String ?: "",
+                                price = (product["price"] as? Number)?.toInt() ?: 0,
+                                stock = (product["quantity"] as? Number)?.toInt() ?: 0
+                            )
+                        } catch (e: Exception) {
+                            null // Ignorar productos mal formateados
+                        }
+                    }
+
+                    Purchase(
+                        id = document.id,
+                        userId = document.getString("userId") ?: "",
+                        paymentMethodName = document.getString("paymentMethodName") ?: "",
+                        deliveryMethodName = document.getString("deliveryMethodName") ?: "",
+                        totalAmount = (document.getDouble("totalAmount") ?: 0.0),
+                        products = mappedProducts,
+                        timestamp = document.getLong("timestamp") ?: 0L
+                    )
                 }
                 purchases = purchaseList
                 isLoading = false
             }
             .addOnFailureListener {
                 isLoading = false
-                // Manejar errores, como mostrar un mensaje de error
             }
     }
 
@@ -95,25 +117,29 @@ fun PurchaseItem(purchase: Purchase) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Producto: ${purchase.productName}",
+            text = "Método de Pago: ${purchase.paymentMethodName}",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Cantidad: ${purchase.quantity}",
+            text = "Método de Entrega: ${purchase.deliveryMethodName}",
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Precio total: $${purchase.totalPrice}",
+            text = "Total: $${purchase.totalAmount}",
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "Fecha: ${purchase.purchaseDate}",
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray
-        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Productos:", fontWeight = FontWeight.Bold)
+        purchase.products.forEach { product ->
+            Text(
+                text = "- ${product.name} (x${product.stock}) - $${product.price}",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
+

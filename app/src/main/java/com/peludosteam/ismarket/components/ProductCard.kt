@@ -1,5 +1,6 @@
 package com.peludosteam.ismarket.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,11 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
 
 @Composable
-fun ProductCard (product: Product){
+fun ProductCard (product: Product, cartViewModel: CarritoViewMode= viewModel()){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -54,7 +57,7 @@ fun ProductCard (product: Product){
                 .padding(4.dp),
             ){
             ProductCardHeader(product)
-            ProductCardBody(product)
+            ProductCardBody(product, cartViewModel)
         }
     }
 }
@@ -74,7 +77,7 @@ fun ProductCardHeader(product: Product){
 }
 
 @Composable
-fun ProductCardBody(product: Product){
+fun ProductCardBody(product: Product, cartViewModel: CarritoViewMode){
     val appColor  = Color(0xFFFA4A0A)
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -120,7 +123,13 @@ fun ProductCardBody(product: Product){
             }
 
             Button(//Añadir al carrito
-                onClick = { /*TODO*/ },
+                onClick = {
+                    Log.d(">>>", "Agregando al carrito")
+
+                    cartViewModel.addProductToCart(product);
+
+
+                     },
                 colors = ButtonDefaults.buttonColors(containerColor = appColor),
             ) {
                 Icon(
