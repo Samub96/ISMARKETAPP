@@ -123,8 +123,9 @@ fun ViewProfile(
                 /*Button(onClick = { /* Acción seguir */ }) {
                     Text(text = "Siguiendo")
                 }*/
-                Button(onClick = { navController.navigate("editProfile") }) { // Cambiar para usar "editProfile"
+               /*  Button(onClick = { navController.navigate("editProfile") }) { // Cambiar para usar "editProfile"
                     Text(text = "Editar perfil")
+                } */
                 }
                 /*Button(onClick = { /* Acción compartir */ }) {
                     Text(text = "Compartir")
@@ -149,7 +150,7 @@ fun ViewProfile(
             }
         }
     }
-}
+
 
 
 //fun ViewProfile(
