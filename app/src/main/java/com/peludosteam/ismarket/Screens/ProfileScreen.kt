@@ -86,9 +86,17 @@ fun ProfileScreen(
                 composable("PaymentScreen") { PaymentScreen(nestedNavController) }
                 composable("ViewCart") { ViewCarrito(nestedNavController) }
 
+                composable("chats") { Chats(nestedNavController) }
+
+                composable("chat/{userId}") { backEntryStack ->
+                    val userId = backEntryStack.arguments?.getString("userId")
+                    userId?.let { ChatScreen(nestedNavController, it) }
+                }
+
 
             }
         }
     }
 }
+
 

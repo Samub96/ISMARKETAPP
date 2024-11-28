@@ -32,12 +32,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peludosteam.ismarket.domain.Product
 import com.peludosteam.ismarket.viewmode.CarritoViewMode
 
 @Composable
-fun ProductCard (product: Product, cartViewModel: CarritoViewMode= viewModel()){
+fun ProductCard (product: Product,  nestedNavController: NavController){
+    val cartViewModel: CarritoViewMode= viewModel()
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -57,7 +59,7 @@ fun ProductCard (product: Product, cartViewModel: CarritoViewMode= viewModel()){
                 .padding(4.dp),
             ){
             ProductCardHeader(product)
-            ProductCardBody(product, cartViewModel)
+            ProductCardBody(product, cartViewModel, nestedNavController)
         }
     }
 }
@@ -77,7 +79,7 @@ fun ProductCardHeader(product: Product){
 }
 
 @Composable
-fun ProductCardBody(product: Product, cartViewModel: CarritoViewMode){
+fun ProductCardBody(product: Product, cartViewModel: CarritoViewMode, nestedNavController: NavController){
     val appColor  = Color(0xFFFA4A0A)
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -111,7 +113,10 @@ fun ProductCardBody(product: Product, cartViewModel: CarritoViewMode){
             horizontalArrangement = Arrangement.SpaceBetween // Espacio entre los botones
         ) {
             Button(//Chatear con el vendedor
-                onClick = { /*TODO*/ },
+                onClick = {
+                    nestedNavController.navigate("chat/${product.userId }")
+
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = appColor),
             ) {
                 Icon(

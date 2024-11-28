@@ -21,7 +21,7 @@ import com.peludosteam.ismarket.viewmode.CarritoViewMode
 import com.peludosteam.ismarket.viewmode.ProductViewModel
 
 @Composable
-fun ViewProducts(navController: NavController, productViewModel: ProductViewModel = viewModel()){
+fun ViewProducts(nestedNavController: NavController, productViewModel: ProductViewModel = viewModel()){
     val productListState by productViewModel.productList.observeAsState()
 
     //Accion se ejecute al inicio
@@ -36,48 +36,48 @@ fun ViewProducts(navController: NavController, productViewModel: ProductViewMode
 
             item {
                 val category="Postres"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Comida y bebidas"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Tecnologia (Accesorios tecnologicos., cargadores, forros celular, etc)"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Tutorias"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Servicios (Limpieza, arreglos y carpinteria, plataformas de streaming, etc)"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category,nestedNavController)
             }
             item {
                 val category="Ropa"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Accesorios (Joyeria, pulseras, etc)"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
             item {
                 val category="Otros"
-                Filtro(innerPadding, productListState, category)
+                Filtro(innerPadding, productListState, category, nestedNavController)
             }
         }
     }
 
 }
 @Composable
-fun Filtro(innerPadding: PaddingValues, productListState: List<Product>?, catName: String) {
+fun Filtro(innerPadding: PaddingValues, productListState: List<Product>?, catName: String, nestedNavController: NavController) {
     Text(text = catName)
     LazyRow(modifier = Modifier.padding(innerPadding)) {
         productListState?.let { list->
             items(list){ product ->
                 if(product.categoryName==catName){
-                                ProductCard(product= product)
+                                ProductCard(product= product,nestedNavController)
                      }
             }
         }
