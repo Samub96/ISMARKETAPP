@@ -42,6 +42,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.listasapp.components.ProductCardEditView
 import com.peludosteam.ismarket.R
@@ -50,9 +52,10 @@ import com.peludosteam.ismarket.viewmode.ProfileViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ViewProfile(
-    navController: NavController = rememberNavController(),
+    navController: NavController, // Elimina el valor predeterminado
     productViewModel: ProductViewModel = viewModel(),
     profileViewModel: ProfileViewModel = viewModel()
 ) {
@@ -121,7 +124,7 @@ fun ViewProfile(
                 Button(onClick = { /* Acción seguir */ }) {
                     Text(text = "Siguiendo")
                 }
-                Button(onClick = { /* Acción mensajes */ }) {
+                Button(onClick = { navController.navigate("editProfile") }) { // Cambiar para usar "editProfile"
                     Text(text = "Editar perfil")
                 }
                 Button(onClick = { /* Acción compartir */ }) {
@@ -141,13 +144,14 @@ fun ViewProfile(
             ) {
                 productListState?.filter { it.userId == userState?.id }?.let { filteredProducts ->
                     items(filteredProducts) { product ->
-                        ProductCardEditView(product = product)
+                        ProductCardEditView(product = product, productViewModel = productViewModel)
                     }
                 }
             }
         }
     }
 }
+
 
 //fun ViewProfile(
 //    navController: NavController = rememberNavController(),
