@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -67,7 +68,7 @@ fun ViewCarrito(
                 // Divisor para separar la lista de productos del total
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Muestra el precio total del carrito
                 Text(
@@ -87,13 +88,16 @@ fun ViewCarrito(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 15.dp),
                     shape = MaterialTheme.shapes.medium, // Redondear las esquinas del botón
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("Finalizar Compra")
+                    Text(
+                        text ="proceder con la Compra" ,
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(horizontal = 15.dp)
+
+                    )
                 }
             }
         }
