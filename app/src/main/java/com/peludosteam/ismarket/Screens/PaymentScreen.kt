@@ -157,6 +157,7 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                             products = products,
                             userId = userId,
                             onSuccess = {
+                                showDialog = true
                                 cartViewModel.checkout() // Vaciar el carrito después del pago
                                 navController.navigate("viewProducts") // Navegar a otra pantalla
                             },
