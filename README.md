@@ -9,12 +9,14 @@ Our sales app makes every step of the sales process easier, allowing you to capt
 
 Perfect for sellers and small business owners looking for a practical solution to increase their sales and provide a fast and reliable service to their customers.
 
-## Creators 
-The creators of this application are:
-- Samuel Barona
-- Juan Manuel Velosa
-- Juan Esteban Ramirez
-- Cristian Cardona
-- Felipe velasco
+
+## Authors
+
+- [Samuel Barona](https://www.github.com/octokatherine)
+- [Juan Velosa](https://github.com/JuanVelosa)
+- [Juan Esteban Ramirez](https://github.com/Jramirezzz)
+- [Felipe Velosa](https://github.com/felipevelasco7)
+
+
 
 
