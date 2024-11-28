@@ -16,10 +16,11 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class ProductViewModel(
-    val productRepository:ProductRepository= ProductRepositoryImpl()
-) : ViewModel() {
+    private val productRepository:ProductRepository= ProductRepositoryImpl(),
 
-    val productList : MutableLiveData<List<Product>> = MutableLiveData(listOf())
+    ) : ViewModel() {
+
+    val productList: MutableLiveData<List<Product>> = MutableLiveData(listOf())
     private val firestore = FirebaseFirestore.getInstance()
 
     fun updateProductStock(productId: String, newStock: Int) {
@@ -34,8 +35,9 @@ class ProductViewModel(
             }
     }
 
+
     fun downloadData() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val snapshot = withContext(Dispatchers.IO) {
                     Firebase.firestore.collection("products").get().await()
@@ -50,6 +52,27 @@ class ProductViewModel(
             } catch (e: Exception) {
                 // Manejo de errores
                 Log.e("FirestoreError", "Error obteniendo productos: ", e)
+            }
+        }
+    }
+
+    fun deleteProduct(id: String) {
+        viewModelScope.launch {
+            try {
+                // Eliminar el producto de Firestore
+                val productRef = FirebaseFirestore.getInstance()
+                    .collection("products")
+                    .document(id)  // Usamos el campo `id`
+
+                productRef.delete().await() // Elimina el producto de Firestore
+
+                Log.d("ProductViewModel", "Producto eliminado exitosamente de Firestore.")
+
+                // Actualizar los datos después de la eliminación
+                downloadData()  // Vuelve a descargar los datos actualizados después de la eliminación
+
+            } catch (e: Exception) {
+                Log.e("ProductViewModel", "Error al eliminar producto de Firestore: ${e.message}")
             }
         }
     }

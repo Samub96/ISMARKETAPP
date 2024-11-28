@@ -75,7 +75,9 @@ fun ProfileScreen(
                 composable("viewProducts"){ ViewProducts(nestedNavController)}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
-                composable("viewProfile"){ ViewProfile() }
+                composable("viewProfile") { ViewProfile(navController = nestedNavController) }
+                composable("editProfile") { EditProfileScreen(nestedNavController) }
+                // Asegúrate de tener esta ruta
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }
                 composable("menu") { MenuScreen( nestedNavController) }
@@ -84,6 +86,7 @@ fun ProfileScreen(
                     val addressViewModel: AddressViewModel = viewModel()
                     AddressScreen(nestedNavController, addressViewModel)
                 }
+
                 composable("orderError") { OrderErrorScreen(nestedNavController) }
                 composable("changeAddress") { ChangeAddressScreen(nestedNavController) }
                 composable("offertError") { OffertErrorScreen(nestedNavController) }

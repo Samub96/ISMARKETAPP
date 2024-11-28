@@ -1,6 +1,5 @@
 package com.peludosteam.ismarket.repository
 
-
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.peludosteam.ismarket.domain.User
@@ -12,11 +11,13 @@ interface UserRepository {
     suspend fun getCurrentUser(): User?
     suspend fun getAllUsers(): List<User?>
 
+    suspend fun updateUser(user: User): Boolean // Nueva función para actualizar el perfil
 }
 
 class UserRepositoryImpl(
     val userServices: UserServices = UserServicesImpl()
 ) : UserRepository {
+
     override suspend fun createUser(user: User) {
         userServices.createUser(user)
     }
@@ -32,5 +33,17 @@ class UserRepositoryImpl(
 
     override suspend fun getAllUsers(): List<User?> {
         return userServices.getAllUsers()
+    }
+
+    // Implementación del nuevo método updateUser
+    override suspend fun updateUser(user: User): Boolean {
+        val currentUser = Firebase.auth.currentUser
+        return if (currentUser != null) {
+            // Llamamos al servicio para actualizar el usuario
+            userServices.updateUser(user)
+            true
+        } else {
+            false
+        }
     }
 }
