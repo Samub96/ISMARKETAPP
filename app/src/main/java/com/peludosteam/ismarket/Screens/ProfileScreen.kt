@@ -94,8 +94,17 @@ fun ProfileScreen(
                     val addressViewModel: AddressViewModel = viewModel()
                     ResumenCompraScreen(nestedNavController, addressViewModel)}
 
+                composable("chats") { Chats(nestedNavController) }
+
+                composable("chat/{userId}") { backEntryStack ->
+                    val userId = backEntryStack.arguments?.getString("userId")
+                    userId?.let { ChatScreen(nestedNavController, it) }
+                }
+
 
             }
         }
     }
 }
+
+

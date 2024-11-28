@@ -52,7 +52,7 @@ fun BottomNavigationBar(nestedNavController: NavController = rememberNavControll
 
 
         NavigationBarItem(selected = navigationSelectedItemIndex == 3, onClick = {
-            nestedNavController.navigate("chat"){
+            nestedNavController.navigate("chats"){
                 launchSingleTop = true
             }
             navigationSelectedItemIndex = 3
