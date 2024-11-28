@@ -7,6 +7,7 @@
     import com.peludosteam.ismarket.service.AuthService
     import com.peludosteam.ismarket.service.AuthServiceImpl
 
+
     interface AuthRepository {
         suspend fun signup(user: User, password: String)
         suspend fun signin(email: String, password: String)

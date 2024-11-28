@@ -39,5 +39,10 @@ fun Cart(navController: NavController,) {
         Button(onClick = { navController.navigate("nav") }) {
             Text(text = "ProfileScreen")
         }
+        Button(onClick = { navController.navigate("ViewCart")}) {
+            Text(text = "View Carrito")
+
+        }
+
     }
 }

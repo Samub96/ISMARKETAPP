@@ -15,8 +15,14 @@ firebaseAuth = "23.0.0"
 playServicesAnalyticsImpl = "18.1.0"
 firebaseStorageKtx = "21.0.1"
 identityJvm = "202408.1"
+glide = "4.15.1"
+landscapist-glide = "2.2.3"
 
 [libraries]
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapist-glide" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -39,6 +45,7 @@ firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage
 identity-jvm = { group = "com.android.identity", name = "identity-jvm", version.ref = "identityJvm" }
 
 [plugins]
+kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.10" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
