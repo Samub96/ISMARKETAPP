@@ -120,15 +120,15 @@ fun ViewProfile(
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = { /* Acción seguir */ }) {
+                /*Button(onClick = { /* Acción seguir */ }) {
                     Text(text = "Siguiendo")
-                }
+                }*/
                 Button(onClick = { navController.navigate("editProfile") }) { // Cambiar para usar "editProfile"
                     Text(text = "Editar perfil")
                 }
-                Button(onClick = { /* Acción compartir */ }) {
+                /*Button(onClick = { /* Acción compartir */ }) {
                     Text(text = "Compartir")
-                }
+                }*/
             }
 
             // Lista de productos en cuadrícula
