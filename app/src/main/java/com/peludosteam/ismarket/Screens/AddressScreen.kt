@@ -15,6 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -27,15 +29,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.AddressViewModel
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
+import com.peludosteam.ismarket.viewmode.PaymentViewModel
 
 @Composable
-fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
+fun AddressScreen(navController: NavController, viewModel: AddressViewModel, paymentViewModel: PaymentViewModel = viewModel(),
+                  cartViewModel: CarritoViewMode = viewModel(),) {
     val selectedOption = viewModel.deliveryMethod
     val addressDetails = viewModel.addressDetails
     val productPrice = viewModel.productPrice
+    val totalPrice by cartViewModel.totalPrice.observeAsState(0)
+    val totalAmount =paymentViewModel.setAmount(totalPrice)
 
     LaunchedEffect(true) {
         viewModel.listenForAddressUpdates()
@@ -48,12 +56,12 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.Top, // Cambiado para mejor alineación con el top
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Reducir el padding superior y hacerlo más flexible
-                Spacer(modifier = Modifier.height(20.dp)) // Menos espacio arriba
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -66,33 +74,29 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                             .size(15.dp)
                             .graphicsLayer { rotationZ = 90f }
                             .clickable {
-                                // Regresar a la pantalla anterior
                                 navController.popBackStack()
                             }
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Pedido",
-                        style = TextStyle(fontSize = 20.sp),
+                        style = TextStyle(fontSize = 22.sp),
                         color = Color.Black,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp)) // Reducido el espacio entre el título y los detalles
-
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Domicilio",
-                    style = TextStyle(fontSize = 30.sp, fontWeight = FontWeight.Bold),
+                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
                     color = Color.Black,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Asegurando que el contenido se ajuste bien a la pantalla
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -112,19 +116,17 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                     )
                 }
 
-                // Contenedor de dirección con un tamaño más flexible
+                Spacer(modifier = Modifier.height(24.dp))
                 Box(
                     modifier = Modifier
-                        .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                        .height(150.dp)
-                        .fillMaxWidth(), // Hacer el contenedor flexible
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column {
                         Text(
                             text = "Universidad ICESI",
-                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold),
                             modifier = Modifier.padding(8.dp)
                         )
                         HorizontalDivider(
@@ -134,93 +136,60 @@ fun AddressScreen(navController: NavController, viewModel: AddressViewModel) {
                         )
                         Text(
                             text = addressDetails.location,
+                            fontWeight = FontWeight.Bold,
                             style = TextStyle(fontSize = 20.sp),
                             modifier = Modifier.padding(8.dp)
                         )
                         Text(
-                            text = addressDetails.details,
+                            text = "Piso: ${addressDetails.floor}",
+                            fontWeight = FontWeight.Bold,
                             style = TextStyle(fontSize = 20.sp),
                             modifier = Modifier.padding(8.dp)
                         )
+                        Text(
+                            text = "Salón: ${addressDetails.room}",
+                            fontWeight = FontWeight.Bold,
+                            style = TextStyle(fontSize = 20.sp),
+                            modifier = Modifier.padding(8.dp)
+                        )
+
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-                // Método de entrega con ajuste en el tamaño
-                Text(
-                    text = "Método de entrega",
-                    style = TextStyle(fontSize = 20.sp),
-                    color = Color.Black,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start
-                )
                 Box(
                     modifier = Modifier
-                        .padding(16.dp)
                         .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(12.dp))
-                        .height(150.dp)
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedOption == "Entrega a domicilio",
-                                onClick = { viewModel.updateDeliveryMethod("Entrega a domicilio") },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
-                            )
-                            Text(
-                                text = "Entrega a domicilio",
-                                style = TextStyle(fontSize = 18.sp),
-                                color = Color.Black
-                            )
-                        }
-                        HorizontalDivider(
-                            color = Color.Gray,
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
-                                selected = selectedOption == "Recogerlo en la tienda",
-                                onClick = { viewModel.updateDeliveryMethod("Recogerlo en la tienda") },
-                                colors = RadioButtonDefaults.colors(selectedColor = Color(0xFFFA4A0C))
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Recogerlo en la tienda",
-                                style = TextStyle(fontSize = 18.sp),
-                                color = Color.Black
-                            )
-                        }
-                    }
+
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Total", style = TextStyle(fontSize = 20.sp))
-                    Text(text = "$productPrice", style = TextStyle(fontSize = 20.sp))
+                    Text(text = "$totalPrice", style = TextStyle(fontSize = 20.sp))
                 }
 
-                Spacer(modifier = Modifier.height(40.dp))
-
+                Spacer(modifier = Modifier.height(30.dp))
                 Button(
-                    onClick = { navController.navigate("PantallaDePago") },
+                    onClick = { navController.navigate("resumen") },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFA4A0C),
                         contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
-                        .padding(8.dp)
                         .fillMaxWidth()
                         .height(55.dp)
-                        .shadow(4.dp, shape = RoundedCornerShape(12.dp))
                 ) {
-                    Text("Proceder al pago", style = TextStyle(fontSize = 20.sp))
+                    Text("finalizar  pago", style = TextStyle(fontSize = 20.sp))
                 }
             }
         }

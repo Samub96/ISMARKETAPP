@@ -42,17 +42,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.listasapp.components.ProductCardEditView
+import com.google.firebase.auth.FirebaseAuth
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.ProductViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ViewProfile(
-    navController: NavController = rememberNavController(),
+    navController: NavController, // Elimina el valor predeterminado
     productViewModel: ProductViewModel = viewModel(),
     profileViewModel: ProfileViewModel = viewModel()
 ) {
@@ -118,15 +121,17 @@ fun ViewProfile(
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = { /* Acción seguir */ }) {
+                /*Button(onClick = { /* Acción seguir */ }) {
                     Text(text = "Siguiendo")
+                }*/
+
+                Button(onClick = { FirebaseAuth.getInstance().signOut()
+                    navController.navigate("login") }) {
+                    Text(text = "cerrar sesion")
                 }
-                Button(onClick = { /* Acción mensajes */ }) {
-                    Text(text = "Editar perfil")
-                }
-                Button(onClick = { /* Acción compartir */ }) {
+                /*Button(onClick = { /* Acción compartir */ }) {
                     Text(text = "Compartir")
-                }
+                }*/
             }
 
             // Lista de productos en cuadrícula
@@ -141,13 +146,14 @@ fun ViewProfile(
             ) {
                 productListState?.filter { it.userId == userState?.id }?.let { filteredProducts ->
                     items(filteredProducts) { product ->
-                        ProductCardEditView(product = product)
+                        ProductCardEditView(product = product, productViewModel = productViewModel)
                     }
                 }
             }
         }
     }
 }
+
 
 //fun ViewProfile(
 //    navController: NavController = rememberNavController(),
