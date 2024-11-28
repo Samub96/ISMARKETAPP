@@ -1,5 +1,6 @@
 package com.peludosteam.ismarket.Screens
 
+import ResumenCompraScreen
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,12 +27,14 @@ import androidx.navigation.compose.rememberNavController
 import com.peludosteam.ismarket.AddProductScreen
 import com.peludosteam.ismarket.viewmode.AddressViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
+import com.peludosteam.ismarket.viewmode.SignupViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavController = rememberNavController(),
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    signupViewModel: SignupViewModel = viewModel(),
 ) {
     val userState by profileViewModel.user.observeAsState()
     Log.e(">>>", userState.toString())
@@ -51,7 +54,7 @@ fun ProfileScreen(
                     },
                     navigationIcon = {
                         // Ícono en la izquierda (Menú)
-                        IconButton(onClick = { navController.navigate("menu") }) {
+                        IconButton(onClick = { nestedNavController.navigate("menu") }) {
                             Icon(Icons.Filled.Menu, contentDescription = "Menu", tint = Color(0xFFFA4A0A))
                         }
                     },
@@ -62,10 +65,10 @@ fun ProfileScreen(
                         }
                     },
                 )
-
             },
+
             bottomBar = { BottomNavigationBar(nestedNavController)}
-            ){ innerPadding ->
+        ){ innerPadding ->
 
             NavHost(navController = nestedNavController, startDestination = "viewProducts", modifier = Modifier.padding(innerPadding)) {
                 composable("viewProducts"){ ViewProducts(nestedNavController)}
@@ -74,6 +77,7 @@ fun ProfileScreen(
                 composable("viewProfile"){ ViewProfile() }
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }
+                composable("menu") { MenuScreen( nestedNavController) }
                 composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()
@@ -85,6 +89,10 @@ fun ProfileScreen(
                 composable("wifiError") { WifiErrorScreen(nestedNavController) }
                 composable("PaymentScreen") { PaymentScreen(nestedNavController) }
                 composable("ViewCart") { ViewCarrito(nestedNavController) }
+
+                composable("resumen"){
+                    val addressViewModel: AddressViewModel = viewModel()
+                    ResumenCompraScreen(nestedNavController, addressViewModel)}
 
                 composable("chats") { Chats(nestedNavController) }
 

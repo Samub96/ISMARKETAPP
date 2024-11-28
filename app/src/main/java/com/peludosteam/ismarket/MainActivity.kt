@@ -52,9 +52,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.peludosteam.ismarket.Screens.EnterScreen
 import com.peludosteam.ismarket.Screens.LoginScreen
+import com.peludosteam.ismarket.Screens.MenuScreen
+import com.peludosteam.ismarket.Screens.Nav
 import com.peludosteam.ismarket.Screens.ProfileScreen
 import com.peludosteam.ismarket.Screens.SignupScreen
 import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmode.SignupViewModel
 import java.util.UUID
 
 class MainActivity : ComponentActivity() {
@@ -89,205 +92,206 @@ fun App() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddProductScreen(navController: NavController) {
-    var name by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
-    var stock by remember { mutableStateOf("") }
-    var imageUri by remember { mutableStateOf<Uri?>(null) } // Para almacenar la URI de la imagen seleccionada
-    var isLoading by remember { mutableStateOf(false) } // Estado de carga
-    var expanded by remember { mutableStateOf(false) } // Controla la expansión del dropdown
-    var category by remember { mutableStateOf("") }
-    val categories = listOf(
-        "Postres",
-        "Comida y bebidas",
-        "Tecnologia (Accesorios tecnologicos., cargadores, forros celular, etc)",
-        "Tutorias",
-        "Servicios (Limpieza, arreglos y carpinteria, plataformas de streaming, etc)",
-        "Ropa",
-        "Accesorios (Joyeria, pulseras, etc)",
-        "Otros"
-    )
-    val auth = FirebaseAuth.getInstance() // Firebase Auth para obtener el ID del usuario
-    val db = FirebaseFirestore.getInstance() // Firestore
-    val storage = FirebaseStorage.getInstance() // Firebase Storage para imágenes
-    // Lanzador para seleccionar imagen
-    val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? -> imageUri = uri }
-    )
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun AddProductScreen(navController: NavController) {
+        var name by remember { mutableStateOf("") }
+        var description by remember { mutableStateOf("") }
+        var price by remember { mutableStateOf("") }
+        var stock by remember { mutableStateOf("") }
+        var imageUri by remember { mutableStateOf<Uri?>(null) } // Para almacenar la URI de la imagen seleccionada
+        var isLoading by remember { mutableStateOf(false) } // Estado de carga
+        var expanded by remember { mutableStateOf(false) } // Controla la expansión del dropdown
+        var category by remember { mutableStateOf("") }
+        val categories = listOf(
+            "Postres",
+            "Comida y bebidas",
+            "Tecnologia (Accesorios tecnologicos., cargadores, forros celular, etc)",
+            "Tutorias",
+            "Servicios (Limpieza, arreglos y carpinteria, plataformas de streaming, etc)",
+            "Ropa",
+            "Accesorios (Joyeria, pulseras, etc)",
+            "Otros"
+        )
+        val auth = FirebaseAuth.getInstance() // Firebase Auth para obtener el ID del usuario
+        val db = FirebaseFirestore.getInstance() // Firestore
+        val storage = FirebaseStorage.getInstance() // Firebase Storage para imágenes
+        // Lanzador para seleccionar imagen
+        val imagePickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
+            onResult = { uri: Uri? -> imageUri = uri }
+        )
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = Color(0xFFF2F2F2)
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Agregar Producto",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color(0xFF1C0000),
-                fontSize = 24.sp
-            )
-
-            // Campo de Nombre
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nombre") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
-                )
-            )
-
-            // Campo de Descripción
-            TextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Descripción") },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
-                )
-            )
-
-            // Dropdown de Categoría
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color(0xFFF2F2F2)
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                TextField(
-                    value = category,
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text("Categoría") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor()
+                Text(
+                    text = "Agregar Producto",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFF1C0000),
+                    fontSize = 24.sp
                 )
-                ExposedDropdownMenu(
+
+                // Campo de Nombre
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nombre") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    )
+                )
+
+                // Campo de Descripción
+                TextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Descripción") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    )
+                )
+
+                // Dropdown de Categoría
+                ExposedDropdownMenuBox(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onExpandedChange = { expanded = !expanded }
                 ) {
-                    categories.forEach { selectedCategory ->
-                        DropdownMenuItem(
-                            text = { Text(selectedCategory) },
-                            onClick = {
-                                category = selectedCategory
-                                expanded = false
-                            }
-                        )
+                    TextField(
+                        value = category,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Categoría") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        categories.forEach { selectedCategory ->
+                            DropdownMenuItem(
+                                text = { Text(selectedCategory) },
+                                onClick = {
+                                    category = selectedCategory
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
                 }
-            }
 
-            // Campo de Precio
-            TextField(
-                value = price,
-                onValueChange = { price = it },
-                label = { Text("Precio") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
+                // Campo de Precio
+                TextField(
+                    value = price,
+                    onValueChange = { price = it },
+                    label = { Text("Precio") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    )
                 )
-            )
 
-            // Campo de Stock
-            TextField(
-                value = stock,
-                onValueChange = { stock = it },
-                label = { Text("Stock") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
+                // Campo de Stock
+                TextField(
+                    value = stock,
+                    onValueChange = { stock = it },
+                    label = { Text("Stock") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    )
                 )
-            )
 
-            // Botón para seleccionar imagen
-            Button(onClick = { imagePickerLauncher.launch("image/*") }) {
-                Text(text = "Seleccionar Imagen")
-            }
+                // Botón para seleccionar imagen
+                Button(onClick = { imagePickerLauncher.launch("image/*") }) {
+                    Text(text = "Seleccionar Imagen")
+                }
 
-            // Mostrar la imagen seleccionada si existe
-            imageUri?.let { uri ->
-                Image(
-                    painter = rememberImagePainter(uri),
-                    contentDescription = "Imagen seleccionada",
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(8.dp)
-                )
-            }
+                // Mostrar la imagen seleccionada si existe
+                imageUri?.let { uri ->
+                    Image(
+                        painter = rememberImagePainter(uri),
+                        contentDescription = "Imagen seleccionada",
+                        modifier = Modifier
+                            .size(150.dp)
+                            .padding(8.dp)
+                    )
+                }
 
-            // Botón para agregar el producto
-            Button(
-                onClick = {
-                    if (name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty()) {
-                        isLoading = true
-                        val productId = UUID.randomUUID().toString()
+                // Botón para agregar el producto
+                Button(
+                    onClick = {
+                        if (name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty()) {
+                            isLoading = true
+                            val productId = UUID.randomUUID().toString()
 
-                        // Subir la imagen a Firebase Storage
-                        val storageRef = storage.reference.child("product_images/$productId")
-                        imageUri?.let { uri ->
-                            storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
-                                // Obtener la URL de descarga de la imagen
-                                storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                                    // Guardar el producto en Firestore
-                                    val userId = auth.currentUser?.uid ?: ""
-                                    val newProduct = Product(
-                                        id = productId,
-                                        name = name,
-                                        price = price.toInt(),
-                                        description = description,
-                                        imageRes = downloadUri.toString(), // Guardar la URL de la imagen
-                                        stock = stock.toInt(),
-                                        userId = userId,
-                                        categoryName = category
-                                    )
+                            // Subir la imagen a Firebase Storage
+                            val storageRef = storage.reference.child("product_images/$productId")
+                            imageUri?.let { uri ->
+                                storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+                                    // Obtener la URL de descarga de la imagen
+                                    storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                                        // Guardar el producto en Firestore
+                                        val userId = auth.currentUser?.uid ?: ""
+                                        val newProduct = Product(
+                                            id = productId,
+                                            name = name,
+                                            price = price.toInt(),
+                                            description = description,
+                                            imageRes = downloadUri.toString(), // Guardar la URL de la imagen
+                                            stock = stock.toInt(),
+                                            userId = userId,
+                                            categoryName = category
+                                        )
 
-                                    // Subir a Firestore
-                                    db.collection("products").document(productId)
-                                        .set(newProduct)
-                                        .addOnSuccessListener {
-                                            isLoading = false
-                                            navController.popBackStack() // Navega de regreso
-                                        }
-                                        .addOnFailureListener {
-                                            isLoading = false
-                                            // Manejar error
-                                        }
+                                        // Subir a Firestore
+                                        db.collection("products").document(productId)
+                                            .set(newProduct)
+                                            .addOnSuccessListener {
+                                                isLoading = false
+                                                navController.popBackStack() // Navega de regreso
+                                            }
+                                            .addOnFailureListener {
+                                                isLoading = false
+                                                // Manejar error
+                                            }
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                enabled = !isLoading && name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFA4A0C))
-            ) {
-                Text(text = if (isLoading) "Cargando..." else "Agregar Producto", color = Color.White)
-            }
+                    },
+                    enabled = !isLoading && name.isNotEmpty() && price.isNotEmpty() && stock.isNotEmpty() && description.isNotEmpty() && imageUri != null && category.isNotEmpty(),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFA4A0C))
+                ) {
+                    Text(
+                        text = if (isLoading) "Cargando..." else "Agregar Producto",
+                        color = Color.White
+                    )
+                }
 
-            if (isLoading) {
-                CircularProgressIndicator()
+                if (isLoading) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
-
-}
-
 
 
 

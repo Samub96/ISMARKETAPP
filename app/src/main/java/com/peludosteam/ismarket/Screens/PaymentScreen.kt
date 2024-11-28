@@ -1,5 +1,7 @@
 package com.peludosteam.ismarket.Screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,17 +22,27 @@ import androidx.navigation.NavController
 import com.peludosteam.ismarket.viewmode.PaymentViewModel
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import com.peludosteam.ismarket.domain.Product
+import com.peludosteam.ismarket.viewmode.CarritoViewMode
 import com.peludosteam.ismarket.viewmode.DeliveryMethod
 import com.peludosteam.ismarket.viewmode.PaymentMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewModel = viewModel()) {
+fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewModel = viewModel(),
+                  cartViewModel: CarritoViewMode = viewModel(),
+
+) {
 
     val selectedPaymentMethod = paymentViewModel.selectedPaymentMethod
     val selectedDeliveryMethod = paymentViewModel.selectedDeliveryMethod
-
+    val totalPrice by cartViewModel.totalPrice.observeAsState(0)
+    val totalAmount =paymentViewModel.setAmount(totalPrice)
+    val carrito = cartViewModel
+    var showDialog by remember { mutableStateOf(false) }
     Scaffold(
 
         content = { innerPadding ->
@@ -119,7 +131,10 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = "Total", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                    Text(text = "$23,000", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    // Aquí mostramos el total dinámicamente
+                    Text(text = "$ $totalPrice", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    Log.d("PriceDetails", "price: $totalPrice")
+
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -127,10 +142,15 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
 
                 Button(
                     onClick = {
+
                         paymentViewModel.savePaymentToFirebase(
+
                             onSuccess = {
+                                showDialog = true
+                                carrito.checkout()
                                 // Acción en caso de éxito, por ejemplo, navegar hacia atrás
                                 navController.navigate("viewProducts")
+
                             },
                             onError = { error ->
                                 // Manejo de errores, como mostrar un mensaje al usuario
@@ -147,6 +167,19 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                     Text(text = "Proceder al pago", style = MaterialTheme.typography.titleMedium.copy(color = Color.White, fontSize = 25.sp))
                 }
             }
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = { showDialog = false }, // Cierra el diálogo
+                    title = { Text("Pago Exitoso") },
+                    text = { Text("Tu pago ha sido realizado correctamente.") },
+                    confirmButton = {
+                        Button(onClick = { showDialog = false }) {
+                            Text("Aceptar")
+                        }
+                    }
+                )
+            }
+
         }
     )
 }

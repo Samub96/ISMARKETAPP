@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,20 +52,25 @@ fun CartProductCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(product.imageRes)
-                    .crossfade(true) // Añade una transición suave
-                    .error(R.drawable.ic_launcher_foreground) // Imagen de error
-                    .placeholder(R.drawable.ic_launcher_foreground) // Imagen de carga
+                    .crossfade(true)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .listener(
+                        onError = { _, result -> Log.e("CartProductCard", "Error: ${result.throwable}") },
+                        onSuccess = { _, _ -> Log.d("CartProductCard", "Imagen cargada correctamente.") }
+                    )
                     .build(),
                 contentDescription = product.name,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(80.dp) // Tamaño fijo para la imagen
+                    .size(80.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.LightGray),
-                contentScale = ContentScale.Crop, // Escala para llenar el espacio sin distorsión
-                onError = { error ->
-                    Log.e("AsyncImage", "Error al cargar imagen: $error")
-                }
+                    .background(Color.LightGray)
+
             )
+            Log.d("ProductDetails", "ID: ${product.id}, " +
+                    "Name: ${product.name}, Price: ${product.price}," +
+                    " Image URL: ${product.imageRes}, " + "description: ${product.description}")
 
             Spacer(modifier = Modifier.width(4.dp))
 

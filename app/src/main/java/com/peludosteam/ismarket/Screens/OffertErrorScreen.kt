@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.peludosteam.ismarket.R
+
 @Composable
 fun OffertErrorScreen(navController: NavController) {
     Scaffold(
@@ -39,15 +40,15 @@ fun OffertErrorScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues) // Para manejar márgenes correctamente
-                    .padding(16.dp),
+                    .padding(paddingValues)
+                    .padding(horizontal = 24.dp, vertical = 0.dp), // Sin padding vertical adicional
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(50.dp))
-
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp), // Separación controlada
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
@@ -55,43 +56,49 @@ fun OffertErrorScreen(navController: NavController) {
                         painter = painterResource(id = R.drawable.flecha),
                         contentDescription = "Flecha",
                         modifier = Modifier
-                            .size(15.dp)
+                            .size(20.dp) // Tamaño ajustado
                             .graphicsLayer { rotationZ = 90f }
                             .clickable {
-
                                 navController.popBackStack()
                             }
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = "Ofertas",
                         style = TextStyle(fontSize = 20.sp),
                         color = Color.Black,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
 
-                Spacer(modifier = Modifier.height(150.dp))
+                Spacer(modifier = Modifier.height(50.dp)) // Espacio controlado
 
                 Image(
                     painter = painterResource(id = R.drawable.ventasflash),
                     contentDescription = "Offert Logo",
-                    modifier = Modifier.size(250.dp)
+                    modifier = Modifier.size(200.dp) // Tamaño del logo ajustado
                 )
+
+                Spacer(modifier = Modifier.height(16.dp)) // Espacio entre logo y texto principal
 
                 Text(
                     text = "No tienes ofertas disponibles",
-                    style = TextStyle(fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                    style = TextStyle(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(12.dp)) // Espacio reducido
 
                 Text(
-                    text = "Por el momento no tienes ofertas disponibles" +
-                            " para ti, pero no te preocupes, en cuanto tengamos" +
-                            " ofertas disponibles te notificaremos.",
+                    text = "Por el momento no tienes ofertas disponibles " +
+                            "para ti, pero no te preocupes, en cuanto tengamos " +
+                            "ofertas disponibles te notificaremos.",
                     textAlign = TextAlign.Center,
+                    style = TextStyle(fontSize = 16.sp, color = Color.Gray),
                     modifier = Modifier.fillMaxWidth()
                 )
             }

@@ -1,5 +1,7 @@
 package com.peludosteam.ismarket.viewmode
 
+
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,13 +15,14 @@ import com.peludosteam.ismarket.repository.CarritoRepositoryImpl
 import kotlinx.coroutines.launch
 
 class CarritoViewMode(
-    val carritoRepository: CarritoRepository = CarritoRepositoryImpl()
+    private val carritoRepository: CarritoRepository = CarritoRepositoryImpl(),
+    private val paymentViewModel: PaymentViewModel = PaymentViewModel()
 ) : ViewModel() {
 
     private val _cartProducts = MutableLiveData<List<Product>>()
     val cartProducts: LiveData<List<Product>> = _cartProducts
 
-    private val _totalPrice = MutableLiveData<Int>()
+    val _totalPrice = MutableLiveData<Int>()
     val totalPrice: LiveData<Int> = _totalPrice
 
     init {
@@ -33,13 +36,19 @@ class CarritoViewMode(
                 val products = carritoRepository.getCartProducts(userID) ?: emptyList()
                 _cartProducts.value = products
                 updateTotalPrice(products)
+
             }
         }
     }
 
-    private fun updateTotalPrice(products: List<Product>) {
-        _totalPrice.value = products.sumOf { it.price }
-    }
+     private fun updateTotalPrice(products: List<Product>) {
+         val total = products.sumOf { it.price }
+         _totalPrice.value = total
+
+        Log.d("PriceAmount:", "price $total")
+     }
+
+
 
     fun addProductToCart(product: Product) {
         val userID = Firebase.auth.currentUser?.uid
@@ -58,6 +67,7 @@ class CarritoViewMode(
                 carritoRepository.removeProduct(userID, productId)
                 loadCartProducts()
             }
+
         }
     }
 
