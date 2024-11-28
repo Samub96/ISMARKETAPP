@@ -38,7 +38,7 @@ fun ProfileScreen(
     signupViewModel: SignupViewModel = viewModel(),
 ) {
     val userState by profileViewModel.user.observeAsState()
-    Log.e(">>>", userState.toString())
+    Log.e("dataUser", userState.toString())
     val nestedNavController = rememberNavController()
 
     LaunchedEffect(true) {

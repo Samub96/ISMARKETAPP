@@ -72,7 +72,7 @@ fun ViewCarrito(
 
                 // Muestra el precio total del carrito
                 Text(
-                    text = "Total: $${"%.2f".format(totalPrice.toDouble())}",
+                    text = "Total: $$totalPrice",
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
