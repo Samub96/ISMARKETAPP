@@ -75,7 +75,7 @@ fun ProfileScreen(
                 composable("viewProducts"){ ViewProducts(nestedNavController)}
                 //composable("history"){ ViewProducts()}
                 //composable("chat"){ ViewProducts()}
-                composable("viewProfile") { ViewProfile(navController = nestedNavController) }
+                composable("viewProfile") { ViewProfile(navController) }
                 composable("editProfile") { EditProfileScreen(nestedNavController) }
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }

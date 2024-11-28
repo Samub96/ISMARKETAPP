@@ -46,6 +46,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.listasapp.components.ProductCardEditView
+import com.google.firebase.auth.FirebaseAuth
 import com.peludosteam.ismarket.R
 import com.peludosteam.ismarket.viewmode.ProductViewModel
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
@@ -123,9 +124,10 @@ fun ViewProfile(
                 /*Button(onClick = { /* Acción seguir */ }) {
                     Text(text = "Siguiendo")
                 }*/
-               /*  Button(onClick = { navController.navigate("editProfile") }) { // Cambiar para usar "editProfile"
-                    Text(text = "Editar perfil")
-                } */
+
+                Button(onClick = { FirebaseAuth.getInstance().signOut()
+                    navController.navigate("login") }) {
+                    Text(text = "cerrar sesion")
                 }
                 /*Button(onClick = { /* Acción compartir */ }) {
                     Text(text = "Compartir")
@@ -150,7 +152,7 @@ fun ViewProfile(
             }
         }
     }
-
+}
 
 
 //fun ViewProfile(
