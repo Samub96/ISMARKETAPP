@@ -34,11 +34,11 @@ fun MenuScreen(navController: NavController) {
         }
 
         // Botón de Favoritos
-        MenuButtonCustom(
+        /*MenuButtonCustom(
             text = "Tus Favoritos",
             icon = Icons.Filled.Favorite,
             onClick = { navController.navigate("favorites") }
-        )
+        )*/
 
         // Botón de Órdenes
         MenuButtonCustom(
@@ -62,11 +62,11 @@ fun MenuScreen(navController: NavController) {
         )
 
         // Botón de Configuración
-        MenuButtonCustom(
+        /*MenuButtonCustom(
             text = "Configuraciones",
             icon = Icons.Filled.Settings,
             onClick = { navController.navigate("settings") }
-        )
+        )*/
 
         // Botón de Cerrar sesión
         MenuButtonCustom(

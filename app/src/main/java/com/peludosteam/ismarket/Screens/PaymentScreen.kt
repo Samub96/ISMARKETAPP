@@ -154,6 +154,7 @@ fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewMod
                     onClick = {
                         val userId = Firebase.auth.currentUser?.uid ?: return@Button
                         paymentViewModel.savePurchaseToFirebase(
+
                             products = products,
                             userId = userId,
                             onSuccess = {
