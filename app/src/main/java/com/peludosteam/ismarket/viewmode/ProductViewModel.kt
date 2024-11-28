@@ -24,7 +24,7 @@ class ProductViewModel(
     private val firestore = FirebaseFirestore.getInstance()
 
     fun updateProductStock(productId: String, newStock: Int) {
-        firestore.collection("products") // Asegúrate de usar la colección correcta
+        firestore.collection("products")
             .document(productId)
             .update("stock", newStock)
             .addOnSuccessListener {
@@ -46,11 +46,9 @@ class ProductViewModel(
                     document.toObject(Product::class.java)!!
                 }
                 withContext(Dispatchers.Main) {
-                    // Actualizar la UI con la lista de productos
                     productList.value = products
                 }
             } catch (e: Exception) {
-                // Manejo de errores
                 Log.e("FirestoreError", "Error obteniendo productos: ", e)
             }
         }
@@ -59,18 +57,13 @@ class ProductViewModel(
     fun deleteProduct(id: String) {
         viewModelScope.launch {
             try {
-                // Eliminar el producto de Firestore
                 val productRef = FirebaseFirestore.getInstance()
                     .collection("products")
-                    .document(id)  // Usamos el campo `id`
-
-                productRef.delete().await() // Elimina el producto de Firestore
+                    .document(id)
+                productRef.delete().await()
 
                 Log.d("ProductViewModel", "Producto eliminado exitosamente de Firestore.")
-
-                // Actualizar los datos después de la eliminación
-                downloadData()  // Vuelve a descargar los datos actualizados después de la eliminación
-
+                downloadData()
             } catch (e: Exception) {
                 Log.e("ProductViewModel", "Error al eliminar producto de Firestore: ${e.message}")
             }

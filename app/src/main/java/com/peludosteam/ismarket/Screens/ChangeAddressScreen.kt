@@ -1,4 +1,5 @@
 package com.peludosteam.ismarket.Screens
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -139,7 +140,7 @@ fun ChangeAddressScreen(navController: NavController) {
                     color = Color.Black,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp),  // Removido padding extra en la parte superior
+                        .padding(horizontal = 8.dp),
                     textAlign = TextAlign.Start
                 )
                 Box(
@@ -221,7 +222,7 @@ fun ChangeAddressScreen(navController: NavController) {
                                 fontWeight = FontWeight.Normal
                             )
                         )
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         Button(
                             onClick = {
                                 saveAddressToFirestore(firstInput, secondInput, thirdInput)
