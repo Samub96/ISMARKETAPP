@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun MenuScreen(navController: NavController) {
+fun MenuScreen(navController: NavController, nestedNavController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,21 +43,21 @@ fun MenuScreen(navController: NavController) {
         MenuButtonCustom(
             text = "Órdenes",
             icon = Icons.Filled.List,
-            onClick = { navController.navigate("orderError") }
+            onClick = { nestedNavController.navigate("orderError") }
         )
 
 
         MenuButtonCustom(
             text = "Ofertas y promociones",
             icon = Icons.Filled.LocalOffer,
-            onClick = { navController.navigate("offertError") }
+            onClick = { nestedNavController.navigate("offertError") }
         )
 
-        MenuButtonCustom(
-            text = "Dirección",
-            icon = Icons.Filled.LocationOn,
-            onClick = { navController.navigate("changeAddress") }
-        )
+        //MenuButtonCustom(
+          //  text = "Dirección",
+          //  icon = Icons.Filled.LocationOn,
+          //  onClick = { nestedNavController.navigate("changeAddress") }
+       // )
 
         // Botón de Configuración
         /*MenuButtonCustom(
