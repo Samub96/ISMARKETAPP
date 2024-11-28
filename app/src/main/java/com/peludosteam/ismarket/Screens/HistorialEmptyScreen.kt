@@ -36,14 +36,14 @@ fun HistorialEmptyScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp), // Eliminado padding vertical extra
+            .padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 8.dp), // Ajustado para mejor alineación
+                .padding(vertical = 16.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -66,13 +66,13 @@ fun HistorialEmptyScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        Spacer(modifier = Modifier.height(80.dp)) // Espacio entre cabecera y logo
+        Spacer(modifier = Modifier.height(80.dp))
         Image(
             painter = painterResource(id = R.drawable.historialogo),
             contentDescription = "Historial Logo",
-            modifier = Modifier.size(200.dp) // Tamaño ajustado del logo
+            modifier = Modifier.size(200.dp)
         )
-        Spacer(modifier = Modifier.height(16.dp)) // Menos espacio
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "No hay historial por ahora",
             style = TextStyle(
@@ -82,16 +82,16 @@ fun HistorialEmptyScreen(navController: NavController) {
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(12.dp)) // Espacio reducido
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Crea tu primer pedido.\nNo pierdas la oportunidad.",
             textAlign = TextAlign.Center,
             style = TextStyle(fontSize = 16.sp, color = Color.Gray),
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(80.dp)) // Menos espacio antes del botón
+        Spacer(modifier = Modifier.height(80.dp))
         Button(
-            onClick = { /* Acción para empezar pedido */ },
+            onClick = { navController.navigate("viewProfile") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFFA4A0C),
                 contentColor = Color.White
@@ -100,13 +100,13 @@ fun HistorialEmptyScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
-                .height(50.dp) // Botón ligeramente más compacto
+                .height(50.dp)
                 .shadow(4.dp, shape = RoundedCornerShape(12.dp))
         ) {
             Text(
                 text = "Empieza tu pedido",
                 style = TextStyle(
-                    fontSize = 18.sp, // Texto un poco más pequeño
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             )

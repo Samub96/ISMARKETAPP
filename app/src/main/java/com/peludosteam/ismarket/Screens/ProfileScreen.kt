@@ -51,16 +51,16 @@ fun ProfileScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "Is Market", color = Color(0xFFFA4A0A)) // Puedes ajustar el título si lo necesitas
+                        Text(text = "Is Market", color = Color(0xFFFA4A0A))
                     },
                     navigationIcon = {
-                        // Ícono en la izquierda (Menú)
+
                         IconButton(onClick = { nestedNavController.navigate("menu") }) {
                             Icon(Icons.Filled.Menu, contentDescription = "Menu", tint = Color(0xFFFA4A0A))
                         }
                     },
                     actions = {
-                        // Ícono en la derecha (Carrito)
+
                         IconButton(onClick = { nestedNavController.navigate("ViewCart") }) {
                             Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart", tint = Color(0xFFFA4A0A))
                         }
@@ -77,10 +77,9 @@ fun ProfileScreen(
                 //composable("chat"){ ViewProducts()}
                 composable("viewProfile") { ViewProfile(navController = nestedNavController) }
                 composable("editProfile") { EditProfileScreen(nestedNavController) }
-                // Asegúrate de tener esta ruta
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }
-                composable("menu") { MenuScreen( nestedNavController) }
+                composable("menu") { MenuScreen( navController) }
                 composable("history") { PurchaseHistoryScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()

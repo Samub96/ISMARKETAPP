@@ -90,10 +90,10 @@ fun EditProfileScreen(
             Button(
                 onClick = {
                     if (password.isNotEmpty()) {
-                        profileViewModel.updatePassword(password) // Actualizar la contraseña
+                        profileViewModel.updatePassword(password)
                     }
                     profileViewModel.updateUserProfile(name, username, email, password.ifEmpty { null })
-                    navController.navigate("viewProfile") // Regresar a la vista de perfil
+                    navController.navigate("viewProfile")
                 },
                 modifier = Modifier.fillMaxWidth().padding(16.dp)
             ) {
