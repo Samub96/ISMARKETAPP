@@ -42,7 +42,9 @@ class CarritoServiceImpl : CarritoService {
             "productId" to carritoProduct.id,
             "Name" to carritoProduct.name,
             "Price" to carritoProduct.price,
-            "imageRes" to carritoProduct.imageRes
+            "imageRes" to carritoProduct.imageRes,
+            "description" to carritoProduct.description
+
         )
 
         Firebase.firestore.collection("User").document(userID)
