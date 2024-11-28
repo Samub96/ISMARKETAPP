@@ -74,7 +74,7 @@ fun ProfileScreen(
                 composable("viewProfile"){ ViewProfile() }
                 composable("addProduct") { AddProductScreen(nestedNavController) }
                 composable("cart") { Cart(nestedNavController) }
-                composable("history") { HistorialEmptyScreen(navController = nestedNavController) }
+                composable("history") { PurchaseHistoryScreen(navController = nestedNavController) }
                 composable("address") {
                     val addressViewModel: AddressViewModel = viewModel()
                     AddressScreen(nestedNavController, addressViewModel)

@@ -63,6 +63,7 @@ import com.peludosteam.ismarket.Screens.ViewProducts
 import com.peludosteam.ismarket.ui.theme.ISMARKETTheme
 import com.peludosteam.ismarket.viewmode.ProfileViewModel
 
+import com.peludosteam.ismarket.Screens.PurchaseHistoryScreen
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -111,6 +112,7 @@ fun App() {
         composable("profile") { ProfileScreen(navController) }
         composable("signup") { SignupScreen(navController) }
         composable("login") { LoginScreen(navController) }
+        composable("history") { PurchaseHistoryScreen(navController) }
     }
 }
 
